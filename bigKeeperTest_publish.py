@@ -16,10 +16,27 @@ os.system("mode con cols=100 lines=10")
 import xml.etree.ElementTree as ET
 
 # To determine current software environment at
-sys.path.append(r'N:\bpPipeline\bigKeeperPy/py/BigKeeperGlob/wip/published')
+sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\BigKeeperGlob\wip\published')
 import bigCodingAssistant_publish
 softwareName = bigCodingAssistant_publish.tool().bigCheckSoftware()
 print(softwareName)
+
+# To determine current version mode (developer, tester or release)
+pathOfDeveloper = r'N:\bpPipeline\bigKeeperPy\repo_01Developer'
+pathOfTester = r'N:\bpPipeline\bigKeeperPy\repo_03Tester'
+pathOfRelease = r'N:\bpPipeline\bigKeeperPy\repo_09Release'
+thisPath = (os.path.dirname(os.path.abspath(__file__)))
+print('this Path ' + thisPath)
+print('path of Dev Path ' + pathOfDeveloper)
+
+if thisPath == pathOfDeveloper:
+    bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_developer.jpg"
+elif thisPath == pathOfTester:
+    bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_tester.jpg"
+elif thisPath == pathOfRelease:
+    bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_release.jpg"
+
+
 
 import bigKeeperInfoGlobal_published
 #bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
@@ -131,9 +148,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def __init__(self):
         super(BigMainWindow, self).__init__(parent = self.SoftwareMainWindow())
         self.setupUi(self)
-        self.setWindowTitle(r'BigKeeper Py - alpha version')
+        #self.setWindowTitle(r'BigKeeper Py - alpha version - Developer Mode')
+        WindowTitleName = 'BigKeeper Py - alpha version - ' + os.path.basename(thisPath)
+        self.setWindowTitle(WindowTitleName)
 
-        self.label_9.setPixmap(QPixmap(r"N:/bpPipeline/bigKeeperPy/bigKeeperPyIcon_developer.jpg"))
+        #self.label_9.setPixmap(QPixmap(r"N:/bpPipeline/bigKeeperPy/bigKeeperPyIcon_developer.jpg"))
+        self.label_9.setPixmap(QPixmap(bannerImage))
+
 
         self.comboBoxEntries = self.listBigKeeperProject()
         self.comboBoxEntries.sort()
