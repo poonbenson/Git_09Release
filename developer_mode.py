@@ -33,7 +33,7 @@ def main():
     #from devbigKeeperTest_publish import BigMainWindow
     from bigKeeperTest_publish import BigMainWindow
 
-    print(sys.path)
+    sys.path.remove(targetAppendPath)
     #BigMainWindow.show_window()
     BigMainWindow.show_window()
 
