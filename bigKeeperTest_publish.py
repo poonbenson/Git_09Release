@@ -133,7 +133,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.setupUi(self)
         self.setWindowTitle(r'BigKeeper Py - alpha version')
 
-        self.label_9.setPixmap(QPixmap(r"N:/bpPipeline/bigKeeperPy/bigKeeperPyIcon.jpg"))
+        self.label_9.setPixmap(QPixmap(r"N:/bpPipeline/bigKeeperPy/bigKeeperPyIcon_developer.jpg"))
 
         self.comboBoxEntries = self.listBigKeeperProject()
         self.comboBoxEntries.sort()
