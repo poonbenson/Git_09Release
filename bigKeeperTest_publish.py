@@ -54,11 +54,11 @@ import bigKeeperInfoGlobal_published
 
 # To import compiled UI that created from QT Designer
 
-sys.path.append(r'N:\bpPipeline\bigKeeperPy')
+#sys.path.append(r'N:\bpPipeline\bigKeeperPy')
 #import bigKeeperPyUi as UiPy # path of compiled py : N:\BigKeeper          WIP : N:\BigKeeper\py\pySide2UI\ui
-import childMenu as UiPyChild # path : N:\BigKeeper         WIP : N:\BigKeeper\py\pySide2UI\ui
+#import childMenu as UiPyChild # path : N:\BigKeeper         WIP : N:\BigKeeper\py\pySide2UI\ui
 #import listView as UiList  # path : N:\BigKeeper         WIP : N:\BigKeeper\py\pySide2UI\ui
-sys.path.remove(r'N:\bpPipeline\bigKeeperPy')
+#sys.path.remove(r'N:\bpPipeline\bigKeeperPy')
 
 try:
     sys.path.append(r'I:\iCloud~com~omz-software~Pythonista3\pySide2UI\ui\published')
@@ -2320,6 +2320,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         except:
             print('No Value.')'''
 
+sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
+import childMenu as UiPyChild # path : N:\BigKeeper         WIP : N:\BigKeeper\py\pySide2UI\ui
+sys.path.remove(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
 
 # The QT Child window class
 class ChildWindow(UiPyChild.Ui_MainWindow, QMainWindow):
