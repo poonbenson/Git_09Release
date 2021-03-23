@@ -20,6 +20,13 @@ def main():
         for i in range(0, noOfTargetRemovePath):
             sys.path.remove(targetRemovePath)
 
+    targetRemovePath = "N:\\bpPipeline\\bigKeeperPy\\repo_03Tester"
+    targetAppendPath = "N:\\bpPipeline\\bigKeeperPy\\repo_09Release"
+    noOfTargetRemovePath = sys.path.count(targetRemovePath)
+    if noOfTargetRemovePath > 0:
+        for i in range(0, noOfTargetRemovePath):
+            sys.path.remove(targetRemovePath)
+
     targeRemoveModule = 'developer_mode'
     targeImportModule = 'release_mode'
     try:
@@ -27,6 +34,16 @@ def main():
         del sys.modules['bigKeeperTest_publish']
     except:
         pass
+
+    targeRemoveModule = 'tester_mode'
+    targeImportModule = 'release_mode'
+    try:
+        del sys.modules[targeRemoveModule]
+        del sys.modules['bigKeeperTest_publish']
+    except:
+        pass
+
+
 
     sys.path.append(targetAppendPath)
     #import bigKeeperTest_publish

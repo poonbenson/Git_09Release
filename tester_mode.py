@@ -10,33 +10,34 @@ def main():
         print('current dir(): after')
         print(dir())
 
-    print('===== developer mode =====')
+    print('===== tester mode =====')
     import sys
 
     targetRemovePath = "N:\\bpPipeline\\bigKeeperPy\\repo_09Release"
-    targetAppendPath = "N:\\bpPipeline\\bigKeeperPy\\repo_01Developer"
+    targetAppendPath = "N:\\bpPipeline\\bigKeeperPy\\repo_03Tester"
     noOfTargetRemovePath = sys.path.count(targetRemovePath)
     if noOfTargetRemovePath > 0:
         for i in range(0, noOfTargetRemovePath):
             sys.path.remove(targetRemovePath)
 
-    targetRemovePath = "N:\\bpPipeline\\bigKeeperPy\\repo_03Tester"
-    targetAppendPath = "N:\\bpPipeline\\bigKeeperPy\\repo_01Developer"
+    targetRemovePath = "N:\\bpPipeline\\bigKeeperPy\\repo_01Developer"
+    targetAppendPath = "N:\\bpPipeline\\bigKeeperPy\\repo_03Tester"
     noOfTargetRemovePath = sys.path.count(targetRemovePath)
     if noOfTargetRemovePath > 0:
         for i in range(0, noOfTargetRemovePath):
             sys.path.remove(targetRemovePath)
+
 
     targeRemoveModule = 'release_mode'
-    targeImportModule = 'developer_mode'
+    targeImportModule = 'tester_mode'
     try:
         del sys.modules[targeRemoveModule]
         del sys.modules['bigKeeperTest_publish']
     except:
         pass
 
-    targeRemoveModule = 'tester_mode'
-    targeImportModule = 'developer_mode'
+    targeRemoveModule = 'developer_mode'
+    targeImportModule = 'tester_mode'
     try:
         del sys.modules[targeRemoveModule]
         del sys.modules['bigKeeperTest_publish']
