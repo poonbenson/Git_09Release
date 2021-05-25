@@ -1,3 +1,5 @@
+winTitlePrefix = '20210525a'
+
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
 
@@ -159,7 +161,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         super(BigMainWindow, self).__init__(parent = self.SoftwareMainWindow())
         self.setupUi(self)
         #self.setWindowTitle(r'BigKeeper Py - alpha version - Developer Mode')
-        WindowTitleName = 'BigKeeper Py - alpha version -d ' + os.path.basename(thisPath)
+        WindowTitleName = winTitlePrefix + ' BigKeeperPy-alpha ' + os.path.basename(thisPath)
         self.setWindowTitle(WindowTitleName)
 
         #self.label_9.setPixmap(QPixmap(r"N:/bpPipeline/bigKeeperPy/bigKeeperPyIcon_developer.jpg"))
