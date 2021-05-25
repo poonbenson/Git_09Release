@@ -18,8 +18,8 @@ import xml.etree.ElementTree as ET
 # To determine current software environment at
 sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\BigKeeperGlob\wip\published')
 import bigCodingAssistant_publish
-softwareName = bigCodingAssistant_publish.tool().bigCheckSoftware()
-print(softwareName)
+CurrentSoftwareName = bigCodingAssistant_publish.tool().bigCheckSoftware()
+print('currentSoftwareName is: {}'.format(CurrentSoftwareName))
 
 try:
     print('__file__:')
@@ -46,10 +46,18 @@ elif thisPath == pathOfTester:
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_tester.jpg"
 elif thisPath == pathOfRelease:
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_release.jpg"
+else:
+    bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_InPythongOrDCC.jpg"
 
-
+##print('line52')
+##print(CurrentSoftwareName)
+##print('line54')
 
 import bigKeeperInfoGlobal_published
+
+##print('line58')
+##print(CurrentSoftwareName)
+##print('line60')
 #bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
 
 # To import compiled UI that created from QT Designer
@@ -60,27 +68,17 @@ import bigKeeperInfoGlobal_published
 #import listView as UiList  # path : N:\BigKeeper         WIP : N:\BigKeeper\py\pySide2UI\ui
 #sys.path.remove(r'N:\bpPipeline\bigKeeperPy')
 
-try:
-    sys.path.append(r'I:\iCloud~com~omz-software~Pythonista3\pySide2UI\ui\published')
-    import bigKeeperPyUi_newLayout_dev as UiPy
-    sys.path.remove(r'I:\iCloud~com~omz-software~Pythonista3\pySide2UI\ui\published')
-    is_iDriveDeveloper = True
-except:
-    sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
-    import bigKeeperPyUi_newLayout as UiPy
-    sys.path.remove(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
-    is_iDriveDeveloper = False
+
 
 sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
-#import bigKeeperPyUi_newLayout as UiPy
+import bigKeeperPyUi_newLayout as UiPy
 import listView_dev as UiList
 import DialogWindow as UiDialog # path : N:\BigKeeper\py\pySide2UI\ui        WIP : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\ui
 import doneWindow as UiDone
 import nukeReadNodeFrameInOut as UiNukeTemp
 import newTaskWindow as UiNewTask
+sys.path.remove(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
 
-'''sys.path.append(r'I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip\published\QDarkStyleSheet-master')
-import qdarkstyle'''
 
 # To initiate current software environment variables
 externalToolPath = r'N:\bpPipeline\bigKeeperPy\py\externalTool'
@@ -97,37 +95,38 @@ if not os.path.isdir(bigKeeperCacheFolderPath):
     os.mkdir(bigKeeperCacheFolderPath)
 print(os.path.isdir(bigKeeperCacheFolderPath))
 
-if softwareName == 'nuke':
+##print('line98')
+if CurrentSoftwareName == 'nuke':
+    ##print('line100')
     in_nuke = True
     import nuke
     import nukescripts
     cacheProjName = r'projCache_nuke.txt'
     wipExtension = r'.nk'
-elif softwareName == 'maya':
+elif CurrentSoftwareName == 'maya':
     in_maya = True
     import maya.cmds as cmds
     cacheProjName = r'projCache_maya.txt'
     wipExtension = r'.ma'
-elif softwareName == 'houdini':
+elif CurrentSoftwareName == 'houdini':
     in_houdini = True
     import hou
     cacheProjName = r'projCache_houdini.txt'
     wipExtension = r'.hip'
-elif softwareName == 'blender':
+elif CurrentSoftwareName == 'blender':
     in_blender = True
     import bpy
     cacheProjName = r'projCache_blender.txt'
     wipExtension = r'.blend'
-elif softwareName == 'python':
+elif CurrentSoftwareName == 'python':
     in_python = True
     cacheProjName = r'projCache_python.txt'
     wipExtension = r'.py'
 
 try:
-    app = QApplication()
+    app = Qpplication()
 except:
     pass
-
 
 print(cacheProjName)
 
@@ -324,9 +323,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.shotAction3.setDisabled(True)
             self.shotAction4.setDisabled(True)
 
-        if is_iDriveDeveloper:
-            self.shotAction3.setDisabled(False)
-            self.shotAction4.setDisabled(False)
+        #if is_iDriveDeveloper:
+            #self.shotAction3.setDisabled(False)
+            #self.shotAction4.setDisabled(False)
 
 
         '''# ref : https://www.qtcentre.org/threads/34073-QTabWidget-tab-button-color(-how-to-set-)
