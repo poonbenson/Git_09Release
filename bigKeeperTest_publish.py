@@ -1,4 +1,4 @@
-winTitlePrefix = '20210525a'
+winTitlePrefix = '20210602a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
