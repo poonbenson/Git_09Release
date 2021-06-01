@@ -81,6 +81,8 @@ import nukeReadNodeFrameInOut as UiNukeTemp
 import newTaskWindow as UiNewTask
 sys.path.remove(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
 
+sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\externalPyModule')
+
 
 # To initiate current software environment variables
 externalToolPath = r'N:\bpPipeline\bigKeeperPy\py\externalTool'
@@ -131,6 +133,8 @@ except:
     pass
 
 print(cacheProjName)
+
+
 
 
 # The QT MainWindow Class
@@ -422,14 +426,24 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.pushButton_num1.setText('QMessageLoopTest')
         #self.pushButton_num4.clicked.connect(lambda: self.handleButton(self.selProjScnShotTaskPath))
         #self.pushButton_num4.setText('handleButton')
-        #self.pushButton_num5.clicked.connect(lambda: self.loopMessage2())
-        #self.pushButton_num5.setText('loopMessage2')
+        self.pushButton_num5.clicked.connect(self.launchSceneUpdate)
+        self.pushButton_num5.setText('Scn Update')
         self.pushButton_num6.clicked.connect(lambda: self.nukeUpdateReadNodeVer())
         self.pushButton_num6.setText('UpReadVer')
         self.pushButton_num9.clicked.connect(lambda: self.cleanUpDelAction())
         self.pushButton_num9.setText('cleanUpDelAction')
         self.pushButton_num8.clicked.connect(lambda: self.openScheduleLink())
         self.pushButton_num8.setText('openScheduleLink')
+
+
+    def launchSceneUpdate(self):
+        if in_maya:
+            from daniel import sceneUpdate_maya as su
+        elif in_nuke:
+            from daniel import sceneUpdate_nuke as su
+        else:
+            from daniel import sceneUpdate as su
+        su.run()
 
 
     def nukeUpdateReadNodeVer(self):
