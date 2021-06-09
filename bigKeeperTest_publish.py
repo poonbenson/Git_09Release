@@ -1,4 +1,4 @@
-winTitlePrefix = '20210602a'
+winTitlePrefix = '20210609a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -438,12 +438,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def launchSceneUpdate(self):
         if in_maya:
-            from daniel import sceneUpdate_maya as su
+            from daniel import sceneUpdate_maya as susu
         elif in_nuke:
-            from daniel import sceneUpdate_nuke as su
+            from daniel import sceneUpdate_nuke as susu
         else:
-            from daniel import sceneUpdate as su
-        su.run()
+            from daniel import sceneUpdate as susu
+        susu.run()
 
 
     def nukeUpdateReadNodeVer(self):
@@ -902,7 +902,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def listBigKeeperProject(self):
 
-        f = open(r'N:/BigKeeper/bigPicture_projects.xml', "r")
+        f = open(r'N:/bpPipeline/maya/plugins/BigKeeper/bigKeeper_projectDatabase/bigPicture_projects.xml', "r")
         startLineNo = 1
         xmlStr = str()
         for x in f:
