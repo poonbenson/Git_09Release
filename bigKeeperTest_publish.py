@@ -1,4 +1,4 @@
-winTitlePrefix = '20210609b'
+winTitlePrefix = '20210609c'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -32,6 +32,15 @@ except:
     print(sys.argv[0])
     print('sys argv done')
     thisPyPath = sys.argv[0]
+
+# Declare
+studioEnvMaya = r'N:\bpPipeline\maya\env\_ini\studioEnv.bat'
+studioEnvNuke = r'N:\bpPipeline\nuke\env\_ini\studioEnv.bat'
+studioEnvNukeAssist = r'N:\bpPipeline\nuke\env\_ini\studioEnvAssist.bat'
+studioEnvNukeX = r'N:\bpPipeline\nuke\env\_ini\studioEnvX.bat'
+studioEnvNukeStudio = r'N:\bpPipeline\nuke\env\_ini\studioEnvStudio.bat'
+
+
 
 
 # To determine current version mode (developer, tester or release)
@@ -197,6 +206,16 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3B_action)
         self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3C_action)
         self.listWidget_3.itemClicked.connect(self.listWidget_shotTask_action)
+
+        self.pushButton_LaunchMaya2022_update0.clicked.connect(self.launchStudioEnvMaya)
+        self.pushButton_LaunchNuke13_0_v2.clicked.connect(self.launchStudioEnvNuke)
+        self.pushButton_LaunchNukeX13_0_v2.clicked.connect(self.launchStudioEnvNukeX)
+        self.pushButton_LaunchNukeX13_0_v2.setEnabled(True)
+        self.pushButton_LaunchNukeAssist13_0_v2.clicked.connect(self.launchStudioEnvNukeAssist)
+        self.pushButton_LaunchNukeAssist13_0_v2.setEnabled(True)
+        self.pushButton_LaunchNukeStudio13_0_v2.clicked.connect(self.launchStudioEnvNukeStudio)
+        self.pushButton_LaunchNukeStudio13_0_v2.setEnabled(False)
+
 
 
         self.pushButton_7zip.clicked.connect(self.myAction2)
@@ -434,6 +453,33 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_num9.setText('cleanUpDelAction')
         self.pushButton_num8.clicked.connect(lambda: self.openScheduleLink())
         self.pushButton_num8.setText('openScheduleLink')
+
+
+    def launchStudioEnvMaya(self):
+        theCmd = 'start {}'.format(studioEnvMaya)
+        print(theCmd)
+        os.system(theCmd)
+
+    def launchStudioEnvNuke(self):
+        theCmd = 'start {}'.format(studioEnvNuke)
+        print(theCmd)
+        os.system(theCmd)
+
+    def launchStudioEnvNukeAssist(self):
+        theCmd = 'start {}'.format(studioEnvNukeAssist)
+        print(theCmd)
+        os.system(theCmd)
+
+    def launchStudioEnvNukeX(self):
+        theCmd = 'start {}'.format(studioEnvNukeX)
+        print(theCmd)
+        os.system(theCmd)
+
+    def launchStudioEnvNukeStudio(self):
+        theCmd = 'start {}'.format(studioEnvNukeStudio)
+        print(theCmd)
+        os.system(theCmd)
+
 
 
     def launchSceneUpdate(self):
