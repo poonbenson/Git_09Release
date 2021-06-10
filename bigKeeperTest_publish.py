@@ -1,4 +1,4 @@
-winTitlePrefix = '20210609c'
+winTitlePrefix = '20210610a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -135,11 +135,12 @@ elif CurrentSoftwareName == 'python':
     in_python = True
     cacheProjName = r'projCache_python.txt'
     wipExtension = r'.py'
-
+'''
 try:
     app = QApplication()
 except:
     pass
+'''
 
 print(cacheProjName)
 
