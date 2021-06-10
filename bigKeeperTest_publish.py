@@ -1,4 +1,4 @@
-winTitlePrefix = '20210610b'
+winTitlePrefix = '20210610c'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -248,6 +248,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.doneUi = doneWindow(parent = self)
         self.initializeNewWIPDialogWindow()
         self.createShotNewTaskUi = createShotNewTaskWindow(parent = self)
+
+        self.pushButton_scnUpdate.clicked.connect(self.launchSceneUpdate)
 
         self.reviveUi = subListView(parent = self)
         self.reviveUi.listWidget.itemDoubleClicked.connect(self.reviveOpenAction)
