@@ -1,4 +1,4 @@
-winTitlePrefix = '20210610c'
+winTitlePrefix = '20210623a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -285,7 +285,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-        self.pushButton_openCal.clicked.connect(lambda: self.openScheduleLink())
+        #self.pushButton_openCal.clicked.connect(lambda: self.openScheduleLink())
+        self.pushButton_openCal.clicked.connect(lambda: self.openScheduleFolder())
+        self.pushButton_openCal.setText('Open PDF Schedule')
 
         # Nuke Tab
         self.pushButton_genWriteLayerMask.clicked.connect(lambda : self.nukeBornWriteNode('LayerMask'))
@@ -541,6 +543,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print(' my openScheduleLink')
         import webbrowser
         webbrowser.open('https://calendar.google.com/calendar/r', new = 2)
+
+    def openScheduleFolder(self):
+        print('my openScheduleFolder')
+        thePath = r'N:\mnt\job\21044ChongFilm\Doc\Schedule\_publishPDF'
+        os.startfile(thePath)
 
     """
     def loopQMessage(self):
