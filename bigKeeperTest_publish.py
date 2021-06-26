@@ -1,4 +1,4 @@
-winTitlePrefix = '20210626a'
+winTitlePrefix = '20210626b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -63,7 +63,7 @@ elif thisPath == pathOfRelease:
 else:
     #eg. for In Python IDE, Standalone
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_InPythongOrDCC.jpg"
-    uiPath = os.path.join(r'N:\bpPipeline\bigKeeperPy', 'ui')
+    uiPath = os.path.join(pathOfRelease, 'ui'pathOfRelease, 'ui')
 
 ##print('line52')
 ##print(CurrentSoftwareName)
@@ -98,6 +98,7 @@ import newTaskWindow as UiNewTask
 sys.path.remove(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
 
 sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\externalPyModule')
+sys.path.append(uiPath)
 
 
 # To initiate current software environment variables
