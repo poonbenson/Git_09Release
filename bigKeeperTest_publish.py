@@ -63,7 +63,7 @@ elif thisPath == pathOfRelease:
 else:
     #eg. for In Python IDE, Standalone
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_InPythongOrDCC.jpg"
-    uiPath = os.path.join(pathOfRelease, 'ui')
+    uiPath = os.path.join(pathOfDeveloper, 'ui')
 
 ##print('line52')
 ##print(CurrentSoftwareName)
@@ -87,9 +87,10 @@ import bigKeeperInfoGlobal_published
 
 
 sys.path.append(uiPath)
-sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
-
 import bigKeeperPyUi_newLayout as UiPy
+sys.path.remove(uiPath)
+
+sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
 import listView_dev as UiList
 import DialogWindow as UiDialog # path : N:\BigKeeper\py\pySide2UI\ui        WIP : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\ui
 import doneWindow as UiDone
@@ -98,7 +99,7 @@ import newTaskWindow as UiNewTask
 sys.path.remove(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
 
 sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\externalPyModule')
-sys.path.append(uiPath)
+
 
 
 # To initiate current software environment variables
@@ -349,8 +350,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.tabWidget_2.setTabEnabled(3, True)
             self.tabWidget_2.setCurrentIndex(3)
         elif in_python:
+            self.tabWidget_2.setTabEnabled(5, True)
             self.tabWidget_2.setTabEnabled(4, True)
-            self.tabWidget_2.setCurrentIndex(4)
+            self.tabWidget_2.setCurrentIndex(5)
 
 
         # This to a temp. and bad way to parenet on the working software and on-top. Current can't find correct way to do so.

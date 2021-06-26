@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'bigKeeperPyUi_newLayout_v113.ui',
-# licensing of 'bigKeeperPyUi_newLayout_v113.ui' applies.
+# Form implementation generated from reading ui file '.\bigKeeperPyUi_newLayout_v114.ui',
+# licensing of '.\bigKeeperPyUi_newLayout_v114.ui' applies.
 #
-# Created: Wed Jun  9 22:18:04 2021
+# Created: Sat Jun 26 22:53:08 2021
 #      by: pyside2-uic  running on PySide2 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -109,25 +109,28 @@ class Ui_MainWindow(object):
         self.label_19 = QtWidgets.QLabel(self.tabCmd)
         self.label_19.setGeometry(QtCore.QRect(300, 30, 71, 16))
         self.label_19.setObjectName("label_19")
-        self.pushButton_LaunchMaya2022_update0 = QtWidgets.QPushButton(self.tabCmd)
-        self.pushButton_LaunchMaya2022_update0.setGeometry(QtCore.QRect(0, 170, 181, 41))
-        self.pushButton_LaunchMaya2022_update0.setObjectName("pushButton_LaunchMaya2022_update0")
-        self.pushButton_LaunchNuke13_0_v2 = QtWidgets.QPushButton(self.tabCmd)
-        self.pushButton_LaunchNuke13_0_v2.setGeometry(QtCore.QRect(0, 220, 61, 41))
-        self.pushButton_LaunchNuke13_0_v2.setObjectName("pushButton_LaunchNuke13_0_v2")
-        self.label_20 = QtWidgets.QLabel(self.tabCmd)
-        self.label_20.setGeometry(QtCore.QRect(0, 140, 161, 16))
-        self.label_20.setObjectName("label_20")
-        self.pushButton_LaunchNukeAssist13_0_v2 = QtWidgets.QPushButton(self.tabCmd)
-        self.pushButton_LaunchNukeAssist13_0_v2.setGeometry(QtCore.QRect(100, 220, 41, 41))
-        self.pushButton_LaunchNukeAssist13_0_v2.setObjectName("pushButton_LaunchNukeAssist13_0_v2")
-        self.pushButton_LaunchNukeStudio13_0_v2 = QtWidgets.QPushButton(self.tabCmd)
-        self.pushButton_LaunchNukeStudio13_0_v2.setGeometry(QtCore.QRect(140, 220, 41, 41))
-        self.pushButton_LaunchNukeStudio13_0_v2.setObjectName("pushButton_LaunchNukeStudio13_0_v2")
-        self.pushButton_LaunchNukeX13_0_v2 = QtWidgets.QPushButton(self.tabCmd)
-        self.pushButton_LaunchNukeX13_0_v2.setGeometry(QtCore.QRect(60, 220, 41, 41))
-        self.pushButton_LaunchNukeX13_0_v2.setObjectName("pushButton_LaunchNukeX13_0_v2")
         self.tabWidget_2.addTab(self.tabCmd, "")
+        self.tabLauncher = QtWidgets.QWidget()
+        self.tabLauncher.setObjectName("tabLauncher")
+        self.groupBox = QtWidgets.QGroupBox(self.tabLauncher)
+        self.groupBox.setGeometry(QtCore.QRect(0, 10, 201, 251))
+        self.groupBox.setObjectName("groupBox")
+        self.pushButton_LaunchNuke13_0_v2 = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_LaunchNuke13_0_v2.setGeometry(QtCore.QRect(10, 60, 61, 41))
+        self.pushButton_LaunchNuke13_0_v2.setObjectName("pushButton_LaunchNuke13_0_v2")
+        self.pushButton_LaunchNukeStudio13_0_v2 = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_LaunchNukeStudio13_0_v2.setGeometry(QtCore.QRect(150, 60, 41, 41))
+        self.pushButton_LaunchNukeStudio13_0_v2.setObjectName("pushButton_LaunchNukeStudio13_0_v2")
+        self.pushButton_LaunchNukeX13_0_v2 = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_LaunchNukeX13_0_v2.setGeometry(QtCore.QRect(70, 60, 41, 41))
+        self.pushButton_LaunchNukeX13_0_v2.setObjectName("pushButton_LaunchNukeX13_0_v2")
+        self.pushButton_LaunchNukeAssist13_0_v2 = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_LaunchNukeAssist13_0_v2.setGeometry(QtCore.QRect(110, 60, 41, 41))
+        self.pushButton_LaunchNukeAssist13_0_v2.setObjectName("pushButton_LaunchNukeAssist13_0_v2")
+        self.pushButton_LaunchMaya2022_update0 = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_LaunchMaya2022_update0.setGeometry(QtCore.QRect(10, 20, 181, 41))
+        self.pushButton_LaunchMaya2022_update0.setObjectName("pushButton_LaunchMaya2022_update0")
+        self.tabWidget_2.addTab(self.tabLauncher, "")
         self.pushButton_scnUpdate = QtWidgets.QPushButton(self.tab_currentOpen)
         self.pushButton_scnUpdate.setGeometry(QtCore.QRect(80, 160, 91, 23))
         self.pushButton_scnUpdate.setObjectName("pushButton_scnUpdate")
@@ -393,6 +396,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_10.addLayout(self.verticalLayout_6)
         self.tabWidget.addTab(self.tab_assetBrowser, "")
         self.verticalLayout.addWidget(self.tabWidget)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.verticalLayout.addItem(spacerItem3)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 433, 21))
@@ -404,7 +409,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(4)
+        self.tabWidget_2.setCurrentIndex(5)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -440,19 +445,20 @@ class Ui_MainWindow(object):
         self.pushButton_exeDel.setText(QtWidgets.QApplication.translate("MainWindow", "Del", None, -1))
         self.label_18.setText(QtWidgets.QApplication.translate("MainWindow", "1) Sort Out by Keeping Versions & Days :", None, -1))
         self.label_19.setText(QtWidgets.QApplication.translate("MainWindow", "2) Execut Del", None, -1))
-        self.pushButton_LaunchMaya2022_update0.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchMaya2022_update0", None, -1))
-        self.pushButton_LaunchMaya2022_update0.setText(QtWidgets.QApplication.translate("MainWindow", "Maya 2022 update0", None, -1))
+        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabCmd), QtWidgets.QApplication.translate("MainWindow", "Cmd", None, -1))
+        self.groupBox.setTitle(QtWidgets.QApplication.translate("MainWindow", "Studio Dedicated Launcher:", None, -1))
         self.pushButton_LaunchNuke13_0_v2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchNuke13_0_v2", None, -1))
         self.pushButton_LaunchNuke13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "Nuke\n"
 "13.0v2", None, -1))
-        self.label_20.setText(QtWidgets.QApplication.translate("MainWindow", "Studio Dedicated Launcher:", None, -1))
-        self.pushButton_LaunchNukeAssist13_0_v2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchNukeAssist13_0_v2", None, -1))
-        self.pushButton_LaunchNukeAssist13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "assist", None, -1))
         self.pushButton_LaunchNukeStudio13_0_v2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchNukeStudio13_0_v2", None, -1))
         self.pushButton_LaunchNukeStudio13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "studio", None, -1))
         self.pushButton_LaunchNukeX13_0_v2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchNukeX13_0_v2", None, -1))
         self.pushButton_LaunchNukeX13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "X", None, -1))
-        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabCmd), QtWidgets.QApplication.translate("MainWindow", "Cmd", None, -1))
+        self.pushButton_LaunchNukeAssist13_0_v2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchNukeAssist13_0_v2", None, -1))
+        self.pushButton_LaunchNukeAssist13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "assist", None, -1))
+        self.pushButton_LaunchMaya2022_update0.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchMaya2022_update0", None, -1))
+        self.pushButton_LaunchMaya2022_update0.setText(QtWidgets.QApplication.translate("MainWindow", "Maya 2022 update0", None, -1))
+        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabLauncher), QtWidgets.QApplication.translate("MainWindow", "Launcher", None, -1))
         self.pushButton_scnUpdate.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_scnUpdate", None, -1))
         self.pushButton_scnUpdate.setText(QtWidgets.QApplication.translate("MainWindow", "Scene Update", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_currentOpen), QtWidgets.QApplication.translate("MainWindow", "Currently Open", None, -1))
