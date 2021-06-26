@@ -1,4 +1,4 @@
-winTitlePrefix = '20210623a'
+winTitlePrefix = '20210626a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -53,12 +53,17 @@ print('this Path ' + thisPath)
 
 if thisPath == pathOfDeveloper:
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_developer.jpg"
+    uiPath = os.path.join(pathOfDeveloper, 'ui')
 elif thisPath == pathOfTester:
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_tester.jpg"
+    uiPath = os.path.join(pathOfTester, 'ui')
 elif thisPath == pathOfRelease:
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_release.jpg"
+    uiPath = os.path.join(pathOfRelease, 'ui')
 else:
+    #eg. for In Python IDE, Standalone
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_InPythongOrDCC.jpg"
+    uiPath = os.path.join(r'N:\bpPipeline\bigKeeperPy', 'ui')
 
 ##print('line52')
 ##print(CurrentSoftwareName)
@@ -81,7 +86,9 @@ import bigKeeperInfoGlobal_published
 
 
 
+sys.path.append(uiPath)
 sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
+
 import bigKeeperPyUi_newLayout as UiPy
 import listView_dev as UiList
 import DialogWindow as UiDialog # path : N:\BigKeeper\py\pySide2UI\ui        WIP : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\ui
