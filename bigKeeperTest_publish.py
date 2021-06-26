@@ -1,4 +1,4 @@
-winTitlePrefix = '20210626b'
+winTitlePrefix = '20210626c'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -63,7 +63,7 @@ elif thisPath == pathOfRelease:
 else:
     #eg. for In Python IDE, Standalone
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_InPythongOrDCC.jpg"
-    uiPath = os.path.join(pathOfRelease, 'ui'pathOfRelease, 'ui')
+    uiPath = os.path.join(pathOfRelease, 'ui')
 
 ##print('line52')
 ##print(CurrentSoftwareName)
