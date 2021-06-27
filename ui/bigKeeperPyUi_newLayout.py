@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\bigKeeperPyUi_newLayout_v114.ui',
-# licensing of '.\bigKeeperPyUi_newLayout_v114.ui' applies.
+# Form implementation generated from reading ui file '.\bigKeeperPyUi_newLayout_v115.ui',
+# licensing of '.\bigKeeperPyUi_newLayout_v115.ui' applies.
 #
-# Created: Sat Jun 26 22:53:08 2021
+# Created: Sun Jun 27 21:42:51 2021
 #      by: pyside2-uic  running on PySide2 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,14 +13,20 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(433, 798)
+        MainWindow.resize(432, 838)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName("verticalLayout")
+        self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_9.setObjectName("horizontalLayout_9")
         self.pushButton_openCal = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_openCal.setObjectName("pushButton_openCal")
-        self.verticalLayout.addWidget(self.pushButton_openCal)
+        self.horizontalLayout_9.addWidget(self.pushButton_openCal)
+        self.pushButton_openCal2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_openCal2.setObjectName("pushButton_openCal2")
+        self.horizontalLayout_9.addWidget(self.pushButton_openCal2)
+        self.verticalLayout.addLayout(self.horizontalLayout_9)
         self.splitter = QtWidgets.QSplitter(self.centralwidget)
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName("splitter")
@@ -400,7 +406,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addItem(spacerItem3)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 433, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 432, 21))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -409,12 +415,14 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(5)
+        self.tabWidget_2.setCurrentIndex(4)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "MainWindow", None, -1))
         self.pushButton_openCal.setText(QtWidgets.QApplication.translate("MainWindow", "Open bpvfx Calendar", None, -1))
+        self.pushButton_openCal2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_openCal2", None, -1))
+        self.pushButton_openCal2.setText(QtWidgets.QApplication.translate("MainWindow", "Open bpvfx Calendar", None, -1))
         self.label_8.setText(QtWidgets.QApplication.translate("MainWindow", "Project Name :", None, -1))
         self.comboBoxProjects.setToolTip(QtWidgets.QApplication.translate("MainWindow", "comboBoxProjects", None, -1))
         self.pushButton_versionUp.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_versionUp", None, -1))
