@@ -1,4 +1,4 @@
-winTitlePrefix = '20210630d'
+winTitlePrefix = '20210630e'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -369,9 +369,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.tabWidget_2.setTabEnabled(3, True)
             self.tabWidget_2.setCurrentIndex(3)
         elif in_python:
-            self.tabWidget_2.setTabEnabled(5, True)
             self.tabWidget_2.setTabEnabled(4, True)
             self.tabWidget_2.setCurrentIndex(5)
+        self.tabWidget_2.setTabEnabled(5, True)
 
 
         # This to a temp. and bad way to parenet on the working software and on-top. Current can't find correct way to do so.
