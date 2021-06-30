@@ -1,4 +1,4 @@
-winTitlePrefix = '20210627a'
+winTitlePrefix = '20210630a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -39,6 +39,8 @@ studioEnvNuke = r'N:\bpPipeline\nuke\env\_ini\studioEnv.bat'
 studioEnvNukeAssist = r'N:\bpPipeline\nuke\env\_ini\studioEnvAssist.bat'
 studioEnvNukeX = r'N:\bpPipeline\nuke\env\_ini\studioEnvX.bat'
 studioEnvNukeStudio = r'N:\bpPipeline\nuke\env\_ini\studioEnvStudio.bat'
+studioEnvMayaFolder = r'N:\bpPipeline\maya\env'
+studioEnvNukeFolder = r'N:\bpPipeline\nuke\env\_bat'
 
 
 
@@ -227,6 +229,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_LaunchNukeAssist13_0_v2.setEnabled(True)
         self.pushButton_LaunchNukeStudio13_0_v2.clicked.connect(self.launchStudioEnvNukeStudio)
         self.pushButton_LaunchNukeStudio13_0_v2.setEnabled(False)
+
+        self.pushButton_mayaOther.clicked.connect(self.launchStudioEnvMayaFolder)
+        self.pushButton_nukeOther.clicked.connect(self.launchStudioEnvNukeFolder)
 
 
 
@@ -499,6 +504,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         theCmd = 'start {}'.format(studioEnvNukeStudio)
         print(theCmd)
         os.system(theCmd)
+
+    def launchStudioEnvMayaFolder(self):
+        os.startfile(studioEnvMayaFolder)
+
+    def launchStudioEnvNukeFolder(self):
+        os.startfile(studioEnvNukeFolder)
 
 
 
