@@ -65,7 +65,7 @@ elif thisPath == pathOfRelease:
 else:
     #eg. for In Python IDE, Standalone
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_InPythongOrDCC.jpg"
-    uiPath = os.path.join(pathOfDeveloper, 'ui')
+    uiPath = os.path.join(pathOfRelease, 'ui')
 
 ##print('line52')
 ##print(CurrentSoftwareName)
