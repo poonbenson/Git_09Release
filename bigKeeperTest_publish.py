@@ -1,4 +1,4 @@
-winTitlePrefix = '20210630b'
+winTitlePrefix = '20210630c'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -56,16 +56,20 @@ print('this Path ' + thisPath)
 if thisPath == pathOfDeveloper:
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_developer.jpg"
     uiPath = os.path.join(pathOfDeveloper, 'ui')
+    iconPath = os.path.join(pathOfDeveloper, 'icon')
 elif thisPath == pathOfTester:
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_tester.jpg"
     uiPath = os.path.join(pathOfTester, 'ui')
+    iconPath = os.path.join(pathOfTester, 'icon')
 elif thisPath == pathOfRelease:
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_release.jpg"
     uiPath = os.path.join(pathOfRelease, 'ui')
+    iconPath = os.path.join(pathOfRelease, 'icon')
 else:
     #eg. for In Python IDE, Standalone
     bannerImage = r"N:\bpPipeline\bigKeeperPy\bigKeeperPyIcon_InPythongOrDCC.jpg"
     uiPath = os.path.join(pathOfRelease, 'ui')
+    iconPath = os.path.join(pathOfRelease, 'icon')
 
 ##print('line52')
 ##print(CurrentSoftwareName)
@@ -194,9 +198,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.label_9.setPixmap(QPixmap(r"N:/bpPipeline/bigKeeperPy/bigKeeperPyIcon_developer.jpg"))
         self.label_9.setPixmap(QPixmap(bannerImage))
         self.label_9.setScaledContents(True)
-        self.label_mayaIcon.setPixmap(QPixmap(os.path.join(thisPath, 'icon', 'maya.png')))
+        self.label_mayaIcon.setPixmap(QPixmap(os.path.join(iconPath, 'maya.png')))
         self.label_mayaIcon.setScaledContents(True)
-        self.label_nukeIcon.setPixmap(QPixmap(os.path.join(thisPath, 'icon', 'nuke.png')))
+        self.label_nukeIcon.setPixmap(QPixmap(os.path.join(iconPath, 'nuke.png')))
         self.label_nukeIcon.setScaledContents(True)
 
 
