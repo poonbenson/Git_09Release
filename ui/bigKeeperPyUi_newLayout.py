@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\bigKeeperPyUi_newLayout_v116.ui',
-# licensing of '.\bigKeeperPyUi_newLayout_v116.ui' applies.
+# Form implementation generated from reading ui file '.\bigKeeperPyUi_newLayout_v117.ui',
+# licensing of '.\bigKeeperPyUi_newLayout_v117.ui' applies.
 #
-# Created: Wed Jun 30 12:22:19 2021
+# Created: Wed Jun 30 13:02:46 2021
 #      by: pyside2-uic  running on PySide2 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -120,29 +120,35 @@ class Ui_MainWindow(object):
         self.tabLauncher = QtWidgets.QWidget()
         self.tabLauncher.setObjectName("tabLauncher")
         self.groupBox = QtWidgets.QGroupBox(self.tabLauncher)
-        self.groupBox.setGeometry(QtCore.QRect(0, 10, 241, 251))
+        self.groupBox.setGeometry(QtCore.QRect(0, 10, 331, 251))
         self.groupBox.setObjectName("groupBox")
         self.pushButton_LaunchNuke13_0_v2 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_LaunchNuke13_0_v2.setGeometry(QtCore.QRect(10, 60, 61, 41))
+        self.pushButton_LaunchNuke13_0_v2.setGeometry(QtCore.QRect(50, 70, 61, 41))
         self.pushButton_LaunchNuke13_0_v2.setObjectName("pushButton_LaunchNuke13_0_v2")
         self.pushButton_LaunchNukeStudio13_0_v2 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_LaunchNukeStudio13_0_v2.setGeometry(QtCore.QRect(150, 60, 41, 41))
+        self.pushButton_LaunchNukeStudio13_0_v2.setGeometry(QtCore.QRect(190, 70, 41, 41))
         self.pushButton_LaunchNukeStudio13_0_v2.setObjectName("pushButton_LaunchNukeStudio13_0_v2")
         self.pushButton_LaunchNukeX13_0_v2 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_LaunchNukeX13_0_v2.setGeometry(QtCore.QRect(70, 60, 41, 41))
+        self.pushButton_LaunchNukeX13_0_v2.setGeometry(QtCore.QRect(110, 70, 41, 41))
         self.pushButton_LaunchNukeX13_0_v2.setObjectName("pushButton_LaunchNukeX13_0_v2")
         self.pushButton_LaunchNukeAssist13_0_v2 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_LaunchNukeAssist13_0_v2.setGeometry(QtCore.QRect(110, 60, 41, 41))
+        self.pushButton_LaunchNukeAssist13_0_v2.setGeometry(QtCore.QRect(150, 70, 41, 41))
         self.pushButton_LaunchNukeAssist13_0_v2.setObjectName("pushButton_LaunchNukeAssist13_0_v2")
         self.pushButton_LaunchMaya2022_update0 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_LaunchMaya2022_update0.setGeometry(QtCore.QRect(10, 20, 181, 41))
+        self.pushButton_LaunchMaya2022_update0.setGeometry(QtCore.QRect(50, 30, 181, 41))
         self.pushButton_LaunchMaya2022_update0.setObjectName("pushButton_LaunchMaya2022_update0")
         self.pushButton_mayaOther = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_mayaOther.setGeometry(QtCore.QRect(190, 20, 16, 41))
+        self.pushButton_mayaOther.setGeometry(QtCore.QRect(230, 30, 16, 41))
         self.pushButton_mayaOther.setObjectName("pushButton_mayaOther")
         self.pushButton_nukeOther = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_nukeOther.setGeometry(QtCore.QRect(190, 60, 16, 41))
+        self.pushButton_nukeOther.setGeometry(QtCore.QRect(230, 70, 16, 41))
         self.pushButton_nukeOther.setObjectName("pushButton_nukeOther")
+        self.label_mayaIcon = QtWidgets.QLabel(self.groupBox)
+        self.label_mayaIcon.setGeometry(QtCore.QRect(10, 30, 41, 41))
+        self.label_mayaIcon.setObjectName("label_mayaIcon")
+        self.label_nukeIcon = QtWidgets.QLabel(self.groupBox)
+        self.label_nukeIcon.setGeometry(QtCore.QRect(10, 70, 41, 41))
+        self.label_nukeIcon.setObjectName("label_nukeIcon")
         self.tabWidget_2.addTab(self.tabLauncher, "")
         self.pushButton_scnUpdate = QtWidgets.QPushButton(self.tab_currentOpen)
         self.pushButton_scnUpdate.setGeometry(QtCore.QRect(80, 160, 91, 23))
@@ -477,6 +483,10 @@ class Ui_MainWindow(object):
         self.pushButton_mayaOther.setText(QtWidgets.QApplication.translate("MainWindow", ">", None, -1))
         self.pushButton_nukeOther.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_nukeOther", None, -1))
         self.pushButton_nukeOther.setText(QtWidgets.QApplication.translate("MainWindow", ">", None, -1))
+        self.label_mayaIcon.setToolTip(QtWidgets.QApplication.translate("MainWindow", "label_mayaIcon", None, -1))
+        self.label_mayaIcon.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
+        self.label_nukeIcon.setToolTip(QtWidgets.QApplication.translate("MainWindow", "label_nukeIcon", None, -1))
+        self.label_nukeIcon.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabLauncher), QtWidgets.QApplication.translate("MainWindow", "Launcher", None, -1))
         self.pushButton_scnUpdate.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_scnUpdate", None, -1))
         self.pushButton_scnUpdate.setText(QtWidgets.QApplication.translate("MainWindow", "Scene Update", None, -1))

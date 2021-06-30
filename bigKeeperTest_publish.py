@@ -1,4 +1,4 @@
-winTitlePrefix = '20210630a'
+winTitlePrefix = '20210630b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -193,6 +193,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         #self.label_9.setPixmap(QPixmap(r"N:/bpPipeline/bigKeeperPy/bigKeeperPyIcon_developer.jpg"))
         self.label_9.setPixmap(QPixmap(bannerImage))
+        self.label_9.setScaledContents(True)
+        self.label_mayaIcon.setPixmap(QPixmap(os.path.join(thisPath, 'icon', 'maya.png')))
+        self.label_mayaIcon.setScaledContents(True)
+        self.label_nukeIcon.setPixmap(QPixmap(os.path.join(thisPath, 'icon', 'nuke.png')))
+        self.label_nukeIcon.setScaledContents(True)
 
 
         self.comboBoxEntries = self.listBigKeeperProject()
