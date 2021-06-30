@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\bigKeeperPyUi_newLayout_v117.ui',
-# licensing of '.\bigKeeperPyUi_newLayout_v117.ui' applies.
+# Form implementation generated from reading ui file '.\bigKeeperPyUi_newLayout_v118.ui',
+# licensing of '.\bigKeeperPyUi_newLayout_v118.ui' applies.
 #
-# Created: Wed Jun 30 13:02:46 2021
+# Created: Wed Jun 30 19:40:45 2021
 #      by: pyside2-uic  running on PySide2 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -46,7 +46,6 @@ class Ui_MainWindow(object):
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.verticalLayout.addItem(spacerItem)
         self.label_9 = QtWidgets.QLabel(self.centralwidget)
-        self.label_9.setText("")
         self.label_9.setPixmap(QtGui.QPixmap("../../../bigKeeper/bigKeeperIcon.jpg"))
         self.label_9.setObjectName("label_9")
         self.verticalLayout.addWidget(self.label_9)
@@ -149,6 +148,9 @@ class Ui_MainWindow(object):
         self.label_nukeIcon = QtWidgets.QLabel(self.groupBox)
         self.label_nukeIcon.setGeometry(QtCore.QRect(10, 70, 41, 41))
         self.label_nukeIcon.setObjectName("label_nukeIcon")
+        self.pushButton_dailyFolder = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_dailyFolder.setGeometry(QtCore.QRect(50, 110, 181, 41))
+        self.pushButton_dailyFolder.setObjectName("pushButton_dailyFolder")
         self.tabWidget_2.addTab(self.tabLauncher, "")
         self.pushButton_scnUpdate = QtWidgets.QPushButton(self.tab_currentOpen)
         self.pushButton_scnUpdate.setGeometry(QtCore.QRect(80, 160, 91, 23))
@@ -438,6 +440,7 @@ class Ui_MainWindow(object):
         self.pushButton_openCal2.setText(QtWidgets.QApplication.translate("MainWindow", "Open bpvfx Calendar", None, -1))
         self.label_8.setText(QtWidgets.QApplication.translate("MainWindow", "Project Name :", None, -1))
         self.comboBoxProjects.setToolTip(QtWidgets.QApplication.translate("MainWindow", "comboBoxProjects", None, -1))
+        self.label_9.setText(QtWidgets.QApplication.translate("MainWindow", "bigKeeperPy Banner", None, -1))
         self.pushButton_versionUp.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_versionUp", None, -1))
         self.pushButton_versionUp.setText(QtWidgets.QApplication.translate("MainWindow", "Version Up (Save WIP) ...", None, -1))
         self.pushButton_revive.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_revive", None, -1))
@@ -484,9 +487,11 @@ class Ui_MainWindow(object):
         self.pushButton_nukeOther.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_nukeOther", None, -1))
         self.pushButton_nukeOther.setText(QtWidgets.QApplication.translate("MainWindow", ">", None, -1))
         self.label_mayaIcon.setToolTip(QtWidgets.QApplication.translate("MainWindow", "label_mayaIcon", None, -1))
-        self.label_mayaIcon.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
+        self.label_mayaIcon.setText(QtWidgets.QApplication.translate("MainWindow", "MayaIcon", None, -1))
         self.label_nukeIcon.setToolTip(QtWidgets.QApplication.translate("MainWindow", "label_nukeIcon", None, -1))
-        self.label_nukeIcon.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
+        self.label_nukeIcon.setText(QtWidgets.QApplication.translate("MainWindow", "NukeIcon", None, -1))
+        self.pushButton_dailyFolder.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_dailyFolder", None, -1))
+        self.pushButton_dailyFolder.setText(QtWidgets.QApplication.translate("MainWindow", "Daily Folder", None, -1))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabLauncher), QtWidgets.QApplication.translate("MainWindow", "Launcher", None, -1))
         self.pushButton_scnUpdate.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_scnUpdate", None, -1))
         self.pushButton_scnUpdate.setText(QtWidgets.QApplication.translate("MainWindow", "Scene Update", None, -1))

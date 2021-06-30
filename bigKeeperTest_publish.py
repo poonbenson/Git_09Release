@@ -1,4 +1,4 @@
-winTitlePrefix = '20210630c'
+winTitlePrefix = '20210630d'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -241,6 +241,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.pushButton_mayaOther.clicked.connect(self.launchStudioEnvMayaFolder)
         self.pushButton_nukeOther.clicked.connect(self.launchStudioEnvNukeFolder)
+
+        self.pushButton_dailyFolder.clicked.connect(self.launchDailyFolder)
 
 
 
@@ -519,6 +521,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def launchStudioEnvNukeFolder(self):
         os.startfile(studioEnvNukeFolder)
+
+    def launchDailyFolder(self):
+        dailyPath = os.path.join(self.subDict[self.selProjPath], 'daily')
+        print('selProjPath is {}'.format(dailyPath))
+        os.startfile(dailyPath)
+
 
 
 
