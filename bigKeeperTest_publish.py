@@ -1,4 +1,4 @@
-winTitlePrefix = '20210704a'
+winTitlePrefix = '20210704b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -236,6 +236,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.pushButton_LaunchMaya2022_update0.clicked.connect(self.launchStudioEnvMaya)
         self.pushButton_LaunchNuke13_0_v2.clicked.connect(self.launchStudioEnvNuke)
+        if os.path.isdir(r'c:\Program Files\Nuke13.0v3'):
+            self.pushButton_LaunchNuke13_0_v2.setText('Nuke13.0v3')
         self.pushButton_LaunchNukeX13_0_v2.clicked.connect(self.launchStudioEnvNukeX)
         self.pushButton_LaunchNukeX13_0_v2.setEnabled(True)
         self.pushButton_LaunchNukeAssist13_0_v2.clicked.connect(self.launchStudioEnvNukeAssist)
