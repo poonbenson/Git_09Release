@@ -201,7 +201,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         #self.label_9.setPixmap(QPixmap(r"N:/bpPipeline/bigKeeperPy/bigKeeperPyIcon_developer.jpg"))
         self.label_9.setPixmap(QPixmap(bannerImage))
-        self.label_9.setScaledContents(True)
+        self.label_9.setScaledContents(False)
         self.label_mayaIcon.setPixmap(QPixmap(os.path.join(iconPath, 'maya.png')))
         self.label_mayaIcon.setScaledContents(True)
         self.label_nukeIcon.setPixmap(QPixmap(os.path.join(iconPath, 'nuke.png')))
@@ -530,8 +530,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def launchDailyFolder(self):
         dailyPath = os.path.join(self.subDict[self.selProjPath], 'daily')
-        print('selProjPath is {}'.format(dailyPath))
+
+        if os.path.isdir(dailyPath):
+            print('selProjPath is {}'.format(dailyPath))
+        else:
+            print('no daily fold exist, created now.')
+            os.mkdir(dailyPath)
+            QMessageBox.information(self, 'Daily Folder not found', 'No existing Daily folder.\nFolder is created: {}'.format(dailyPath))
+
+
         os.startfile(dailyPath)
+
 
 
 
