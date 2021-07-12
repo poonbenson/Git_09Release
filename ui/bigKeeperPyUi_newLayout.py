@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\bigKeeperPyUi_newLayout_v118.ui',
-# licensing of '.\bigKeeperPyUi_newLayout_v118.ui' applies.
+# Form implementation generated from reading ui file 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\bigKeeperPyUi_newLayout_v119.ui',
+# licensing of 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\bigKeeperPyUi_newLayout_v119.ui' applies.
 #
-# Created: Wed Jun 30 19:40:45 2021
+# Created: Mon Jul 12 15:26:52 2021
 #      by: pyside2-uic  running on PySide2 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,8 +13,8 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(400, 829)
-        MainWindow.setMinimumSize(QtCore.QSize(400, 829))
+        MainWindow.resize(432, 829)
+        MainWindow.setMinimumSize(QtCore.QSize(432, 829))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -28,6 +28,8 @@ class Ui_MainWindow(object):
         self.pushButton_openCal2.setObjectName("pushButton_openCal2")
         self.horizontalLayout_9.addWidget(self.pushButton_openCal2)
         self.verticalLayout.addLayout(self.horizontalLayout_9)
+        self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
         self.splitter = QtWidgets.QSplitter(self.centralwidget)
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName("splitter")
@@ -42,10 +44,15 @@ class Ui_MainWindow(object):
         self.label_8.setObjectName("label_8")
         self.comboBoxProjects = QtWidgets.QComboBox(self.splitter)
         self.comboBoxProjects.setObjectName("comboBoxProjects")
-        self.verticalLayout.addWidget(self.splitter)
+        self.horizontalLayout_8.addWidget(self.splitter)
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.horizontalLayout_8.addWidget(self.pushButton_2)
+        self.verticalLayout.addLayout(self.horizontalLayout_8)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.verticalLayout.addItem(spacerItem)
         self.label_9 = QtWidgets.QLabel(self.centralwidget)
+        self.label_9.setText("")
         self.label_9.setPixmap(QtGui.QPixmap("../../../bigKeeper/bigKeeperIcon.jpg"))
         self.label_9.setObjectName("label_9")
         self.verticalLayout.addWidget(self.label_9)
@@ -421,7 +428,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addItem(spacerItem3)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 400, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 432, 21))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -429,7 +436,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.tabWidget_2.setCurrentIndex(5)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -440,7 +447,9 @@ class Ui_MainWindow(object):
         self.pushButton_openCal2.setText(QtWidgets.QApplication.translate("MainWindow", "Open bpvfx Calendar", None, -1))
         self.label_8.setText(QtWidgets.QApplication.translate("MainWindow", "Project Name :", None, -1))
         self.comboBoxProjects.setToolTip(QtWidgets.QApplication.translate("MainWindow", "comboBoxProjects", None, -1))
-        self.label_9.setText(QtWidgets.QApplication.translate("MainWindow", "bigKeeperPy Banner", None, -1))
+        self.pushButton_2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Open Project Folder in explore.\n"
+"(pushButton_2)", None, -1))
+        self.pushButton_2.setText(QtWidgets.QApplication.translate("MainWindow", "explore...", None, -1))
         self.pushButton_versionUp.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_versionUp", None, -1))
         self.pushButton_versionUp.setText(QtWidgets.QApplication.translate("MainWindow", "Version Up (Save WIP) ...", None, -1))
         self.pushButton_revive.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_revive", None, -1))

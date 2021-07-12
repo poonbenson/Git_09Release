@@ -1,4 +1,4 @@
-winTitlePrefix = '20210704b'
+winTitlePrefix = '20210712b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -211,6 +211,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.comboBoxEntries = self.listBigKeeperProject()
         self.comboBoxEntries.sort()
         self.comboBoxProjects.addItems(self.comboBoxEntries)
+        self.pushButton_2.clicked.connect(self.launchProjExplorer)
 
         # prepare for storing and reload last selected project
         previousSelDetail = self.readProjCache()
@@ -541,8 +542,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         os.startfile(dailyPath)
 
-
-
+    def launchProjExplorer(self):
+        print(self.selProjRootPath)
+        os.startfile(self.selProjRootPath)
 
 
     def launchSceneUpdate(self):
@@ -726,6 +728,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.selProjWipCode = 'workshopname'
             self.selProjPublishCode = 'mastername'
             self.subDict = self.dictProj[self.selProj]
+
+            # generating project Root path by split the path that read from xml information
+            splitPath = os.path.splitdrive(os.path.normpath(self.subDict[self.selProjPath]))
+            splitDrive = splitPath[0]
+            splitTail = splitPath[1].split(os.path.sep)
+            print('splitPath : {}'.format(splitPath))
+            print('splitDrive : {}'.format(splitDrive))
+            print('splitTail : {}'.format(splitTail))
+            self.selProjRootPath = os.path.join(splitDrive, os.path.sep, splitTail[1], splitTail[2], splitTail[3])
+            print('self.selProjRootPath : {}'.format(self.selProjRootPath))
+
 
             print('self.subDict[self.selProjName]:' + self.subDict[self.selProjName]) # eg. kfcPoke
             print('self.subDict[self.selProjPath]:' + self.subDict[self.selProjPath]) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/
@@ -1031,6 +1044,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def listBigKeeperProject(self):
 
+        #this def is to read infomation from bigKeeperMel xml file
         f = open(r'N:/bpPipeline/maya/plugins/BigKeeper/bigKeeper_projectDatabase/bigPicture_projects.xml', "r")
         startLineNo = 1
         xmlStr = str()
