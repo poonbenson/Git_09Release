@@ -1,4 +1,4 @@
-winTitlePrefix = '20210712c'
+winTitlePrefix = '20210715a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -50,6 +50,7 @@ if os.path.isdir(r'c:\Program Files\Nuke13.0v3'):
     studioEnvNuke = r'N:\bpPipeline\nuke\env\_bat\global_v002\Nuke13.0v3.bat'
     studioEnvNukeAssist = r'N:\bpPipeline\nuke\env\_bat\global_v002\NukeAssist13.0v3.bat'
     studioEnvNukeX = r'N:\bpPipeline\nuke\env\_bat\global_v002\NukeX13.0v3.bat'
+    studioEnvNukeStudio = r'N:\bpPipeline\nuke\env\_bat\global_v002\NukeStudio13.0v3.bat'
 
 
 
@@ -250,7 +251,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_LaunchNukeAssist13_0_v2.clicked.connect(self.launchStudioEnvNukeAssist)
         self.pushButton_LaunchNukeAssist13_0_v2.setEnabled(True)
         self.pushButton_LaunchNukeStudio13_0_v2.clicked.connect(self.launchStudioEnvNukeStudio)
-        self.pushButton_LaunchNukeStudio13_0_v2.setEnabled(False)
+        self.pushButton_LaunchNukeStudio13_0_v2.setEnabled(True)
 
         self.pushButton_mayaOther.clicked.connect(self.launchStudioEnvMayaFolder)
         self.pushButton_nukeOther.clicked.connect(self.launchStudioEnvNukeFolder)
@@ -2001,8 +2002,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 ypMin = a.ypos()
 
         bd = nuke.nodes.BackdropNode(bdwidth=(xpMax-xpMin)+margin , bdheight=(ypMax-ypMin)+ margin + yLabelSpace )
-        bd.setXpos(xpMin-margin/2 + int(rightOffSetSpace * 1.8))
-        bd.setYpos(ypMin-margin/2 - yLabelSpace)
+        bd.setXpos(int(xpMin-margin/2 + rightOffSetSpace * 1.8))
+        bd.setYpos(int(ypMin-margin/2 - yLabelSpace))
 
         bd.knob('tile_color').setValue(baseColor)
         bd.knob('label').setValue(labelText)
