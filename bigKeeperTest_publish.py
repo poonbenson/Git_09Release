@@ -1,4 +1,4 @@
-winTitlePrefix = '20210712b'
+winTitlePrefix = '20210712c'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -35,17 +35,21 @@ except:
 
 # Declare
 
+
+
 studioEnvMaya = r'N:\bpPipeline\maya\env\_ini\studioEnv.bat'
 studioEnvNuke = r'N:\bpPipeline\nuke\env\_ini\studioEnv.bat'
-if os.path.isdir(r'c:\Program Files\Nuke13.0v3'):
-    studioEnvNuke = r'N:\bpPipeline\nuke\env\_bat\global_v002\Nuke13.0v3.bat'
-
 studioEnvNukeAssist = r'N:\bpPipeline\nuke\env\_ini\studioEnvAssist.bat'
 studioEnvNukeX = r'N:\bpPipeline\nuke\env\_ini\studioEnvX.bat'
 studioEnvNukeStudio = r'N:\bpPipeline\nuke\env\_ini\studioEnvStudio.bat'
 studioEnvMayaFolder = r'N:\bpPipeline\maya\env'
 studioEnvNukeFolder = r'N:\bpPipeline\nuke\env\_bat'
 
+#Temp workaround !!!!!!!!!! #Temp workaround !!!!!!!!!! #Temp workaround !!!!!!!!!! #Temp workaround !!!!!!!!!!
+if os.path.isdir(r'c:\Program Files\Nuke13.0v3'):
+    studioEnvNuke = r'N:\bpPipeline\nuke\env\_bat\global_v002\Nuke13.0v3.bat'
+    studioEnvNukeAssist = r'N:\bpPipeline\nuke\env\_bat\global_v002\NukeAssist13.0v3.bat'
+    studioEnvNukeX = r'N:\bpPipeline\nuke\env\_bat\global_v002\NukeX13.0v3.bat'
 
 
 
@@ -237,8 +241,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.pushButton_LaunchMaya2022_update0.clicked.connect(self.launchStudioEnvMaya)
         self.pushButton_LaunchNuke13_0_v2.clicked.connect(self.launchStudioEnvNuke)
+
+        #Temp workaround !!!!!!!!!! #Temp workaround !!!!!!!!!! #Temp workaround !!!!!!!!!! #Temp workaround !!!!!!!!!!
         if os.path.isdir(r'c:\Program Files\Nuke13.0v3'):
-            self.pushButton_LaunchNuke13_0_v2.setText('Nuke13.0v3')
+            self.pushButton_LaunchNuke13_0_v2.setText('Nuke\n13.0v3')
         self.pushButton_LaunchNukeX13_0_v2.clicked.connect(self.launchStudioEnvNukeX)
         self.pushButton_LaunchNukeX13_0_v2.setEnabled(True)
         self.pushButton_LaunchNukeAssist13_0_v2.clicked.connect(self.launchStudioEnvNukeAssist)
