@@ -1,4 +1,4 @@
-winTitlePrefix = '20210715a'
+winTitlePrefix = '20210720a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -9,7 +9,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 
 # To import standard modules
-import subprocess, os, sys, time
+import subprocess, os, sys, time, configparser
 
 # ref: https://www.daniweb.com/programming/software-development/threads/265576/how-can-i-specify-the-size-of-the-python-command-line-window-in-my-code
 os.system("mode con cols=100 lines=10")
@@ -34,23 +34,6 @@ except:
     thisPyPath = sys.argv[0]
 
 # Declare
-
-
-
-studioEnvMaya = r'N:\bpPipeline\maya\env\_ini\studioEnv.bat'
-studioEnvNuke = r'N:\bpPipeline\nuke\env\_ini\studioEnv.bat'
-studioEnvNukeAssist = r'N:\bpPipeline\nuke\env\_ini\studioEnvAssist.bat'
-studioEnvNukeX = r'N:\bpPipeline\nuke\env\_ini\studioEnvX.bat'
-studioEnvNukeStudio = r'N:\bpPipeline\nuke\env\_ini\studioEnvStudio.bat'
-studioEnvMayaFolder = r'N:\bpPipeline\maya\env'
-studioEnvNukeFolder = r'N:\bpPipeline\nuke\env\_bat'
-
-#Temp workaround !!!!!!!!!! #Temp workaround !!!!!!!!!! #Temp workaround !!!!!!!!!! #Temp workaround !!!!!!!!!!
-if os.path.isdir(r'c:\Program Files\Nuke13.0v3'):
-    studioEnvNuke = r'N:\bpPipeline\nuke\env\_bat\global_v002\Nuke13.0v3.bat'
-    studioEnvNukeAssist = r'N:\bpPipeline\nuke\env\_bat\global_v002\NukeAssist13.0v3.bat'
-    studioEnvNukeX = r'N:\bpPipeline\nuke\env\_bat\global_v002\NukeX13.0v3.bat'
-    studioEnvNukeStudio = r'N:\bpPipeline\nuke\env\_bat\global_v002\NukeStudio13.0v3.bat'
 
 
 
@@ -240,12 +223,18 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3C_action)
         self.listWidget_3.itemClicked.connect(self.listWidget_shotTask_action)
 
+        #nukeLabel = self.envRead('NUKE', 'label')
+        #mayaLabel = self.envRead('MAYA', 'label')
+
         self.pushButton_LaunchMaya2022_update0.clicked.connect(self.launchStudioEnvMaya)
+        self.pushButton_LaunchMaya2022_update0.setText(self.envRead('MAYA', 'label'))
+        #self.pushButton_LaunchNuke13_0_v2.clicked.connect(self.launchStudioEnvNuke)
         self.pushButton_LaunchNuke13_0_v2.clicked.connect(self.launchStudioEnvNuke)
+        self.pushButton_LaunchNuke13_0_v2.setText(self.envRead('NUKE', 'label'))
 
         #Temp workaround !!!!!!!!!! #Temp workaround !!!!!!!!!! #Temp workaround !!!!!!!!!! #Temp workaround !!!!!!!!!!
-        if os.path.isdir(r'c:\Program Files\Nuke13.0v3'):
-            self.pushButton_LaunchNuke13_0_v2.setText('Nuke\n13.0v3')
+        #if os.path.isdir(r'c:\Program Files\Nuke13.0v3'):
+            #self.pushButton_LaunchNuke13_0_v2.setText(nukeLabel)
         self.pushButton_LaunchNukeX13_0_v2.clicked.connect(self.launchStudioEnvNukeX)
         self.pushButton_LaunchNukeX13_0_v2.setEnabled(True)
         self.pushButton_LaunchNukeAssist13_0_v2.clicked.connect(self.launchStudioEnvNukeAssist)
@@ -254,7 +243,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_LaunchNukeStudio13_0_v2.setEnabled(True)
 
         self.pushButton_mayaOther.clicked.connect(self.launchStudioEnvMayaFolder)
+        self.pushButton_mayaOther.setText(self.envRead('MAYA', 'batFolderPathLabel'))
         self.pushButton_nukeOther.clicked.connect(self.launchStudioEnvNukeFolder)
+        self.pushButton_nukeOther.setText(self.envRead('NUKE', 'batFolderPathLabel'))
 
         self.pushButton_dailyFolder.clicked.connect(self.launchDailyFolder)
 
@@ -317,6 +308,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.createShotNewTaskUi.pushButton_cancel.clicked.connect(self.createShotNewTaskClose)
 
         self.pushButton_CompLatestRv.clicked.connect(self.compLatestRvAction)
+
 
 
         self.initDummy()
@@ -482,7 +474,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
     def initDummy(self):
-
         #self.pushButton_childUi.clicked.connect(self.myAction4)
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnPath))
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnShotTaskPath))
@@ -493,8 +484,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.pushButton_num2.setText('loopQMsg')
         #self.pushButton_num1.clicked.connect(lambda: self.QMessageLoopTest())
         #self.pushButton_num1.setText('QMessageLoopTest')
-        #self.pushButton_num4.clicked.connect(lambda: self.handleButton(self.selProjScnShotTaskPath))
-        #self.pushButton_num4.setText('handleButton')
+        self.pushButton_num4.clicked.connect(lambda: self.envRead('NUKE', 'label'))
+        self.pushButton_num4.setText('label')
         self.pushButton_num5.clicked.connect(self.launchSceneUpdate)
         self.pushButton_num5.setText('Scn Update')
         self.pushButton_num6.clicked.connect(lambda: self.nukeUpdateReadNodeVer())
@@ -504,37 +495,66 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_num8.clicked.connect(lambda: self.openScheduleLink())
         self.pushButton_num8.setText('openScheduleLink')
 
+    def envRead(self, inSection, inKey):
+        print('my envRead')
+
+        def addLine(inStr):
+            seperator = r'\n'
+            splitText = inStr.split(seperator)
+            joinText = '\n'.join(splitText)
+
+            return joinText
+
+        config = configparser.ConfigParser()
+        #config.read(r'./myConfigINI.py')
+        config.read(r'N:\bpPipeline\bigKeeperPyIni\env.ini')
+
+        theInfo = config[inSection]
+
+        if inKey == 'label':
+            return str(addLine(theInfo[inKey]))
+        else:
+            return theInfo[inKey]
+
 
     def launchStudioEnvMaya(self):
-        theCmd = 'start {}'.format(studioEnvMaya)
+        #theCmd = 'start {}'.format(studioEnvMaya)
+        theCmd = 'start {}'.format(os.path.join(self.envRead('MAYA', 'batPath'), 'studioEnv.bat'))
         print(theCmd)
         os.system(theCmd)
 
     def launchStudioEnvNuke(self):
-        theCmd = 'start {}'.format(studioEnvNuke)
+
+        #theCmd = 'start {}'.format(studioEnvNuke)
+        theCmd = 'start {}'.format(os.path.join(self.envRead('NUKE', 'batPath'), 'studioEnv.bat'))
         print(theCmd)
         os.system(theCmd)
 
     def launchStudioEnvNukeAssist(self):
-        theCmd = 'start {}'.format(studioEnvNukeAssist)
+        #theCmd = 'start {}'.format(studioEnvNukeAssist)
+        theCmd = 'start {}'.format(os.path.join(self.envRead('NUKE', 'batPath'), 'studioEnvAssist.bat'))
         print(theCmd)
         os.system(theCmd)
 
     def launchStudioEnvNukeX(self):
-        theCmd = 'start {}'.format(studioEnvNukeX)
+        #theCmd = 'start {}'.format(studioEnvNukeX)
+        theCmd = 'start {}'.format(os.path.join(self.envRead('NUKE', 'batPath'), 'studioEnvX.bat'))
         print(theCmd)
         os.system(theCmd)
 
     def launchStudioEnvNukeStudio(self):
-        theCmd = 'start {}'.format(studioEnvNukeStudio)
+        #theCmd = 'start {}'.format(studioEnvNukeStudio)
+        theCmd = 'start {}'.format(os.path.join(self.envRead('NUKE', 'batPath'), 'studioEnvStudio.bat'))
         print(theCmd)
         os.system(theCmd)
 
     def launchStudioEnvMayaFolder(self):
-        os.startfile(studioEnvMayaFolder)
+        theCmd = self.envRead('MAYA', 'batFolderPath')
+        os.startfile(theCmd)
 
     def launchStudioEnvNukeFolder(self):
-        os.startfile(studioEnvNukeFolder)
+        theCmd = self.envRead('NUKE', 'batFolderPath')
+        os.startfile(theCmd)
 
     def launchDailyFolder(self):
         dailyPath = os.path.join(self.subDict[self.selProjPath], 'daily')
