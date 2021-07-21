@@ -1,4 +1,4 @@
-winTitlePrefix = '20210720a'
+winTitlePrefix = '20210721a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -186,6 +186,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.setWindowTitle(r'BigKeeper Py - alpha version - Developer Mode')
         WindowTitleName = winTitlePrefix + ' BigKeeperPy-alpha ' + os.path.basename(thisPath)
         self.setWindowTitle(WindowTitleName)
+        self.setWindowIcon(QIcon(os.path.join(iconPath, 'maya.png')))
 
         #self.label_9.setPixmap(QPixmap(r"N:/bpPipeline/bigKeeperPy/bigKeeperPyIcon_developer.jpg"))
         self.label_9.setPixmap(QPixmap(bannerImage))
@@ -222,6 +223,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3B_action)
         self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3C_action)
         self.listWidget_3.itemClicked.connect(self.listWidget_shotTask_action)
+        self.pushButton_listWidget1Refresh.clicked.connect(self.listWidget_1_appear)
+
 
         #nukeLabel = self.envRead('NUKE', 'label')
         #mayaLabel = self.envRead('MAYA', 'label')
@@ -482,8 +485,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnShotTaskWIPPath))
         #self.pushButton_num2.clicked.connect(lambda: self.loopQMessage())
         #self.pushButton_num2.setText('loopQMsg')
-        #self.pushButton_num1.clicked.connect(lambda: self.QMessageLoopTest())
-        #self.pushButton_num1.setText('QMessageLoopTest')
+        self.pushButton_num1.clicked.connect(self.listWidget_1_appear)
+        self.pushButton_num1.setText('refresh seq')
         self.pushButton_num4.clicked.connect(lambda: self.envRead('NUKE', 'label'))
         self.pushButton_num4.setText('label')
         self.pushButton_num5.clicked.connect(self.launchSceneUpdate)
@@ -494,6 +497,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_num9.setText('cleanUpDelAction')
         self.pushButton_num8.clicked.connect(lambda: self.openScheduleLink())
         self.pushButton_num8.setText('openScheduleLink')
+
+
 
     def envRead(self, inSection, inKey):
         print('my envRead')
@@ -736,11 +741,37 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.updateCurrentOpeningLocationPath()
 
 
-
-
     def initializeMainWindow(self):
         pass
 
+
+    '''
+    def comboBoxAction1(self, item):
+        self.comboBoxAction1ReceiveItem = item
+        print("my comboBoxAction1")
+        print(type(self.comboBoxAction1ReceiveItem))
+        print(self.comboBoxAction1ReceiveItem)
+        self.listWidget_2.clear()
+        return self.comboBoxAction1ReceiveItem
+    '''
+
+    def listWidget_1_appear(self, item):
+        print('my listWidget_1_appear')
+        print(self.selProj)
+        folderList = os.listdir(self.selProjScnPath)
+        listSeq = []
+        for i in folderList:
+            if os.path.isdir(os.path.join(self.selProjScnPath, i)):
+                listSeq.append(i)
+        listSeq.sort()
+        print('listSeq is :')
+        print(listSeq) # eg. ['animaticSeq', 'balloonSeq', 'edits', 'socialSeq', 'testSeq', 'turnTableSeq', 'tvcSeq']
+        self.list1Entries = []
+        self.list1Entries = listSeq
+        #self.listWidget_3.clear()
+        #self.listWidget_2.clear()
+        self.listWidget_1.clear()
+        self.listWidget_1.addItems(self.list1Entries)
 
 
     def comboBoxAction2(self, item):
@@ -799,6 +830,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         f.write(cacheProj)
         f.close()
 
+
     def readProjCache(self):
         try:
             thepath = os.path.join(bigKeeperCacheFolderPath, cacheProjName)
@@ -808,16 +840,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             return readAllLines
         except:
             return str(" ")
-
-
-
-    def comboBoxAction1(self, item):
-        self.comboBoxAction1ReceiveItem = item
-        print("my comboBoxAction1")
-        print(type(self.comboBoxAction1ReceiveItem))
-        print(self.comboBoxAction1ReceiveItem)
-        self.listWidget_2.clear()
-        return self.comboBoxAction1ReceiveItem
 
 
 

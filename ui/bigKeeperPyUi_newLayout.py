@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\bigKeeperPyUi_newLayout_v119.ui',
-# licensing of 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\bigKeeperPyUi_newLayout_v119.ui' applies.
+# Form implementation generated from reading ui file 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\bigKeeperPyUi_newLayout_v121.ui',
+# licensing of 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\bigKeeperPyUi_newLayout_v121.ui' applies.
 #
-# Created: Mon Jul 12 15:26:52 2021
+# Created: Wed Jul 21 19:47:07 2021
 #      by: pyside2-uic  running on PySide2 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -176,9 +176,18 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.horizontalLayout_12 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_12.setObjectName("horizontalLayout_12")
         self.label_5 = QtWidgets.QLabel(self.tab_shotBrowser)
+        self.label_5.setMinimumSize(QtCore.QSize(0, 23))
         self.label_5.setObjectName("label_5")
-        self.verticalLayout_2.addWidget(self.label_5)
+        self.horizontalLayout_12.addWidget(self.label_5)
+        self.pushButton_listWidget1Refresh = QtWidgets.QPushButton(self.tab_shotBrowser)
+        self.pushButton_listWidget1Refresh.setMinimumSize(QtCore.QSize(0, 23))
+        self.pushButton_listWidget1Refresh.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.pushButton_listWidget1Refresh.setObjectName("pushButton_listWidget1Refresh")
+        self.horizontalLayout_12.addWidget(self.pushButton_listWidget1Refresh)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_12)
         self.listWidget_1 = QtWidgets.QListWidget(self.tab_shotBrowser)
         self.listWidget_1.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.listWidget_1.setObjectName("listWidget_1")
@@ -186,9 +195,18 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.horizontalLayout_13 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_13.setObjectName("horizontalLayout_13")
         self.label_7 = QtWidgets.QLabel(self.tab_shotBrowser)
+        self.label_7.setMinimumSize(QtCore.QSize(0, 23))
         self.label_7.setObjectName("label_7")
-        self.verticalLayout_3.addWidget(self.label_7)
+        self.horizontalLayout_13.addWidget(self.label_7)
+        self.label_20 = QtWidgets.QLabel(self.tab_shotBrowser)
+        self.label_20.setMinimumSize(QtCore.QSize(0, 23))
+        self.label_20.setText("")
+        self.label_20.setObjectName("label_20")
+        self.horizontalLayout_13.addWidget(self.label_20)
+        self.verticalLayout_3.addLayout(self.horizontalLayout_13)
         self.listWidget_2 = QtWidgets.QListWidget(self.tab_shotBrowser)
         self.listWidget_2.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.listWidget_2.setObjectName("listWidget_2")
@@ -197,6 +215,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.label_6 = QtWidgets.QLabel(self.tab_shotBrowser)
+        self.label_6.setMinimumSize(QtCore.QSize(0, 23))
         self.label_6.setObjectName("label_6")
         self.verticalLayout_4.addWidget(self.label_6)
         self.pushButton_CompLatestRv = QtWidgets.QPushButton(self.tab_shotBrowser)
@@ -424,6 +443,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_10.addLayout(self.verticalLayout_6)
         self.tabWidget.addTab(self.tab_assetBrowser, "")
         self.verticalLayout.addWidget(self.tabWidget)
+        self.horizontalSlider = QtWidgets.QSlider(self.centralwidget)
+        self.horizontalSlider.setMaximum(1)
+        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider.setObjectName("horizontalSlider")
+        self.verticalLayout.addWidget(self.horizontalSlider)
         spacerItem3 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         self.verticalLayout.addItem(spacerItem3)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -507,8 +531,11 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_currentOpen), QtWidgets.QApplication.translate("MainWindow", "Currently Open", None, -1))
         self.label_11.setText(QtWidgets.QApplication.translate("MainWindow", "SHOT BROWSER", None, -1))
         self.label_5.setText(QtWidgets.QApplication.translate("MainWindow", "Sequence", None, -1))
+        self.pushButton_listWidget1Refresh.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_listWidget1Refresh", None, -1))
+        self.pushButton_listWidget1Refresh.setText(QtWidgets.QApplication.translate("MainWindow", "Refresh", None, -1))
         self.listWidget_1.setToolTip(QtWidgets.QApplication.translate("MainWindow", "listWidget_1", None, -1))
         self.label_7.setText(QtWidgets.QApplication.translate("MainWindow", "Shot", None, -1))
+        self.label_20.setToolTip(QtWidgets.QApplication.translate("MainWindow", "label_20", None, -1))
         self.listWidget_2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "listWidget_2", None, -1))
         self.label_6.setText(QtWidgets.QApplication.translate("MainWindow", "Task Shot", None, -1))
         self.pushButton_CompLatestRv.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_CompLatestRv", None, -1))
@@ -563,4 +590,5 @@ class Ui_MainWindow(object):
         self.pushButton_20.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_20", None, -1))
         self.pushButton_20.setText(QtWidgets.QApplication.translate("MainWindow", "explore...", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_assetBrowser), QtWidgets.QApplication.translate("MainWindow", "developing Browser", None, -1))
+        self.horizontalSlider.setToolTip(QtWidgets.QApplication.translate("MainWindow", "horizontalSlider", None, -1))
 
