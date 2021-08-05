@@ -1,4 +1,4 @@
-winTitlePrefix = '20210721a'
+winTitlePrefix = '20210805a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2194,7 +2194,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             except:
                 checking = True'''
 
-        keepDays, DaysOkPressed = QInputDialog.getInt(self, 'Input :', 'How many Latest DAYS to be kept and protected?', 30, 1, 100, 1)
+        keepDays, DaysOkPressed = QInputDialog.getInt(self, 'Input :', 'How many Latest DAYS to be kept and protected?', 30, 0, 100, 1)
         if DaysOkPressed:
             print('keepDays inputed : %d' %keepDays)
 
@@ -2302,24 +2302,43 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             if os.path.isdir(theCompOutputPath):
                 tempDirs = os.listdir(theCompOutputPath)
-                print('tempDirs is :')
-                print(tempDirs)
+                print(f'tempDirs is : {len(tempDirs)} {tempDirs}')
 
                 folderOnlyList = []
 
                 # for loop of each version in SHOT-Comp-Output
                 for j in tempDirs:
+
                     if self.checkVerFolderFormat(j) and os.path.isdir(os.path.join(theCompOutputPath, j)):
                         folderOnlyList.append(j)
 
-                folderOnlyList.sort(reverse = True)
-                unKeepFolderList = []
+                    unKeepFolderList = []
+                    keptVerNumList = []
+                    counter = 0
 
-                if len(folderOnlyList) > keepVers:
-                    unKeepFolderList = folderOnlyList[keepVers::]
+                    folderOnlyList.sort(reverse = True)
 
-                print(folderOnlyList)
-                print(unKeepFolderList)
+                    for j in folderOnlyList[::]:
+
+                        previousJ = folderOnlyList[folderOnlyList.index(j)-1]
+                        #print(f'j is {j}, index is {folderOnlyList.index(j)}, j-1 is {folderOnlyList[folderOnlyList.index(j)-1]}, j[0:5] is {j[0:5]}, previousJ is {previousJ[0:5]}')
+
+                        if counter < keepVers:
+                            if j[0:5] != previousJ[0:5]:
+                                counter += 1
+                                keptVerNumList.append(j[0:5])
+                            else:
+                                pass
+                                keptVerNumList.append(j[0:5])
+                        else:
+                            if j[0:5] == previousJ[0:5] and j[0:5] in keptVerNumList:
+                                continue
+                            else:
+                                unKeepFolderList.append(j)
+
+
+                print(f'folderOnlyList : {len(folderOnlyList)} {folderOnlyList}')
+                print(f'unKeepFolderList : {len(unKeepFolderList)} {unKeepFolderList}')
 
                 for k in unKeepFolderList:
                     if self.isEarlierThanKeepDays(os.path.join(theCompOutputPath, k), keepDays):
@@ -2395,15 +2414,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         for path, dirs, files in os.walk(start_path):
             for f in files:
                 filecounter += 1
-                print(start_path)
+                ###print(start_path)
                 fp = os.path.join(path, f)
                 fileSize = os.path.getsize(fp)
                 total_size += fileSize
 
-                print('%d of %d   ---   %d' %(filecounter, totalfiles, (filecounter/totalfiles)*100.0) + '%')
+                ###print('%d of %d   ---   %d' %(filecounter, totalfiles, (filecounter/totalfiles)*100.0) + '%')
                 #print(start_path)
-                print(str(fp))
-                print('total_size in MB : %s' %str(total_size * float(sizeUnit['Megabytes'])))
+                ###print(str(fp))
+                ###print('total_size in MB : %s' %str(total_size * float(sizeUnit['Megabytes'])))
 
 
 
