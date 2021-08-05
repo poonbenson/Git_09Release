@@ -1,4 +1,4 @@
-winTitlePrefix = '20210805a'
+winTitlePrefix = '20210805b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2185,80 +2185,74 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         if VersOkPressed:
             print('keepVers inputed : %d' %keepVers)
 
-        '''checking = True
-        while checking:
-            keepDays = input('How many Latest DAYS to keep? (int, eg:30) -----> :')
-            try:
-                keepDays = int(keepDays)
-                checking = False
-            except:
-                checking = True'''
 
-        keepDays, DaysOkPressed = QInputDialog.getInt(self, 'Input :', 'How many Latest DAYS to be kept and protected?', 30, 0, 100, 1)
-        if DaysOkPressed:
-            print('keepDays inputed : %d' %keepDays)
+            keepDays, DaysOkPressed = QInputDialog.getInt(self, 'Input :', 'How many Latest DAYS to be kept and protected?', 30, 0, 100, 1)
+            if DaysOkPressed:
+                print('keepDays inputed : %d' %keepDays)
 
 
 
-        timerStart = datetime.datetime.now()
+                timerStart = datetime.datetime.now()
 
-        # Calculate boundary data (currentTime - KeepDays)
-        currentTimeStamp = datetime.datetime.now().timestamp()
-        currentTimeStamp_YYYYmmddHHMMSS = datetime.datetime.fromtimestamp(currentTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
-        print(currentTimeStamp_YYYYmmddHHMMSS)
-        value_currentTimeStamp_YYYYmmddHHMMSS = datetime.datetime.strptime(currentTimeStamp_YYYYmmddHHMMSS , '%Y-%m-%d %H:%M:%S')
-        DayValue = datetime.timedelta(days=keepDays)
-        boundryDate = value_currentTimeStamp_YYYYmmddHHMMSS - DayValue
-        print('boundryDate is : ')
-        print(boundryDate)
+                # Calculate boundary data (currentTime - KeepDays)
+                currentTimeStamp = datetime.datetime.now().timestamp()
+                currentTimeStamp_YYYYmmddHHMMSS = datetime.datetime.fromtimestamp(currentTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
+                print(currentTimeStamp_YYYYmmddHHMMSS)
+                value_currentTimeStamp_YYYYmmddHHMMSS = datetime.datetime.strptime(currentTimeStamp_YYYYmmddHHMMSS , '%Y-%m-%d %H:%M:%S')
+                DayValue = datetime.timedelta(days=keepDays)
+                boundryDate = value_currentTimeStamp_YYYYmmddHHMMSS - DayValue
+                print('boundryDate is : ')
+                print(boundryDate)
+                saveNameCurrentTimeStamp = 'toBeDel' + datetime.datetime.fromtimestamp(currentTimeStamp).strftime('-D%Y-%m-%d_T%H%M%S')
 
-        saveNameCurrentTimeStamp = 'toBeDel' + datetime.datetime.fromtimestamp(currentTimeStamp).strftime('-D%Y-%m-%d_T%H%M%S')
-        saveFullPath = self.askSaveFile(saveNameCurrentTimeStamp)
+                saveFullPath = None
+                saveFullPath = self.askSaveFile(saveNameCurrentTimeStamp)
+                if saveFullPath != None:
 
-        toBeDelList = self.cleanUpSortOutDelVers(self.selProjScnShotPath, keepVers, keepDays)
-        print('toBeDelList is :')
-        for i in toBeDelList:
-            print(i)
+                    toBeDelList = self.cleanUpSortOutDelVers(self.selProjScnShotPath, keepVers, keepDays)
+                    print('toBeDelList is :')
+                    for i in toBeDelList:
+                        print(i)
 
-        totalSize = 0
+                    totalSize = 0
 
-        print()
+                    print()
 
-        msgBox = QMessageBox()
-        msgBox.setStandardButtons(QMessageBox.NoButton)
-        msgBox.show()
+                    msgBox = QMessageBox()
+                    msgBox.setStandardButtons(QMessageBox.NoButton)
+                    msgBox.show()
 
-        for i in toBeDelList:
-            print(i)
-            size = self.cleanUpCheckFolderSize(i)
-            print('Path : ' + i + '     Size in MB : ' + str(size/1024/1024))
-            totalSize += size
-            QApplication.processEvents()
-            #msgBox.setText(os.path.normpath(i))
-            msg = 'Path : ' + str(i) + '     Size in MB : ' + str(size/1024/1024)
-            msgBox.setText(msg)
+                    for i in toBeDelList:
+                        print(i)
+                        size = self.cleanUpCheckFolderSize(i)
+                        print('Path : ' + i + '     Size in MB : ' + str(size/1024/1024))
+                        totalSize += size
+                        QApplication.processEvents()
+                        #msgBox.setText(os.path.normpath(i))
+                        msg = 'Path : ' + str(i) + '     Size in MB : ' + str(size/1024/1024)
+                        msgBox.setText(msg)
 
-        print()
-        print('toBeDelList is :')
-        print(toBeDelList)
-        for i in toBeDelList:
-            print(i)
+                    print()
+                    print('toBeDelList is :')
+                    print(toBeDelList)
+                    for i in toBeDelList:
+                        print(i)
 
-        print()
-        print('Keeping %d Latest Vers ---OR--- verions within %d Latest Days (%s)' %(keepVers, keepDays, str(boundryDate)))
-        print('totalSize is :')
-        print('totalSize in MB (to be deleted) : ' + str(totalSize/1024/1024))
-        print('totalSize in GB (to be deleted) : ' + str(totalSize/1024/1024/1024))
-        timerEnd = datetime.datetime.now()
-        print(timerEnd - timerStart)
+                    print()
+                    print('Keeping %d Latest Vers ---OR--- verions within %d Latest Days (%s)' %(keepVers, keepDays, str(boundryDate)))
+                    print('totalSize is :')
+                    print('totalSize in MB (to be deleted) : ' + str(totalSize/1024/1024))
+                    print('totalSize in GB (to be deleted) : ' + str(totalSize/1024/1024/1024))
+                    timerEnd = datetime.datetime.now()
+                    print(timerEnd - timerStart)
 
-        headerContentList = []
-        headerContentList.append(str('Keeping %d Latest Vers ---OR--- verions within %d Latest Days (%s)' %(keepVers, keepDays, str(boundryDate))))
-        headerContentList.append(str('totalSize in MB (to be deleted): ' + str(totalSize/1024/1024)))
-        headerContentList.append(str('totalSize in GB (to be deleted): ' + str(totalSize/1024/1024/1024)))
+                    headerContentList = []
+                    headerContentList.append(str('Keeping %d Latest Vers ---OR--- verions within %d Latest Days (%s)' %(keepVers, keepDays, str(boundryDate))))
+                    headerContentList.append(str('totalSize in MB (to be deleted): ' + str(totalSize/1024/1024)))
+                    headerContentList.append(str('totalSize in GB (to be deleted): ' + str(totalSize/1024/1024/1024)))
 
-        #writePath = os.path.normpath(r'D:\\')
-        self.cleanUpWriteToText(saveFullPath, headerContentList, toBeDelList)
+                    #writePath = os.path.normpath(r'D:\\')
+                    self.cleanUpWriteToText(saveFullPath, headerContentList, toBeDelList)
 
     def checkVerFolderFormat(self, inName):
         print('my checkVerFolderFormat')
