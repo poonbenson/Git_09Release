@@ -1,4 +1,4 @@
-winTitlePrefix = '20210805b'
+winTitlePrefix = '20210811a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2296,7 +2296,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             if os.path.isdir(theCompOutputPath):
                 tempDirs = os.listdir(theCompOutputPath)
-                print(f'tempDirs is : {len(tempDirs)} {tempDirs}')
+                print('tempDirs is : {} {}'.format(len(tempDirs), tempDirs))
 
                 folderOnlyList = []
 
@@ -2331,8 +2331,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                                 unKeepFolderList.append(j)
 
 
-                print(f'folderOnlyList : {len(folderOnlyList)} {folderOnlyList}')
-                print(f'unKeepFolderList : {len(unKeepFolderList)} {unKeepFolderList}')
+                print('folderOnlyList : {} {}'.format(len(folderOnlyList), folderOnlyList))
+                print('unKeepFolderList : {} {}'.format(len(unKeepFolderList), unKeepFolderList))
 
                 for k in unKeepFolderList:
                     if self.isEarlierThanKeepDays(os.path.join(theCompOutputPath, k), keepDays):
