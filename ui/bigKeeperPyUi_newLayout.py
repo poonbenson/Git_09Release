@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\bigKeeperPyUi_newLayout_v121.ui',
-# licensing of 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\bigKeeperPyUi_newLayout_v121.ui' applies.
+# Form implementation generated from reading ui file 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\bigKeeperPyUi_newLayout_v122.ui',
+# licensing of 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\bigKeeperPyUi_newLayout_v122.ui' applies.
 #
-# Created: Wed Jul 21 19:47:07 2021
+# Created: Wed Aug 18 22:24:16 2021
 #      by: pyside2-uic  running on PySide2 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -156,8 +156,17 @@ class Ui_MainWindow(object):
         self.label_nukeIcon.setGeometry(QtCore.QRect(10, 70, 41, 41))
         self.label_nukeIcon.setObjectName("label_nukeIcon")
         self.pushButton_dailyFolder = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_dailyFolder.setGeometry(QtCore.QRect(50, 110, 181, 41))
+        self.pushButton_dailyFolder.setGeometry(QtCore.QRect(50, 150, 181, 41))
         self.pushButton_dailyFolder.setObjectName("pushButton_dailyFolder")
+        self.pushButton_launchHoudini1 = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_launchHoudini1.setGeometry(QtCore.QRect(50, 110, 181, 41))
+        self.pushButton_launchHoudini1.setObjectName("pushButton_launchHoudini1")
+        self.pushButton_houdiniOther = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_houdiniOther.setGeometry(QtCore.QRect(230, 110, 16, 41))
+        self.pushButton_houdiniOther.setObjectName("pushButton_houdiniOther")
+        self.label_houdiniIcon = QtWidgets.QLabel(self.groupBox)
+        self.label_houdiniIcon.setGeometry(QtCore.QRect(10, 110, 41, 41))
+        self.label_houdiniIcon.setObjectName("label_houdiniIcon")
         self.tabWidget_2.addTab(self.tabLauncher, "")
         self.pushButton_scnUpdate = QtWidgets.QPushButton(self.tab_currentOpen)
         self.pushButton_scnUpdate.setGeometry(QtCore.QRect(80, 160, 91, 23))
@@ -460,7 +469,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(5)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -505,16 +514,16 @@ class Ui_MainWindow(object):
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabCmd), QtWidgets.QApplication.translate("MainWindow", "Cmd", None, -1))
         self.groupBox.setTitle(QtWidgets.QApplication.translate("MainWindow", "Studio Dedicated Launcher:", None, -1))
         self.pushButton_LaunchNuke13_0_v2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchNuke13_0_v2", None, -1))
-        self.pushButton_LaunchNuke13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "Nuke\n"
+        self.pushButton_LaunchNuke13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "_Nuke\n"
 "13.0v2", None, -1))
         self.pushButton_LaunchNukeStudio13_0_v2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchNukeStudio13_0_v2", None, -1))
-        self.pushButton_LaunchNukeStudio13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "studio", None, -1))
+        self.pushButton_LaunchNukeStudio13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "_studio", None, -1))
         self.pushButton_LaunchNukeX13_0_v2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchNukeX13_0_v2", None, -1))
-        self.pushButton_LaunchNukeX13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "X", None, -1))
+        self.pushButton_LaunchNukeX13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "_X", None, -1))
         self.pushButton_LaunchNukeAssist13_0_v2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchNukeAssist13_0_v2", None, -1))
-        self.pushButton_LaunchNukeAssist13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "assist", None, -1))
+        self.pushButton_LaunchNukeAssist13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "_assist", None, -1))
         self.pushButton_LaunchMaya2022_update0.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchMaya2022_update0", None, -1))
-        self.pushButton_LaunchMaya2022_update0.setText(QtWidgets.QApplication.translate("MainWindow", "Maya 2022 update0", None, -1))
+        self.pushButton_LaunchMaya2022_update0.setText(QtWidgets.QApplication.translate("MainWindow", "_Maya 2022 update0", None, -1))
         self.pushButton_mayaOther.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_mayaOther", None, -1))
         self.pushButton_mayaOther.setText(QtWidgets.QApplication.translate("MainWindow", ">", None, -1))
         self.pushButton_nukeOther.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_nukeOther", None, -1))
@@ -525,6 +534,12 @@ class Ui_MainWindow(object):
         self.label_nukeIcon.setText(QtWidgets.QApplication.translate("MainWindow", "NukeIcon", None, -1))
         self.pushButton_dailyFolder.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_dailyFolder", None, -1))
         self.pushButton_dailyFolder.setText(QtWidgets.QApplication.translate("MainWindow", "Daily Folder", None, -1))
+        self.pushButton_launchHoudini1.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_launchHoudini1", None, -1))
+        self.pushButton_launchHoudini1.setText(QtWidgets.QApplication.translate("MainWindow", "launchHoudini1", None, -1))
+        self.pushButton_houdiniOther.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_houdiniOther", None, -1))
+        self.pushButton_houdiniOther.setText(QtWidgets.QApplication.translate("MainWindow", ">", None, -1))
+        self.label_houdiniIcon.setToolTip(QtWidgets.QApplication.translate("MainWindow", "label_houdiniIcon", None, -1))
+        self.label_houdiniIcon.setText(QtWidgets.QApplication.translate("MainWindow", "HoudiniIcon", None, -1))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabLauncher), QtWidgets.QApplication.translate("MainWindow", "Launcher", None, -1))
         self.pushButton_scnUpdate.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_scnUpdate", None, -1))
         self.pushButton_scnUpdate.setText(QtWidgets.QApplication.translate("MainWindow", "Scene Update", None, -1))

@@ -1,4 +1,4 @@
-winTitlePrefix = '20210811a'
+winTitlePrefix = '20210818a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -195,6 +195,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.label_mayaIcon.setScaledContents(True)
         self.label_nukeIcon.setPixmap(QPixmap(os.path.join(iconPath, 'nuke.png')))
         self.label_nukeIcon.setScaledContents(True)
+        self.label_houdiniIcon.setPixmap(QPixmap(os.path.join(iconPath, 'houdini.png')))
+        self.label_houdiniIcon.setScaledContents(True)
 
 
         self.comboBoxEntries = self.listBigKeeperProject()
@@ -245,10 +247,16 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_LaunchNukeStudio13_0_v2.clicked.connect(self.launchStudioEnvNukeStudio)
         self.pushButton_LaunchNukeStudio13_0_v2.setEnabled(True)
 
+        self.pushButton_launchHoudini1.clicked.connect(self.launchStudioEnvHoudini)
+        self.pushButton_launchHoudini1.setText(self.envRead('HOUDINI', 'label'))
+
+
         self.pushButton_mayaOther.clicked.connect(self.launchStudioEnvMayaFolder)
         self.pushButton_mayaOther.setText(self.envRead('MAYA', 'batFolderPathLabel'))
         self.pushButton_nukeOther.clicked.connect(self.launchStudioEnvNukeFolder)
         self.pushButton_nukeOther.setText(self.envRead('NUKE', 'batFolderPathLabel'))
+        self.pushButton_houdiniOther.clicked.connect(self.launchStudioEnvHoudiniFolder)
+        self.pushButton_houdiniOther.setText(self.envRead('HOUDINI', 'batFolderPathLabel'))
 
         self.pushButton_dailyFolder.clicked.connect(self.launchDailyFolder)
 
@@ -553,12 +561,21 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print(theCmd)
         os.system(theCmd)
 
+    def launchStudioEnvHoudini(self):
+        theCmd = 'start {}'.format(os.path.join(self.envRead('HOUDINI', 'batPath'), 'studioEnv.bat'))
+        print(theCmd)
+        os.system(theCmd)
+
     def launchStudioEnvMayaFolder(self):
         theCmd = self.envRead('MAYA', 'batFolderPath')
         os.startfile(theCmd)
 
     def launchStudioEnvNukeFolder(self):
         theCmd = self.envRead('NUKE', 'batFolderPath')
+        os.startfile(theCmd)
+
+    def launchStudioEnvHoudiniFolder(self):
+        theCmd = self.envRead('HOUDINI', 'batFolderPath')
         os.startfile(theCmd)
 
     def launchDailyFolder(self):
