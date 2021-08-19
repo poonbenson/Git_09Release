@@ -1,4 +1,4 @@
-winTitlePrefix = '20210819c'
+winTitlePrefix = '20210819d'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -1534,11 +1534,34 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             # This function is to limit only activate for EXR format. Due to current ability that other format seems have color issue when create RV session by text pad hacking. Should tackle later.
             print('my checkExrOnly')
             allFiles = os.listdir(inPath)
+
+            '''
             check1stFrame = allFiles[0].split('.')
             if check1stFrame[-1] == 'exr' or check1stFrame[-1] == 'EXR':
                 exrFormat = True
             else:
                 exrFormat = False
+            '''
+
+            for i in allFiles:
+                if i.split('.')[-1] == 'exr' or i.split('.')[-1] == 'EXR':
+                    print(i)
+                    exrFormat = True
+                    print(exrFormat)
+                elif i.split('.')[-1] == 'png' or i.split('.')[-1] == 'PNG':
+                    print(i)
+                    exrFormat = True
+                    print(exrFormat)
+
+                elif i.split('.')[-1] == 'tmp' or i.split('.')[-1] == 'TMP':
+                    print(i)
+                    print('pass')
+                    pass
+                else:
+                    print(i)
+                    exrFormat = False
+                    print(exrFormat)
+                    break
 
             return exrFormat
 
@@ -1582,6 +1605,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 print(verType)
 
             if len(listSeq) > 0:
+
 
                 SameRvVersionPath = (os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', latestVersion + '.rv'))
                 haveSameRvVersion = os.path.isfile(SameRvVersionPath)
@@ -1631,7 +1655,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 return onlyFiles
 
             theFrameList = getFrames(inLatestVerPath)
-            print(theFrameList)
+            print('theFrameList : {}'.format(theFrameList))
+
+            # to avoid first frame is .tmp which will fail to read meta data
+            for frame in theFrameList:
+                if frame.split('.')[-1] == 'tmp' or frame.split('.')[-1] == 'TMP':
+                    theFrameList.remove(frame)
+
+            print('theFrameList after del tmp check: {}'.format(theFrameList))
 
             FrameStartFullName = theFrameList[0].split('.')
             FrameEndFullName = theFrameList[-1].split('.')
