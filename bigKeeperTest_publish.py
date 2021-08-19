@@ -1,4 +1,4 @@
-winTitlePrefix = '20210819b'
+winTitlePrefix = '20210819c'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -106,6 +106,8 @@ sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\externalPyModule')
 
 # To initiate current software environment variables
 externalToolPath = r'N:\bpPipeline\bigKeeperPy\py\externalTool'
+rvPath = r'C:\Program Files\Shotgun\RV-2021.0.0\bin\rv.exe'
+rvTemplate = r'N:\bpPipeline\rv\_bigkeeperPyData\rv.template'
 in_nuke = None
 in_maya = None
 in_houdini = None
@@ -1462,10 +1464,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             print(listSeq)
             if len(listSeq) > 0:
                 print(listSeq[-1])
-                if is_iDriveDeveloper:
-                    subprocess.Popen([r'C:\Program Files\Shotgun\RV-7.6.1\bin\rv.exe', listSeq[-1]])
-                else:
-                    subprocess.Popen([r'C:\Program Files\Shotgun\RV-7.2.1\bin\rv.exe', listSeq[-1]])
+                subprocess.Popen([rvPath, listSeq[-1]])
             else:
                 QMessageBox.information(self, 'message', r'No folder in ...\comp\output')
         else:
@@ -1588,18 +1587,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 haveSameRvVersion = os.path.isfile(SameRvVersionPath)
 
                 if haveSameRvVersion:
-                    if is_iDriveDeveloper:
-                        subprocess.Popen([r'C:\Program Files\Shotgun\RV-7.6.1\bin\rv.exe', SameRvVersionPath])
-                    else:
-                        subprocess.Popen([r'C:\Program Files\Shotgun\RV-7.2.1\bin\rv.exe', SameRvVersionPath])
+                    subprocess.Popen([rvPath, SameRvVersionPath])
+
                 else:
                     if verType == 'CompMaster':
                         if isExrFormat(LatestVerPath):
                             self.createRvFile(LatestVerPath, latestVersion)
-                            if is_iDriveDeveloper:
-                                subprocess.Popen([r'C:\Program Files\Shotgun\RV-7.6.1\bin\rv.exe', SameRvVersionPath])
-                            else:
-                                subprocess.Popen([r'C:\Program Files\Shotgun\RV-7.2.1\bin\rv.exe', SameRvVersionPath])
+                            subprocess.Popen([rvPath, SameRvVersionPath])
+
                         else:
                             QMessageBox.information(self, 'message', r'Make Sure all frame are .exr format.')
                     elif verType == 'LayerMask':
@@ -1758,7 +1753,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-        rvTemplate = r'N:\mnt\job\19901BigPicture_TestProj\_bigkeeperPyData\rv.template'
+        # rvTemplate = r'N:\mnt\job\19901BigPicture_TestProj\_bigkeeperPyData\rv.template'
         theFile = os.path.join(self.selProjScnShotTaskPath, 'comp', 'output')
 
         with open(rvTemplate) as f:
