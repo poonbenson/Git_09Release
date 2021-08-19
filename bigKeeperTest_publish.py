@@ -518,23 +518,26 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def envRead(self, inSection, inKey):
         print('my envRead')
 
-        def addLine(inStr):
-            seperator = r'\n'
-            splitText = inStr.split(seperator)
-            joinText = '\n'.join(splitText)
+        try:
+            def addLine(inStr):
+                seperator = r'\n'
+                splitText = inStr.split(seperator)
+                joinText = '\n'.join(splitText)
 
-            return joinText
+                return joinText
 
-        config = configparser.ConfigParser()
-        #config.read(r'./myConfigINI.py')
-        config.read(r'N:\bpPipeline\bigKeeperPyIni\env.ini')
+            config = configparser.ConfigParser()
+            #config.read(r'./myConfigINI.py')
+            config.read(r'N:\bpPipeline\bigKeeperPyIni\env.ini')
 
-        theInfo = config[inSection]
+            theInfo = config[inSection]
 
-        if inKey == 'label':
-            return str(addLine(theInfo[inKey]))
-        else:
-            return theInfo[inKey]
+            if inKey == 'label':
+                return str(addLine(theInfo[inKey]))
+            else:
+                return theInfo[inKey]
+        except:
+            print('configparser fail, pass.')
 
 
     def launchStudioEnvMaya(self):
