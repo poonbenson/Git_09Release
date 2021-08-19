@@ -1,4 +1,4 @@
-winTitlePrefix = '20210818a'
+winTitlePrefix = '20210819a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -10,6 +10,10 @@ from PySide2.QtGui import *
 
 # To import standard modules
 import subprocess, os, sys, time, configparser
+
+if sys.version_info.major >= 3:
+    import configparser
+
 
 # ref: https://www.daniweb.com/programming/software-development/threads/265576/how-can-i-specify-the-size-of-the-python-command-line-window-in-my-code
 os.system("mode con cols=100 lines=10")
@@ -373,6 +377,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         for i in range(0, tabCount):
             self.tabWidget_2.setTabEnabled(i, False)
 
+        if sys.version_info.major >= 3:
+            self.tabWidget_2.setTabEnabled(5, True)
+
         if in_maya:
             self.tabWidget_2.setTabEnabled(0, True)
             self.tabWidget_2.setCurrentIndex(0)
@@ -388,7 +395,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         elif in_python:
             self.tabWidget_2.setTabEnabled(4, True)
             self.tabWidget_2.setCurrentIndex(5)
-        self.tabWidget_2.setTabEnabled(5, True)
+
 
 
         # This to a temp. and bad way to parenet on the working software and on-top. Current can't find correct way to do so.
