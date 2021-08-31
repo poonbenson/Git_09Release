@@ -1,4 +1,4 @@
-winTitlePrefix = '20210819d'
+winTitlePrefix = '20210831a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -977,6 +977,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                     nuke.scriptClose()
                     nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
+                    nuke.onScriptLoad(self.launchSceneUpdate())
                     self.activateCurrentTab()
                     #window.close()
             elif in_houdini:
