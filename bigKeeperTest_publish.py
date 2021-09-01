@@ -1,4 +1,4 @@
-winTitlePrefix = '20210831a'
+winTitlePrefix = '20210901a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -133,7 +133,7 @@ elif CurrentSoftwareName == 'maya':
     in_maya = True
     import maya.cmds as cmds
     cacheProjName = r'projCache_maya.txt'
-    wipExtension = r'.ma'
+    wipExtension = r'.mb'
 elif CurrentSoftwareName == 'houdini':
     in_houdini = True
     import hou
