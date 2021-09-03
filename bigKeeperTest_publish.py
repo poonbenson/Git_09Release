@@ -1,4 +1,4 @@
-winTitlePrefix = '20210901a'
+winTitlePrefix = '20210901b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -977,7 +977,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                     nuke.scriptClose()
                     nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
-                    nuke.onScriptLoad(self.launchSceneUpdate())
+
+                    # To avoid error message when launchSceneUpdate on a v0000
+                    try:
+                        nuke.onScriptLoad(self.launchSceneUpdate())
+                    except:
+                        pass
+
                     self.activateCurrentTab()
                     #window.close()
             elif in_houdini:
@@ -1252,6 +1258,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.dialogUi.close()
             self.openLastestWIP()
             self.updateCurrentOpeningLocationPath()
+
+        sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\externalPyModule\compTeamNukePy')
+        import projectRoot_published
+        projectRoot_published.projectSetting()
+        nuke.scriptSave()
+        sys.path.remove(r'N:\bpPipeline\bigKeeperPy\py\externalPyModule\compTeamNukePy')
+
+
 
     def useCurrentWIP(self):
         print('my useCurrentWIP')
