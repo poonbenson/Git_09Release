@@ -1,4 +1,4 @@
-winTitlePrefix = '20210901b'
+winTitlePrefix = '20210904a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -1263,6 +1263,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         import projectRoot_published
         projectRoot_published.projectSetting()
         nuke.scriptSave()
+        os.remove(os.path.join(self.selProjScnShotTaskWIPPath, newWipName+'~'))
         sys.path.remove(r'N:\bpPipeline\bigKeeperPy\py\externalPyModule\compTeamNukePy')
 
 
