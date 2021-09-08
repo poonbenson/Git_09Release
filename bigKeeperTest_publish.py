@@ -1,4 +1,4 @@
-winTitlePrefix = '20210904a'
+winTitlePrefix = '20210908a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -500,8 +500,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize())
         #self.pushButton_num3.setText('CalDirSize')
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnShotTaskWIPPath))
-        #self.pushButton_num2.clicked.connect(lambda: self.loopQMessage())
-        #self.pushButton_num2.setText('loopQMsg')
+        self.pushButton_num2.clicked.connect(lambda : self.nukeBornWriteNode('PreRend'))
+        self.pushButton_num2.setText('PreRend')
         self.pushButton_num1.clicked.connect(self.listWidget_1_appear)
         self.pushButton_num1.setText('refresh seq')
         self.pushButton_num4.clicked.connect(lambda: self.envRead('NUKE', 'label'))
@@ -1981,7 +1981,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
     def nukeBornWriteNode(self, inType):
-        print('my nnukeBornWriteNode')
+        print('my nukeBornWriteNode')
         try:
             orignalSelNode = nuke.selectedNode()
             print('original :::')
@@ -2021,6 +2021,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4) + '_' + inType
                     targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder, answerName, frameName))
                     checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder, answerName))
+                    backdropLabel = answerName + '_' + inType
+
+                elif inType == 'PreRend':
+                    print(inType)
+                    answerName, readyToCreate = QInputDialog.getText(self, 'sub-name', 'Input a sub-name for sub-folderName and sub-framename', QLineEdit.Normal)
+                    print(answerName)
+                    frameName = str(bigKInfo.currentShot()) + '_' + answerName + '.%04d' + '.exr'
+                    verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
+                    targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, frameName))
+                    checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder))
+                    readyToCreate = True
                     backdropLabel = answerName + '_' + inType
 
                 print('checkPath is : ' + checkPath)
@@ -2087,6 +2098,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             baseColor = 2419101951
         elif inTypeForColor == 'LayerMask':
             baseColor = 2068476415
+        elif inTypeForColor == 'PreRend':
+            baseColor = 2060476415
 
         allNode = nuke.selectedNode()
         print('nodes :' + str(len(allNode)))
@@ -2185,6 +2198,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         allFilteredNodes = []
         for i in allNodes:
 
+            '''
             # to sort out Disabled Write node. For Freeze the version update status.
             if i.Class() == 'Write' and i.knob('disable').getValue() == True:
                 pass
@@ -2195,6 +2209,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     sameNodeNameList.append(i.name())
                     #create a list containing "node" instead of nodeName, for coding convinient
                     allFilteredNodes.append(nuke.toNode(i.name()))
+            '''
+
+            # Cancel the above procedure of sorting out Disable Write Node. After discuss with Apple and Lik.
+            mergePrefix = dedictatedPrefix + '_' + nodeClassName + '_'
+            if i.name()[0:len(mergePrefix)] == mergePrefix:
+                sameNodeNameList.append(i.name())
+                #create a list containing "node" instead of nodeName, for coding convinient
+                allFilteredNodes.append(nuke.toNode(i.name()))
 
         # To avoid, in case, previous version is copy and paste from window explorer.
         try:
