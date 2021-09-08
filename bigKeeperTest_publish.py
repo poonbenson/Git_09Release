@@ -1,4 +1,4 @@
-winTitlePrefix = '20210908a'
+winTitlePrefix = '20210909a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2029,8 +2029,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     print(answerName)
                     frameName = str(bigKInfo.currentShot()) + '_' + answerName + '.%04d' + '.exr'
                     verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
-                    targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, frameName))
-                    checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder))
+                    targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName, frameName))
+                    checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName))
                     readyToCreate = True
                     backdropLabel = answerName + '_' + inType
 
@@ -2169,6 +2169,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def nukeUpdateWriteNodeVer(self):
         print('my nukeUpdateWriteNodeVer')
+        # This function is intentionally read and update the path data according to the current content, instead of using bigkeeperinfo toolkit. To avoid unwanted overwrite data.
 
         # check if it is in Nuke Assist
         nukeEnv = nuke.env
@@ -2218,16 +2219,26 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 #create a list containing "node" instead of nodeName, for coding convinient
                 allFilteredNodes.append(nuke.toNode(i.name()))
 
+        '''
         # To avoid, in case, previous version is copy and paste from window explorer.
         try:
             seperator = '/output/v'
         except:
             seperator = '\output\v'
+        '''
+
+        seperatorKeywords = ['output', 'prerend']
 
         for i in allFilteredNodes:
-            originalContent = (i.knob('file').value())
+            originalContent = os.path.normpath(i.knob('file').value())
             print('originalContent :')
             print(originalContent)
+
+            for keyword in seperatorKeywords:
+                print(r'\{}\v'.format(keyword))
+                if r'\{}\v'.format(keyword) in originalContent:
+                    seperator = r'\{}\v'.format(keyword)
+                    print(seperator)
 
             #To find out current frame name for both CompMaster(tsq0010) & LayerMask(tsq0010_shadow), store in basenameFullShotName[0]
             basename = os.path.basename(originalContent)
@@ -2242,8 +2253,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             print('splitContentEnd is :')
             print(splitContentEnd)
             splitContentEnd = splitContentEnd.replace(basenameFullShotName[0], currentShotname)
-            print(splitContentEnd)
-
 
             newVerNumber = currentVerNumber
             updatedContent = str(os.path.normpath(currentTaskPath + seperator + str(newVerNumber).zfill(4) + splitContentEnd))
