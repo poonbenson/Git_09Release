@@ -341,6 +341,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
         # Nuke Tab
+        self.pushButton_genWritePrerend.clicked.connect(lambda : self.nukeBornWriteNode('PreRend'))
+        self.pushButton_genWritePrerend.setText('PreRend')
         self.pushButton_genWriteLayerMask.clicked.connect(lambda : self.nukeBornWriteNode('LayerMask'))
         self.pushButton_genWriteLayerMask.setText('LayerMask')
         self.pushButton_genWriteCompMaster.clicked.connect(lambda : self.nukeBornWriteNode('CompMaster'))
