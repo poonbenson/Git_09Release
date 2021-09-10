@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\bigKeeperPyUi_newLayout_v122.ui',
-# licensing of 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\bigKeeperPyUi_newLayout_v122.ui' applies.
+# Form implementation generated from reading ui file 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\designer_wip\bigKeeperPyUi_newLayout\bigKeeperPyUi_newLayout_v123.ui',
+# licensing of 'N:\bpPipeline\bigKeeperPy\py\pySide2UI\designer_wip\bigKeeperPyUi_newLayout\bigKeeperPyUi_newLayout_v123.ui' applies.
 #
-# Created: Wed Aug 18 22:24:16 2021
+# Created: Fri Sep 10 10:58:02 2021
 #      by: pyside2-uic  running on PySide2 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -97,6 +97,12 @@ class Ui_MainWindow(object):
         self.label_16 = QtWidgets.QLabel(self.tabNuke)
         self.label_16.setGeometry(QtCore.QRect(0, 130, 121, 16))
         self.label_16.setObjectName("label_16")
+        self.label_21 = QtWidgets.QLabel(self.tabNuke)
+        self.label_21.setGeometry(QtCore.QRect(0, 80, 121, 16))
+        self.label_21.setObjectName("label_21")
+        self.pushButton_genWritePrerend = QtWidgets.QPushButton(self.tabNuke)
+        self.pushButton_genWritePrerend.setGeometry(QtCore.QRect(0, 100, 121, 23))
+        self.pushButton_genWritePrerend.setObjectName("pushButton_genWritePrerend")
         self.tabWidget_2.addTab(self.tabNuke, "")
         self.tabHoudini = QtWidgets.QWidget()
         self.tabHoudini.setObjectName("tabHoudini")
@@ -470,7 +476,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(5)
+        self.tabWidget_2.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -500,7 +506,10 @@ class Ui_MainWindow(object):
         self.pushButton_genWriteCompMaster.setText(QtWidgets.QApplication.translate("MainWindow", "CompMaster (only 1)", None, -1))
         self.pushButton_genWriteLayerMask.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_genWriteLayerMask", None, -1))
         self.pushButton_genWriteLayerMask.setText(QtWidgets.QApplication.translate("MainWindow", "LayerMasks", None, -1))
-        self.label_16.setText(QtWidgets.QApplication.translate("MainWindow", "Gen Write Node :", None, -1))
+        self.label_16.setText(QtWidgets.QApplication.translate("MainWindow", "Output Write Node :", None, -1))
+        self.label_21.setText(QtWidgets.QApplication.translate("MainWindow", "Prerend Write Node :", None, -1))
+        self.pushButton_genWritePrerend.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_genWritePrerend", None, -1))
+        self.pushButton_genWritePrerend.setText(QtWidgets.QApplication.translate("MainWindow", "Prerend", None, -1))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabNuke), QtWidgets.QApplication.translate("MainWindow", "Nuke", None, -1))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabHoudini), QtWidgets.QApplication.translate("MainWindow", "Houdini", None, -1))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabBlender), QtWidgets.QApplication.translate("MainWindow", "Blender", None, -1))
@@ -517,11 +526,11 @@ class Ui_MainWindow(object):
         self.pushButton_LaunchNuke13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "_Nuke\n"
 "13.0v2", None, -1))
         self.pushButton_LaunchNukeStudio13_0_v2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchNukeStudio13_0_v2", None, -1))
-        self.pushButton_LaunchNukeStudio13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "_studio", None, -1))
+        self.pushButton_LaunchNukeStudio13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "studio", None, -1))
         self.pushButton_LaunchNukeX13_0_v2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchNukeX13_0_v2", None, -1))
-        self.pushButton_LaunchNukeX13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "_X", None, -1))
+        self.pushButton_LaunchNukeX13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "X", None, -1))
         self.pushButton_LaunchNukeAssist13_0_v2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchNukeAssist13_0_v2", None, -1))
-        self.pushButton_LaunchNukeAssist13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "_assist", None, -1))
+        self.pushButton_LaunchNukeAssist13_0_v2.setText(QtWidgets.QApplication.translate("MainWindow", "assist", None, -1))
         self.pushButton_LaunchMaya2022_update0.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_LaunchMaya2022_update0", None, -1))
         self.pushButton_LaunchMaya2022_update0.setText(QtWidgets.QApplication.translate("MainWindow", "_Maya 2022 update0", None, -1))
         self.pushButton_mayaOther.setToolTip(QtWidgets.QApplication.translate("MainWindow", "pushButton_mayaOther", None, -1))
