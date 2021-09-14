@@ -1,4 +1,4 @@
-winTitlePrefix = '20210914a'
+winTitlePrefix = '20210914b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -98,7 +98,7 @@ import DialogWindow as UiDialog # path : N:\BigKeeper\py\pySide2UI\ui        WIP
 import doneWindow as UiDone
 import nukeReadNodeFrameInOut as UiNukeTemp
 import newTaskWindow as UiNewTask
-import nukePrerendPresetWindow as UiNukePrerendPreset
+import presetWindow as UiPreset
 sys.path.remove(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
 
 sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\externalPyModule')
@@ -291,6 +291,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.compPreviousVerUi.listWidget.itemDoubleClicked.connect(self.shotAction3Action)
         self.compPreviousVerUi.pushButton_exec.clicked.connect(lambda : self.shotAction3Action(self.compPreviousVerUi.listWidget.currentItem()))
         self.compPreviousVerUi.setWindowTitle('RV Review Comp Previous ver')
+
+        self.prerendKeywordListUi  = prerendKeywordListView(parent = self)
 
         self.dialogUi = NewWIPDialogWindow(parent = self)
         self.doneUi = doneWindow(parent = self)
@@ -505,8 +507,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_num3.clicked.connect(lambda: self.prerendKeywordShow())
         self.pushButton_num3.setText('*prerend*')
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnShotTaskWIPPath))
-        #self.pushButton_num2.clicked.connect(lambda : self.nukeBornWriteNode('PreRend'))
-        #self.pushButton_num2.setText('PreRend')
+        self.pushButton_num2.clicked.connect(lambda : self.prerendKeywordPresetShow())
+        self.pushButton_num2.setText('*presetButton*')
         self.pushButton_num1.clicked.connect(self.listWidget_1_appear)
         self.pushButton_num1.setText('refresh seq')
         self.pushButton_num4.clicked.connect(lambda: self.envRead('NUKE', 'label'))
@@ -1237,7 +1239,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def prerendKeywordShow(self):
         print('my prerendKeywordShow')
         #self.prerendKeywordUi.label.setText('replaced:::')
+
+        self.prerendKeywordUi.pushButton_1.setText('presets')
+        self.prerendKeywordUi.pushButton_1.clicked.connect(lambda : self.prerendKeywordListUi.show())
         self.prerendKeywordUi.show()
+
+
+    def prerendKeywordPresetShow(self):
+        print('my prerendKeywordPresetShow')
+        self.prerendKeywordListUi.show()
 
     def createNewWIP2(self):
         print ('my createNewWIP2')
@@ -2667,6 +2677,12 @@ class subListView(UiList.Ui_MainWindow, QMainWindow):
         self.setupUi(self)
         self.setWindowModality(Qt.ApplicationModal)
 
+class prerendKeywordListView(UiList.Ui_MainWindow, QMainWindow):
+    def __init__(self, parent = None):
+        super(prerendKeywordListView, self).__init__(parent)
+        self.setupUi(self)
+        self.setWindowModality(Qt.ApplicationModal)
+
 class NewWIPDialogWindow(UiDialog.Ui_MainWindow, QMainWindow):
     def __init__(self, parent = None):
         super(NewWIPDialogWindow, self).__init__(parent)
@@ -2750,7 +2766,7 @@ class createShotNewTaskWindow(UiNewTask.Ui_MainWindow, QMainWindow):
         self.label.setText('New Task Name :')
         #self.setWindowModality(Qt.ApplicationModal)
 
-class nukeAskKeywordWindow(UiNukePrerendPreset.Ui_MainWindow, QMainWindow):
+class nukeAskKeywordWindow(UiPreset.Ui_MainWindow, QMainWindow):
     def __init__(self, parent = None):
         super(nukeAskKeywordWindow, self).__init__(parent)
         print('my nukeAskKeywordWindow - __init__')
