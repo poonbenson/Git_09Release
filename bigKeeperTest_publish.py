@@ -1,4 +1,4 @@
-winTitlePrefix = '20210914b'
+winTitlePrefix = '20210917a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -25,6 +25,9 @@ import xml.etree.ElementTree as ET
 sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\BigKeeperGlob\wip\published')
 import bigCodingAssistant_publish
 CurrentSoftwareName = bigCodingAssistant_publish.tool().bigCheckSoftware()
+
+import bigKeeperInfoGlobal_published
+getBigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
 print('currentSoftwareName is: {}'.format(CurrentSoftwareName))
 
 try:
@@ -194,6 +197,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         WindowTitleName = winTitlePrefix + ' BigKeeperPy-alpha ' + os.path.basename(thisPath)
         self.setWindowTitle(WindowTitleName)
         self.setWindowIcon(QIcon(os.path.join(iconPath, 'maya.png')))
+        self.prerendKeyword = ""
 
         #self.label_9.setPixmap(QPixmap(r"N:/bpPipeline/bigKeeperPy/bigKeeperPyIcon_developer.jpg"))
         self.label_9.setPixmap(QPixmap(bannerImage))
@@ -292,13 +296,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.compPreviousVerUi.pushButton_exec.clicked.connect(lambda : self.shotAction3Action(self.compPreviousVerUi.listWidget.currentItem()))
         self.compPreviousVerUi.setWindowTitle('RV Review Comp Previous ver')
 
-        self.prerendKeywordListUi  = prerendKeywordListView(parent = self)
+        #self.prerendKeywordListUi  = prerendKeywordListView(parent = self)
 
         self.dialogUi = NewWIPDialogWindow(parent = self)
         self.doneUi = doneWindow(parent = self)
         self.initializeNewWIPDialogWindow()
         self.createShotNewTaskUi = createShotNewTaskWindow(parent = self)
         self.prerendKeywordUi = nukeAskKeywordWindow(parent = self)
+        self.initializePrerendKeywordUi()
 
 
         self.pushButton_scnUpdate.clicked.connect(self.launchSceneUpdate)
@@ -335,6 +340,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.initDummy()
 
+        #self.getBigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
+
 
 
 
@@ -346,8 +353,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
         # Nuke Tab
-        self.pushButton_genWritePrerend.clicked.connect(lambda : self.nukeBornWriteNode('PreRend'))
-        self.pushButton_genWritePrerend.setText('PreRend')
+        #self.pushButton_genWritePrerend.clicked.connect(lambda : self.nukeBornWriteNode('PreRend'))
+        self.pushButton_genWritePrerend.clicked.connect(lambda: self.prerendKeywordShow())
+        self.pushButton_genWritePrerend.setText('Prerend')
         self.pushButton_genWriteLayerMask.clicked.connect(lambda : self.nukeBornWriteNode('LayerMask'))
         self.pushButton_genWriteLayerMask.setText('LayerMask')
         self.pushButton_genWriteCompMaster.clicked.connect(lambda : self.nukeBornWriteNode('CompMaster'))
@@ -416,10 +424,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             #self.pushButton_shotAction.setEnabled(False)
             self.shotAction3.setDisabled(True)
             self.shotAction4.setDisabled(True)
-
-        #if is_iDriveDeveloper:
-            #self.shotAction3.setDisabled(False)
-            #self.shotAction4.setDisabled(False)
 
 
         '''# ref : https://www.qtcentre.org/threads/34073-QTabWidget-tab-button-color(-how-to-set-)
@@ -648,22 +652,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-
-
     def nukeReadNodeFindOtherVer(self, inFullPath, inSeperator):
         print('my nukeReadNodeFindOtherVer')
 
         sepList = inFullPath.split('')
-
-
-
-
-
-
-
-
-
-
 
     def openScheduleLink(self):
         print(' my openScheduleLink')
@@ -765,11 +757,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 label1.setText(str(total_size))'''
 
     """
-
-
-
-
-
 
     def activateCurrentTab(self):
         print('my activateCurrentTab')
@@ -1205,7 +1192,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 QMessageBox.information(self, 'WARNING !!! ', theMessage)
             else:
                 theMessage = 'WIP version up, Done.\n\nbigK_Write nodes --- version numbers aligned.\nbigK_ModifyMetadata nodes --- fps metadata aligned to Project Setting.'
-                QMessageBox.information(self, 'version up ', theMessage)
+                QMessageBox.information(self, 'version up33 ', theMessage)
 
 
         elif in_houdini:
@@ -1238,16 +1225,47 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def prerendKeywordShow(self):
         print('my prerendKeywordShow')
-        #self.prerendKeywordUi.label.setText('replaced:::')
 
-        self.prerendKeywordUi.pushButton_1.setText('presets')
-        self.prerendKeywordUi.pushButton_1.clicked.connect(lambda : self.prerendKeywordListUi.show())
+        getBigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
+        print(getBigKInfo.currentProjWorkPath())
+
+        self.prerendKeywordUi.comboBox.clear()
+        self.prerendKeywordUi.lineEdit.clear()
+
+        with open(os.path.join(getBigKInfo.currentProjWorkPath(), 'compPrerendPreset.txt')) as file:
+            contents = file.readlines()
+        print(contents)
+
+        keywords = []
+        for i in contents:
+            keywords.append(i.replace('\n', ""))
+        print(keywords)
+
+        self.prerendKeywordUi.label.setText('Input a sub-name for sub-folderName and sub-framename :')
+        self.prerendKeywordUi.comboBox.addItems(keywords)
+
         self.prerendKeywordUi.show()
 
+    def initializePrerendKeywordUi(self):
+        print('my initializePrerendKeywordUi')
 
-    def prerendKeywordPresetShow(self):
-        print('my prerendKeywordPresetShow')
-        self.prerendKeywordListUi.show()
+        self.prerendKeywordUi.setWindowTitle('Prerend Keyword')
+
+        self.prerendKeywordUi.pushButton_2.setText('OK')
+        self.prerendKeywordUi.pushButton_3.setText('Cancel')
+        self.prerendKeywordUi.pushButton_2.clicked.connect(lambda : self.nukeBornWriteNode('Prerend', self.prerendKeywordUi.lineEdit.text()))
+        self.prerendKeywordUi.pushButton_2.clicked.connect(lambda : self.prerendKeywordUi.close())
+        self.prerendKeywordUi.pushButton_3.clicked.connect(lambda : self.prerendKeywordUi.close())
+        self.prerendKeywordUi.comboBox.activated[str].connect(self.prerendKeywordAction)
+
+
+    def prerendKeywordAction(self, item):
+        ('my prerendKeywordAction')
+        print(item)
+
+        self.prerendKeywordUi.lineEdit.setText(item)
+
+
 
     def createNewWIP2(self):
         print ('my createNewWIP2')
@@ -2000,8 +2018,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-    def nukeBornWriteNode(self, inType):
+    def nukeBornWriteNode(self, inType, *args):
         print('my nukeBornWriteNode')
+        print(args)
+        print(args[0])
         try:
             orignalSelNode = nuke.selectedNode()
             print('original :::')
@@ -2051,8 +2071,22 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
                     targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName, frameName))
                     checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName))
-                    readyToCreate = True
+                    #readyToCreate = True
                     backdropLabel = answerName + '_' + inType
+
+                elif inType == 'Prerend':
+                    print(inType)
+                    answerName = args[0]
+                    readyToCreate = True
+
+                    print('3 self.prerendKeyword is {}'.format(answerName))
+                    frameName = str(bigKInfo.currentShot()) + '_' + answerName + '.%04d' + '.exr'
+                    verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
+                    targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName, frameName))
+                    checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName))
+                    backdropLabel = answerName + '_' + inType
+
+
 
                 print('checkPath is : ' + checkPath)
                 checkPath = str(checkPath + os.sep)
@@ -2119,6 +2153,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         elif inTypeForColor == 'LayerMask':
             baseColor = 2068476415
         elif inTypeForColor == 'PreRend':
+            baseColor = 2060476415
+        elif inTypeForColor == 'Prerend':
             baseColor = 2060476415
 
         allNode = nuke.selectedNode()
@@ -2677,11 +2713,13 @@ class subListView(UiList.Ui_MainWindow, QMainWindow):
         self.setupUi(self)
         self.setWindowModality(Qt.ApplicationModal)
 
+'''
 class prerendKeywordListView(UiList.Ui_MainWindow, QMainWindow):
     def __init__(self, parent = None):
         super(prerendKeywordListView, self).__init__(parent)
         self.setupUi(self)
         self.setWindowModality(Qt.ApplicationModal)
+        '''
 
 class NewWIPDialogWindow(UiDialog.Ui_MainWindow, QMainWindow):
     def __init__(self, parent = None):
@@ -2770,6 +2808,7 @@ class nukeAskKeywordWindow(UiPreset.Ui_MainWindow, QMainWindow):
     def __init__(self, parent = None):
         super(nukeAskKeywordWindow, self).__init__(parent)
         print('my nukeAskKeywordWindow - __init__')
+        #self.setWindowModality(Qt.ApplicationModal)
         self.setupUi(self)
 
 
