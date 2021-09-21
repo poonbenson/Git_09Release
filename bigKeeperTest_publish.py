@@ -1,4 +1,4 @@
-winTitlePrefix = '20210917a'
+winTitlePrefix = '20210921a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -1264,6 +1264,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print(item)
 
         self.prerendKeywordUi.lineEdit.setText(item)
+        keywordLength = len(self.prerendKeywordUi.lineEdit.text())
+        print(len(self.prerendKeywordUi.lineEdit.text()))
+        self.prerendKeywordUi.lineEdit.setFocus()
+        self.prerendKeywordUi.lineEdit.setCursorPosition(int(keywordLength))
+
+        #self.prerendKeywordUi.lineEdit.setCursorPosition(100)
+
+
 
 
 
