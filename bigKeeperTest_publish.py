@@ -1,4 +1,4 @@
-winTitlePrefix = '20210921a'
+winTitlePrefix = '20210921b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -1236,9 +1236,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             contents = file.readlines()
         print(contents)
 
-        keywords = []
+        keywords = [""]
+
         for i in contents:
             keywords.append(i.replace('\n', ""))
+
         print(keywords)
 
         self.prerendKeywordUi.label.setText('Input a sub-name for sub-folderName and sub-framename :')
@@ -1253,14 +1255,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.prerendKeywordUi.pushButton_2.setText('OK')
         self.prerendKeywordUi.pushButton_3.setText('Cancel')
-        self.prerendKeywordUi.pushButton_2.clicked.connect(lambda : self.nukeBornWriteNode('Prerend', self.prerendKeywordUi.lineEdit.text()))
-        self.prerendKeywordUi.pushButton_2.clicked.connect(lambda : self.prerendKeywordUi.close())
+        self.prerendKeywordUi.pushButton_2.clicked.connect(lambda : self.prerendOKButtonAction(self.prerendKeywordUi.lineEdit.text()))
+        #self.prerendKeywordUi.pushButton_2.clicked.connect(lambda : self.nukeBornWriteNode('Prerend', self.prerendKeywordUi.lineEdit.text()))
+        #self.prerendKeywordUi.pushButton_2.clicked.connect(lambda : self.prerendKeywordUi.close())
         self.prerendKeywordUi.pushButton_3.clicked.connect(lambda : self.prerendKeywordUi.close())
         self.prerendKeywordUi.comboBox.activated[str].connect(self.prerendKeywordAction)
 
 
     def prerendKeywordAction(self, item):
-        ('my prerendKeywordAction')
+        print('my prerendKeywordAction')
         print(item)
 
         self.prerendKeywordUi.lineEdit.setText(item)
@@ -1270,6 +1273,22 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.prerendKeywordUi.lineEdit.setCursorPosition(int(keywordLength))
 
         #self.prerendKeywordUi.lineEdit.setCursorPosition(100)
+
+
+    def prerendOKButtonAction(self, item):
+        print('my prerendOKButtonAction')
+        print(item)
+
+        if item != "":
+            self.nukeBornWriteNode('Prerend', item)
+            self.prerendKeywordUi.close()
+        else:
+            print('empty is not accepted')
+            self.prerendKeywordUi.lineEdit.setFocus()
+
+
+
+
 
 
 
