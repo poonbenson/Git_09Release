@@ -1,4 +1,4 @@
-winTitlePrefix = '20210921b'
+winTitlePrefix = '20210927a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2047,8 +2047,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def nukeBornWriteNode(self, inType, *args):
         print('my nukeBornWriteNode')
-        print(args)
-        print(args[0])
+
+        try:
+            print(args)
+            print(args[0])
+        except:
+            args=[None]
+            print('no args, assigned {} instead.'.format(args[0]))
+
         try:
             orignalSelNode = nuke.selectedNode()
             print('original :::')
