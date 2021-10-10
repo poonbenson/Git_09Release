@@ -1,4 +1,4 @@
-winTitlePrefix = '20210927a'
+winTitlePrefix = '20211011a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -508,8 +508,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.pushButton_childUi.clicked.connect(self.myAction4)
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnPath))
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnShotTaskPath))
-        self.pushButton_num3.clicked.connect(lambda: self.prerendKeywordShow())
-        self.pushButton_num3.setText('*prerend*')
+        self.pushButton_num3.clicked.connect(lambda: self.nukeAskSuffix())
+        self.pushButton_num3.setText('*suffix*')
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnShotTaskWIPPath))
         self.pushButton_num2.clicked.connect(lambda : self.prerendKeywordPresetShow())
         self.pushButton_num2.setText('*presetButton*')
@@ -2042,11 +2042,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         return isUnique
 
+    def nukeAskSuffix(self):
+        bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
+        print(bigKInfo.currentCompIniSuffix())
+
 
 
 
     def nukeBornWriteNode(self, inType, *args):
         print('my nukeBornWriteNode')
+
+        answerName = answerSuffix = readyToCreate = None
 
         try:
             print(args)
@@ -2079,33 +2085,41 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
                 if inType == 'CompMaster':
                     print(inType)
-                    frameName = str(bigKInfo.currentShot()) + '.%04d' + '.exr'
+
+                    answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
+                    frameName = str(bigKInfo.currentShot()) + answerSuffix + '.%04d' + '.exr'
                     verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
                     targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder, frameName))
                     checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder))
-                    readyToCreate = True
+                    #readyToCreate = True
                     backdropLabel = inType
 
                 elif inType == 'LayerMask':
                     print(inType)
                     answerName, readyToCreate = QInputDialog.getText(self, 'sub-name', 'Input a sub-name for sub-folderName and sub-framename', QLineEdit.Normal)
                     print(answerName)
-                    frameName = str(bigKInfo.currentShot()) + '_' + answerName + '.%04d' + '.exr'
+                    if readyToCreate == True:
+                        answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
+
+                    frameName = str(bigKInfo.currentShot()) + '_' + answerName + answerSuffix + '.%04d' + '.exr'
                     verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4) + '_' + inType
                     targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder, answerName, frameName))
                     checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder, answerName))
                     backdropLabel = answerName + '_' + inType
 
                 elif inType == 'PreRend':
+                    # *** unknow bug, this elif section need to keep. If this section deleted, the 'Prerend' section will sytax error. To Be Fix.
                     print(inType)
                     answerName, readyToCreate = QInputDialog.getText(self, 'sub-name', 'Input a sub-name for sub-folderName and sub-framename', QLineEdit.Normal)
                     print(answerName)
+
                     frameName = str(bigKInfo.currentShot()) + '_' + answerName + '.%04d' + '.exr'
                     verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
                     targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName, frameName))
                     checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName))
                     #readyToCreate = True
                     backdropLabel = answerName + '_' + inType
+                    # *** unknow bug, this elif section need to keep. If this section deleted, the 'Prerend' section will sytax error. To Be Fix.
 
                 elif inType == 'Prerend':
                     print(inType)
@@ -2113,7 +2127,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     readyToCreate = True
 
                     print('3 self.prerendKeyword is {}'.format(answerName))
-                    frameName = str(bigKInfo.currentShot()) + '_' + answerName + '.%04d' + '.exr'
+
+                    answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
+                    frameName = str(bigKInfo.currentShot()) + '_' + answerName + answerSuffix + '.%04d' + '.exr'
                     verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
                     targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName, frameName))
                     checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName))
