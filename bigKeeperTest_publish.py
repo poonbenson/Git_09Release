@@ -1,4 +1,4 @@
-winTitlePrefix = '20211011a'
+winTitlePrefix = '20211027a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -9,7 +9,8 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 
 # To import standard modules
-import subprocess, os, sys, time
+import subprocess, os, sys, time, webbrowser
+
 
 if sys.version_info.major >= 3:
     import configparser
@@ -48,6 +49,10 @@ except:
 pathOfDeveloper = r'N:\bpPipeline\bigKeeperPy\repo_01Developer'
 pathOfTester = r'N:\bpPipeline\bigKeeperPy\repo_03Tester'
 pathOfRelease = r'N:\bpPipeline\bigKeeperPy\repo_09Release'
+pathOfEnvIni = r'N:\bpPipeline\bigKeeperPyIni\env.ini'
+pathOfIconPathsStudio = r'N:\bpPipeline\bigKeeperPyIni\iconPathsStudio.ini'
+
+
 thisPath = (os.path.dirname(os.path.abspath(thisPyPath)))
 print('this Path ' + thisPath)
 
@@ -270,6 +275,18 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_houdiniOther.setText(self.envRead('HOUDINI', 'batFolderPathLabel'))
 
         self.pushButton_dailyFolder.clicked.connect(self.launchDailyFolder)
+        self.pushButton_dailyFolder2.clicked.connect(self.launchDailyFolder)
+
+
+        self.pushButton_shotlist.clicked.connect(self.launchShotlist)
+        self.pushButton_shotlist.setText(self.iconPathRead(pathOfIconPathsStudio, 'SHOTLIST', 'label'))
+
+        self.pushButton_roughcut.clicked.connect(self.launchRoughcut)
+        self.pushButton_roughcut.setText(self.iconPathRead(pathOfIconPathsStudio, 'ROUGHCUT', 'label'))
+
+        self.pushButton_commentClient.clicked.connect(self.launchCommentClient)
+        self.pushButton_commentClient.setText(self.iconPathRead(pathOfIconPathsStudio, 'COMMENTCLIENT', 'label'))
+
 
 
 
@@ -541,7 +558,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             config = configparser.ConfigParser()
             #config.read(r'./myConfigINI.py')
-            config.read(r'N:\bpPipeline\bigKeeperPyIni\env.ini')
+            config.read(pathOfEnvIni)
 
             theInfo = config[inSection]
 
@@ -551,6 +568,44 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 return theInfo[inKey]
         except:
             print('configparser fail, pass.')
+
+
+    def iconPathRead(self, inPath, inSection, inKey):
+        print('my inconPathRead')
+
+        config = configparser.ConfigParser()
+        config.read(inPath)
+
+        theInfo = config[inSection]
+
+        return str(theInfo[inKey])
+
+
+    def launchShotlist(self):
+        print('my launchShotlist')
+
+        getBigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
+        print(os.path.join(self.subDict[self.selProjPath], 'iconPathsProject.ini'))
+        #print(os.path.join(self.selProjRootPath, 'iconPathsProject.ini'))
+
+        #webbrowser.open(self.iconPathRead('SHOTLIST', 'Path'), new = 2)
+        webbrowser.open(self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'iconPathsProject.ini'), 'SHOTLIST', 'Path'), new = 2)
+
+    def launchCommentClient(self):
+        print('my launchCommentClient')
+
+        os.startfile(os.path.normpath(os.path.join(self.selProjRootPath, 'Comment')))
+
+
+    def launchRoughcut(self):
+        print('my launchRoughcut')
+
+        try:
+            os.startfile(os.path.normpath(os.path.join(self.selProjRootPath, 'Roughcut', '__latestMov')))
+        except:
+            os.startfile(os.path.normpath(os.path.join(self.selProjRootPath, 'Roughcut')))
+
+
 
 
     def launchStudioEnvMaya(self):
@@ -659,7 +714,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def openScheduleLink(self):
         print(' my openScheduleLink')
-        import webbrowser
         webbrowser.open('https://calendar.google.com/calendar/r', new = 2)
 
     def openScheduleFolder(self):
@@ -1122,6 +1176,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         os.startfile(self.lineEdit_Location_2.text())
 
     def listBigKeeperProject(self):
+        print('my listBigKeeperProject')
 
         #this def is to read infomation from bigKeeperMel xml file
         f = open(r'N:/bpPipeline/maya/plugins/BigKeeper/bigKeeper_projectDatabase/bigPicture_projects.xml', "r")
