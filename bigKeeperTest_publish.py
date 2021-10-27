@@ -1,4 +1,4 @@
-winTitlePrefix = '20211027a'
+winTitlePrefix = '20211027b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -287,6 +287,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_commentClient.clicked.connect(self.launchCommentClient)
         self.pushButton_commentClient.setText(self.iconPathRead(pathOfIconPathsStudio, 'COMMENTCLIENT', 'label'))
 
+        self.pushButton_miscCookbook.clicked.connect(self.launchMiscCookbook)
+        self.pushButton_miscCookbook.setText(self.iconPathRead(pathOfIconPathsStudio, 'LEARNING', 'label'))
+
+        self.pushButton_miscLoginInfo.clicked.connect(self.launchMiscLoginInfo)
+        self.pushButton_miscLoginInfo.setText(self.iconPathRead(pathOfIconPathsStudio, 'LOGINS', 'label'))
+
+        self.pushButton_miscStaffContact.clicked.connect(self.launchStaffContact)
+        self.pushButton_miscStaffContact.setText(self.iconPathRead(pathOfIconPathsStudio, 'STAFFCONTACT', 'label'))
+
+
+
 
 
 
@@ -410,6 +421,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print(tabCount)
         for i in range(0, tabCount):
             self.tabWidget_2.setTabEnabled(i, False)
+
+        self.tabWidget_2.setTabEnabled(6, True)
 
         if sys.version_info.major >= 3:
             self.tabWidget_2.setTabEnabled(5, True)
@@ -604,6 +617,29 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             os.startfile(os.path.normpath(os.path.join(self.selProjRootPath, 'Roughcut', '__latestMov')))
         except:
             os.startfile(os.path.normpath(os.path.join(self.selProjRootPath, 'Roughcut')))
+
+
+    def launchMiscCookbook(self):
+        print('my launchMiscCookbook')
+        print(self.iconPathRead(pathOfIconPathsStudio, 'LEARNING', 'Path'))
+
+        os.startfile(self.iconPathRead(pathOfIconPathsStudio, 'LEARNING', 'Path'))
+
+
+
+    def launchMiscLoginInfo(self):
+        print('my launchMiscLoginInfo')
+        print(self.iconPathRead(pathOfIconPathsStudio, 'LOGINS', 'Path'))
+
+        os.startfile(self.iconPathRead(pathOfIconPathsStudio, 'LOGINS', 'Path'))
+
+
+
+    def launchStaffContact(self):
+        print('my launchStaffContact')
+        print(self.iconPathRead(pathOfIconPathsStudio, 'STAFFCONTACT', 'Path'))
+
+        os.startfile(self.iconPathRead(pathOfIconPathsStudio, 'STAFFCONTACT', 'Path'))
 
 
 
