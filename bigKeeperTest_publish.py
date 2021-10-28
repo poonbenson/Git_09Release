@@ -1,4 +1,4 @@
-winTitlePrefix = '20211027b'
+winTitlePrefix = '20211028a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -41,16 +41,18 @@ except:
     print('sys argv done')
     thisPyPath = sys.argv[0]
 
-# Declare
+# Pre-Define Global Variables
+pathOfIconPathsStudio = r'N:\bpPipeline\bigKeeperPyIni\iconPathsStudio.ini'
 
-
+edge_path=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+webbrowser.register('edge', None, webbrowser.BackgroundBrowser(edge_path))
 
 # To determine current version mode (developer, tester or release)
 pathOfDeveloper = r'N:\bpPipeline\bigKeeperPy\repo_01Developer'
 pathOfTester = r'N:\bpPipeline\bigKeeperPy\repo_03Tester'
 pathOfRelease = r'N:\bpPipeline\bigKeeperPy\repo_09Release'
 pathOfEnvIni = r'N:\bpPipeline\bigKeeperPyIni\env.ini'
-pathOfIconPathsStudio = r'N:\bpPipeline\bigKeeperPyIni\iconPathsStudio.ini'
+
 
 
 thisPath = (os.path.dirname(os.path.abspath(thisPyPath)))
@@ -602,7 +604,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #print(os.path.join(self.selProjRootPath, 'iconPathsProject.ini'))
 
         #webbrowser.open(self.iconPathRead('SHOTLIST', 'Path'), new = 2)
-        webbrowser.open(self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'iconPathsProject.ini'), 'SHOTLIST', 'Path'), new = 2)
+        #webbrowser.open(self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'iconPathsProject.ini'), 'SHOTLIST', 'Path'), new = 2)
+        webbrowser.get('edge').open(self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'iconPathsProject.ini'), 'SHOTLIST', 'Path'))
 
     def launchCommentClient(self):
         print('my launchCommentClient')
