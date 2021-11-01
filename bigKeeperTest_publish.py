@@ -2465,37 +2465,39 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         for i in allFilteredNodes:
             originalContent = os.path.normpath(i.knob('file').value())
-            print('originalContent :')
-            print(originalContent)
 
-            for keyword in seperatorKeywords:
-                print(r'\{}\v'.format(keyword))
-                if r'\{}\v'.format(keyword) in originalContent:
-                    seperator = r'\{}\v'.format(keyword)
-                    print(seperator)
+            if 'vDrive' in originalContent == False:
+                print('originalContent :')
+                print(originalContent)
 
-            #To find out current frame name for both CompMaster(tsq0010) & LayerMask(tsq0010_shadow), store in basenameFullShotName[0]
-            basename = os.path.basename(originalContent)
-            basenameFull = basename.split('.')
-            basenameFullShotName = basenameFull[0].split('_')
+                for keyword in seperatorKeywords:
+                    print(r'\{}\v'.format(keyword))
+                    if r'\{}\v'.format(keyword) in originalContent:
+                        seperator = r'\{}\v'.format(keyword)
+                        print(seperator)
 
-            splitContent = originalContent.split(seperator)
-            splitContentFront = splitContent[0]
-            splitVerNumber = splitContent[1][0:4]
-            splitContentEnd = splitContent[1][4::]
+                #To find out current frame name for both CompMaster(tsq0010) & LayerMask(tsq0010_shadow), store in basenameFullShotName[0]
+                basename = os.path.basename(originalContent)
+                basenameFull = basename.split('.')
+                basenameFullShotName = basenameFull[0].split('_')
 
-            print('splitContentEnd is :')
-            print(splitContentEnd)
-            splitContentEnd = splitContentEnd.replace(basenameFullShotName[0], currentShotname)
+                splitContent = originalContent.split(seperator)
+                splitContentFront = splitContent[0]
+                splitVerNumber = splitContent[1][0:4]
+                splitContentEnd = splitContent[1][4::]
 
-            newVerNumber = currentVerNumber
-            updatedContent = str(os.path.normpath(currentTaskPath + seperator + str(newVerNumber).zfill(4) + splitContentEnd))
-            updatedContent = updatedContent.replace(os.sep, '/')
+                print('splitContentEnd is :')
+                print(splitContentEnd)
+                splitContentEnd = splitContentEnd.replace(basenameFullShotName[0], currentShotname)
 
-            print('updatedContent :')
-            print(updatedContent)
+                newVerNumber = currentVerNumber
+                updatedContent = str(os.path.normpath(currentTaskPath + seperator + str(newVerNumber).zfill(4) + splitContentEnd))
+                updatedContent = updatedContent.replace(os.sep, '/')
 
-            i.knob('file').setValue(updatedContent)
+                print('updatedContent :')
+                print(updatedContent)
+
+                i.knob('file').setValue(updatedContent)
 
     def cleanUpCompOutput(self):
         import datetime
