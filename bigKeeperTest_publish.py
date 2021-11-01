@@ -1,4 +1,4 @@
-winTitlePrefix = '20211028a'
+winTitlePrefix = '20211101a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -42,7 +42,7 @@ except:
     thisPyPath = sys.argv[0]
 
 # Pre-Define Global Variables
-pathOfIconPathsStudio = r'N:\bpPipeline\bigKeeperPyIni\iconPathsStudio.ini'
+pathOfIconPathsStudio = r'N:\bpPipeline\bigKeeperPyIni\bigPathsStudio.ini'
 
 edge_path=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
 webbrowser.register('edge', None, webbrowser.BackgroundBrowser(edge_path))
@@ -203,7 +203,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.setWindowTitle(r'BigKeeper Py - alpha version - Developer Mode')
         WindowTitleName = winTitlePrefix + ' BigKeeperPy-alpha ' + os.path.basename(thisPath)
         self.setWindowTitle(WindowTitleName)
-        self.setWindowIcon(QIcon(os.path.join(iconPath, 'maya.png')))
+        self.setWindowIcon(QIcon(os.path.join(iconPath, 'standalone.png')))
         self.prerendKeyword = ""
 
         #self.label_9.setPixmap(QPixmap(r"N:/bpPipeline/bigKeeperPy/bigKeeperPyIcon_developer.jpg"))
@@ -390,6 +390,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_genWriteLayerMask.setText('LayerMask')
         self.pushButton_genWriteCompMaster.clicked.connect(lambda : self.nukeBornWriteNode('CompMaster'))
         self.pushButton_genWriteCompMaster.setText('CompMaster')
+        self.pushButton_genWriteCompMasterV.clicked.connect(lambda : self.nukeBornWriteNode('CompMasterToV'))
+        self.pushButton_genWriteCompMasterV.setText('CompMaster-V')
 
         #Cmd Tab
         self.pushButton_sortoutfile.clicked.connect(lambda: self.cleanUpCompOutput())
@@ -540,8 +542,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.pushButton_childUi.clicked.connect(self.myAction4)
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnPath))
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnShotTaskPath))
-        self.pushButton_num3.clicked.connect(lambda: self.nukeAskSuffix())
-        self.pushButton_num3.setText('*suffix*')
+        self.pushButton_num3.clicked.connect(lambda : self.nukeBornWriteNode('CompMasterToV'))
+        self.pushButton_num3.setText('*Write to V:*')
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnShotTaskWIPPath))
         self.pushButton_num2.clicked.connect(lambda : self.prerendKeywordPresetShow())
         self.pushButton_num2.setText('*presetButton*')
@@ -557,6 +559,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_num9.setText('cleanUpDelAction')
         self.pushButton_num8.clicked.connect(lambda: self.openScheduleLink())
         self.pushButton_num8.setText('openScheduleLink')
+
+
+
+
 
 
 
@@ -585,6 +591,19 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             print('configparser fail, pass.')
 
 
+    def vDrivePathRead(self, inPath, inSection, inKey):
+        print('vDrivePathRead')
+
+        config = configparser.ConfigParser()
+        config.read(inPath)
+
+        theInfo = config[inSection]
+
+        return str(theInfo[inKey])
+
+
+
+
     def iconPathRead(self, inPath, inSection, inKey):
         print('my inconPathRead')
 
@@ -600,12 +619,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print('my launchShotlist')
 
         getBigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
-        print(os.path.join(self.subDict[self.selProjPath], 'iconPathsProject.ini'))
-        #print(os.path.join(self.selProjRootPath, 'iconPathsProject.ini'))
+        print(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'))
+        #print(os.path.join(self.selProjRootPath, 'bigPathsProject.ini'))
 
         #webbrowser.open(self.iconPathRead('SHOTLIST', 'Path'), new = 2)
-        #webbrowser.open(self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'iconPathsProject.ini'), 'SHOTLIST', 'Path'), new = 2)
-        webbrowser.get('edge').open(self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'iconPathsProject.ini'), 'SHOTLIST', 'Path'))
+        #webbrowser.open(self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'), 'SHOTLIST', 'Path'), new = 2)
+        webbrowser.get('edge').open(self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'), 'SHOTLIST', 'Path'))
 
     def launchCommentClient(self):
         print('my launchCommentClient')
@@ -2184,7 +2203,21 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     frameName = str(bigKInfo.currentShot()) + answerSuffix + '.%04d' + '.exr'
                     verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
                     targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder, frameName))
-                    checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder))
+                    checkPath      = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder))
+                    #readyToCreate = True
+                    backdropLabel = inType
+
+
+                elif inType == 'CompMasterToV':
+                    print(inType)
+
+                    answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
+                    frameName = str(bigKInfo.currentShot()) + answerSuffix + '.%04d' + '.exr'
+                    vDriveFolder = self.vDrivePathRead(os.path.join(bigKInfo.currentProjWorkPath(), 'bigPathsProject.ini'), 'BIGPATHS', 'vOutput')
+                    outputVdriveFolder = os.path.join(vDriveFolder, bigKInfo.currentShot())
+
+                    targetFilePath = os.path.normpath(os.path.join(outputVdriveFolder, frameName))
+                    checkPath      = outputVdriveFolder
                     #readyToCreate = True
                     backdropLabel = inType
 
@@ -2293,6 +2326,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         if inTypeForColor == 'CompMaster':
             baseColor = 2419101951
+        elif inTypeForColor == 'CompMasterToV':
+            baseColor = 2319101951
         elif inTypeForColor == 'LayerMask':
             baseColor = 2068476415
         elif inTypeForColor == 'PreRend':
