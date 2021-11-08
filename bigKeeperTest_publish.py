@@ -1,4 +1,4 @@
-winTitlePrefix = '20211109a'
+winTitlePrefix = '20211109b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2409,7 +2409,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         nukeEnv = nuke.env
         isAssist = nukeEnv['assist']
 
-        '''if isAssist:
+        '''
+        if isAssist:
             theMessage = 'Warning !!!\n\n' + 'Currently in < Nuke Assist >.\n\n' + 'Therefore <Write Nodes> are not updated to align output version number.\n'+ '- Do not render this nuke script verion.\n' + '- < Version Up > in Nuke or Nuke X, before submit render to align the write node version number.'
             QMessageBox.information(self, 'WARNING !!! ', theMessage)'''
 
@@ -2431,7 +2432,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         # sort out only (bigK + targetClassName)nodes, filter by .name()
         allFilteredNodes = []
-        print('line 2434')
+
         for i in allNodes:
 
             '''
@@ -2465,32 +2466,40 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         '''
 
         seperatorKeywords = ['output', 'prerend']
-        print('line 2466')
+
         for i in allFilteredNodes:
 
-            #if 'vDrive' in i.knob('file').value():
-
-            '''
-            answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
-            frameName = str(bigKInfo.currentShot()) + answerSuffix + '.%04d' + '.exr'
-            vDriveFolder = self.vDrivePathRead(os.path.join(bigKInfo.currentProjWorkPath(), 'bigPathsProject.ini'), 'BIGPATHS', 'vOutput')
-            outputVdriveFolder = os.path.join(vDriveFolder, bigKInfo.currentShot())
-
-            targetFilePath = os.path.normpath(os.path.join(outputVdriveFolder, frameName))
-            checkPath      = outputVdriveFolder
-            #readyToCreate = True
-            backdropLabel = inType
-            '''
-
-
+            print(f"i.knob('file').value() : {i.knob('file').value()}")
             originalContent = os.path.normpath(i.knob('file').value())
 
 
             print('originalContent :')
             print(originalContent)
 
-            if 'vDrive' in i.knob('file').value():
-                pass
+            if r'\vDrive' in originalContent:
+                seperator = r'\vDrive'
+                print(f'vDrive Node Found. -- {seperator}')
+
+                basename = os.path.basename(originalContent)
+                print(f'basename : {basename}')
+                basenameFull = basename.split('.')
+                print(f'basenameFull : {basenameFull}')
+                basenameFullShotName = basenameFull[0].split('_')
+                print(f'basenameFullShotName : {basenameFullShotName}')
+
+                splitContent = originalContent.split(seperator)
+                print(f'splitContent : {splitContent}')
+
+                splitContentEnd = splitContent[-1]
+                print(f'splitContentEnd : {splitContentEnd}')
+                splitContentEnd = splitContentEnd.replace(basenameFullShotName[0], currentShotname)
+                print(f'splitContentEnd : {splitContentEnd}')
+
+                vDriveFolder = self.vDrivePathRead(os.path.join(bigKInfo.currentProjWorkPath(), 'bigPathsProject.ini'), 'BIGPATHS', 'vOutput')
+                print(f'vDriveFolder : {vDriveFolder}')
+
+                updatedContent = str(os.path.normpath(vDriveFolder + splitContentEnd))
+                updatedContent = updatedContent.replace(os.sep, '/')
 
             else:
 
@@ -2502,10 +2511,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                 #To find out current frame name for both CompMaster(tsq0010) & LayerMask(tsq0010_shadow), store in basenameFullShotName[0]
                 basename = os.path.basename(originalContent)
+                print(f'basename : {basename}')
                 basenameFull = basename.split('.')
+                print(f'basenameFull : {basenameFull}')
                 basenameFullShotName = basenameFull[0].split('_')
+                print(f'basenameFullShotName : {basenameFullShotName}')
 
                 splitContent = originalContent.split(seperator)
+                print(f'splitContent : {splitContent}')
                 splitContentFront = splitContent[0]
                 splitVerNumber = splitContent[1][0:4]
                 splitContentEnd = splitContent[1][4::]
@@ -2518,11 +2531,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 updatedContent = str(os.path.normpath(currentTaskPath + seperator + str(newVerNumber).zfill(4) + splitContentEnd))
                 updatedContent = updatedContent.replace(os.sep, '/')
 
-                print('updatedContent :')
-                print(updatedContent)
+            print('updatedContent :')
+            print(updatedContent)
 
-                i.knob('file').setValue(updatedContent)
-        print('line 2502')
+            os.path.normpath
+            i.knob('file').setValue(updatedContent)
 
     def cleanUpCompOutput(self):
         import datetime
