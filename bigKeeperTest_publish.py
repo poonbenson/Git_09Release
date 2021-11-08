@@ -1,4 +1,4 @@
-winTitlePrefix = '20211101a'
+winTitlePrefix = '20211109a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2431,6 +2431,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         # sort out only (bigK + targetClassName)nodes, filter by .name()
         allFilteredNodes = []
+        print('line 2434')
         for i in allNodes:
 
             '''
@@ -2453,6 +2454,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 #create a list containing "node" instead of nodeName, for coding convinient
                 allFilteredNodes.append(nuke.toNode(i.name()))
 
+        print(allFilteredNodes)
+
         '''
         # To avoid, in case, previous version is copy and paste from window explorer.
         try:
@@ -2462,13 +2465,34 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         '''
 
         seperatorKeywords = ['output', 'prerend']
-
+        print('line 2466')
         for i in allFilteredNodes:
+
+            #if 'vDrive' in i.knob('file').value():
+
+            '''
+            answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
+            frameName = str(bigKInfo.currentShot()) + answerSuffix + '.%04d' + '.exr'
+            vDriveFolder = self.vDrivePathRead(os.path.join(bigKInfo.currentProjWorkPath(), 'bigPathsProject.ini'), 'BIGPATHS', 'vOutput')
+            outputVdriveFolder = os.path.join(vDriveFolder, bigKInfo.currentShot())
+
+            targetFilePath = os.path.normpath(os.path.join(outputVdriveFolder, frameName))
+            checkPath      = outputVdriveFolder
+            #readyToCreate = True
+            backdropLabel = inType
+            '''
+
+
             originalContent = os.path.normpath(i.knob('file').value())
 
-            if 'vDrive' in originalContent == False:
-                print('originalContent :')
-                print(originalContent)
+
+            print('originalContent :')
+            print(originalContent)
+
+            if 'vDrive' in i.knob('file').value():
+                pass
+
+            else:
 
                 for keyword in seperatorKeywords:
                     print(r'\{}\v'.format(keyword))
@@ -2498,6 +2522,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 print(updatedContent)
 
                 i.knob('file').setValue(updatedContent)
+        print('line 2502')
 
     def cleanUpCompOutput(self):
         import datetime
