@@ -1,4 +1,4 @@
-winTitlePrefix = '20211124a'
+winTitlePrefix = '20211214a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -264,6 +264,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_LaunchNukeAssist13_0_v2.setEnabled(True)
         self.pushButton_LaunchNukeStudio13_0_v2.clicked.connect(self.launchStudioEnvNukeStudio)
         self.pushButton_LaunchNukeStudio13_0_v2.setEnabled(True)
+        self.pushButton_LaunchHieroPlayer.clicked.connect(self.launchStudioEnvNukeStudioHiero)
+        self.pushButton_LaunchHieroPlayer.setEnabled(True)
+        self.pushButton_LaunchHieroPlayer.setText(self.envRead('HIERO', 'label'))
 
         self.pushButton_launchHoudini1.clicked.connect(self.launchStudioEnvHoudini)
         self.pushButton_launchHoudini1.setText(self.envRead('HOUDINI', 'label'))
@@ -275,6 +278,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_nukeOther.setText(self.envRead('NUKE', 'batFolderPathLabel'))
         self.pushButton_houdiniOther.clicked.connect(self.launchStudioEnvHoudiniFolder)
         self.pushButton_houdiniOther.setText(self.envRead('HOUDINI', 'batFolderPathLabel'))
+        self.pushButton_hieroPlayerOther.clicked.connect(self.launchStudioEnvNukeStudioHieroOther)
+        self.pushButton_hieroPlayerOther.setText(self.envRead('HIERO', 'batFolderPathLabel'))
 
         self.pushButton_dailyFolder.clicked.connect(self.launchDailyFolder)
         self.pushButton_dailyFolder2.clicked.connect(self.launchDailyFolder)
@@ -697,6 +702,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print(theCmd)
         os.system(theCmd)
 
+    def launchStudioEnvNukeStudioHiero(self):
+        theCmd = 'start {}'.format(os.path.join(self.envRead('HIERO', 'batPath'), 'nukeHieroPlayer.bat'))
+        print(theCmd)
+        os.system(theCmd)
+
+
     def launchStudioEnvHoudini(self):
         theCmd = 'start {}'.format(os.path.join(self.envRead('HOUDINI', 'batPath'), 'studioEnv.bat'))
         print(theCmd)
@@ -709,6 +720,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def launchStudioEnvNukeFolder(self):
         theCmd = self.envRead('NUKE', 'batFolderPath')
         os.startfile(theCmd)
+
+    def launchStudioEnvNukeStudioHieroOther(self):
+        theCmd = self.envRead('HIERO', 'batFolderPath')
+        os.startfile(theCmd)
+
 
     def launchStudioEnvHoudiniFolder(self):
         theCmd = self.envRead('HOUDINI', 'batFolderPath')

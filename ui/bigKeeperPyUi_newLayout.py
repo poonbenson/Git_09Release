@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v129.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v130.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -183,7 +183,7 @@ class Ui_MainWindow(object):
         self.tabLauncher.setObjectName(u"tabLauncher")
         self.groupBox = QGroupBox(self.tabLauncher)
         self.groupBox.setObjectName(u"groupBox")
-        self.groupBox.setGeometry(QRect(0, 10, 331, 251))
+        self.groupBox.setGeometry(QRect(0, 10, 371, 251))
         self.pushButton_LaunchNuke13_0_v2 = QPushButton(self.groupBox)
         self.pushButton_LaunchNuke13_0_v2.setObjectName(u"pushButton_LaunchNuke13_0_v2")
         self.pushButton_LaunchNuke13_0_v2.setGeometry(QRect(50, 70, 61, 41))
@@ -223,6 +223,12 @@ class Ui_MainWindow(object):
         self.label_houdiniIcon = QLabel(self.groupBox)
         self.label_houdiniIcon.setObjectName(u"label_houdiniIcon")
         self.label_houdiniIcon.setGeometry(QRect(10, 110, 41, 41))
+        self.pushButton_LaunchHieroPlayer = QPushButton(self.groupBox)
+        self.pushButton_LaunchHieroPlayer.setObjectName(u"pushButton_LaunchHieroPlayer")
+        self.pushButton_LaunchHieroPlayer.setGeometry(QRect(250, 70, 41, 41))
+        self.pushButton_hieroPlayerOther = QPushButton(self.groupBox)
+        self.pushButton_hieroPlayerOther.setObjectName(u"pushButton_hieroPlayerOther")
+        self.pushButton_hieroPlayerOther.setGeometry(QRect(290, 70, 16, 41))
         self.pushButton_LaunchNuke13_0_v2.raise_()
         self.pushButton_LaunchNukeStudio13_0_v2.raise_()
         self.pushButton_LaunchNukeX13_0_v2.raise_()
@@ -236,6 +242,8 @@ class Ui_MainWindow(object):
         self.pushButton_houdiniOther.raise_()
         self.label_houdiniIcon.raise_()
         self.pushButton_launchHoudini1.raise_()
+        self.pushButton_LaunchHieroPlayer.raise_()
+        self.pushButton_hieroPlayerOther.raise_()
         self.tabWidget_2.addTab(self.tabLauncher, "")
         self.tabMisc = QWidget()
         self.tabMisc.setObjectName(u"tabMisc")
@@ -691,7 +699,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(1)
+        self.tabWidget_2.setCurrentIndex(5)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -828,6 +836,14 @@ class Ui_MainWindow(object):
         self.label_houdiniIcon.setToolTip(QCoreApplication.translate("MainWindow", u"label_houdiniIcon", None))
 #endif // QT_CONFIG(tooltip)
         self.label_houdiniIcon.setText(QCoreApplication.translate("MainWindow", u"HoudiniIcon", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_LaunchHieroPlayer.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_LaunchHieroPlayer", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_LaunchHieroPlayer.setText(QCoreApplication.translate("MainWindow", u"hieroPlayer", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_hieroPlayerOther.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_hieroPlayerOther", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_hieroPlayerOther.setText(QCoreApplication.translate("MainWindow", u">", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabLauncher), QCoreApplication.translate("MainWindow", u"Launcher", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_miscCookbook.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWritePrerend", None))
