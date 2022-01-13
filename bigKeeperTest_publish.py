@@ -452,8 +452,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.tabWidget_2.setTabEnabled(4, True)
             self.tabWidget_2.setCurrentIndex(5)
 
-        # to avoid "hard to find it back after minimize", workaroun is to disable the minimize
-        self.setWindowFlags(Qt.WindowCloseButtonHint)
+
+        if in_python == False and in_blender == False:
+            # to avoid "hard to find it back after minimize", workaroun is to disable the minimize
+            self.setWindowFlags(Qt.WindowCloseButtonHint)
 
 
 
