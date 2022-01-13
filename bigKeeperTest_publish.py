@@ -1,4 +1,4 @@
-winTitlePrefix = '20211214a'
+winTitlePrefix = '20210113a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -451,6 +451,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         elif in_python:
             self.tabWidget_2.setTabEnabled(4, True)
             self.tabWidget_2.setCurrentIndex(5)
+
+        # to avoid "hard to find it back after minimize", workaroun is to disable the minimize
+        self.setWindowFlags(Qt.WindowCloseButtonHint)
 
 
 
