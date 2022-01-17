@@ -1,4 +1,4 @@
-winTitlePrefix = '20210113a'
+winTitlePrefix = '20210116a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -549,6 +549,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
     def initDummy(self):
+        '''
         #self.pushButton_childUi.clicked.connect(self.myAction4)
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnPath))
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnShotTaskPath))
@@ -569,9 +570,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_num9.setText('cleanUpDelAction')
         self.pushButton_num8.clicked.connect(lambda: self.openScheduleLink())
         self.pushButton_num8.setText('openScheduleLink')
+        '''
+        self.pushButton_num7.clicked.connect(lambda: self.deadlineCoreOverride())
+        self.pushButton_num7.setText('CPU_Deadline')
 
 
 
+    def deadlineCoreOverride(self):
+        subprocess.call(r'N:\bpPipeline\miscScriptTools\deadline_cmd\get_cmd_output_deadlineInfo_publish.py', shell=True)
+        #os.system(r'N:\bpPipeline\miscScriptTools\deadline_cmd\get_cmd_output_deadlineInfo_publish.py')
 
 
 
