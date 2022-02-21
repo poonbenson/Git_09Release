@@ -1,4 +1,4 @@
-winTitlePrefix = '20210116a'
+winTitlePrefix = 'BigKeeper_20220221a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -283,6 +283,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.pushButton_dailyFolder.clicked.connect(self.launchDailyFolder)
         self.pushButton_dailyFolder2.clicked.connect(self.launchDailyFolder)
+
+        self.pushButton_LaunchCpuCoreController.clicked.connect(lambda: self.deadlineCoreOverride())
+        self.pushButton_LaunchCpuCoreController.setText('Deadline Override CPU Core\n Controller')
 
 
         self.pushButton_shotlist.clicked.connect(self.launchShotlist)
@@ -577,7 +580,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
     def deadlineCoreOverride(self):
-        subprocess.call(r'N:\bpPipeline\miscScriptTools\deadline_cmd\get_cmd_output_deadlineInfo_publish.py', shell=True)
+        subprocess.call(r'python N:\bpPipeline\miscScriptTools\deadline_cmd\get_cmd_output_deadlineInfo_publish.py', shell=True)
         #os.system(r'N:\bpPipeline\miscScriptTools\deadline_cmd\get_cmd_output_deadlineInfo_publish.py')
 
 
