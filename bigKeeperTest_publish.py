@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20220503a'
+winTitlePrefix = 'BigKeeper_20220503b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -444,6 +444,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.tabWidget_2.setCurrentIndex(0)
         elif in_nuke:
             self.tabWidget_2.setTabEnabled(1, True)
+            self.tabWidget_2.setTabEnabled(4, True)
             self.tabWidget_2.setCurrentIndex(1)
         elif in_houdini:
             self.tabWidget_2.setTabEnabled(2, True)
