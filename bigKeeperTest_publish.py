@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20220221a'
+winTitlePrefix = 'BigKeeper_20220503a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2616,9 +2616,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 saveFullPath = self.askSaveFile(saveNameCurrentTimeStamp)
                 if saveFullPath != None:
 
-                    toBeDelList = self.cleanUpSortOutDelVers(self.selProjScnShotPath, keepVers, keepDays)
+                    toBeDelList, toBeKeepList = self.cleanUpSortOutDelVers(self.selProjScnShotPath, keepVers, keepDays)
                     print('toBeDelList is :')
                     for i in toBeDelList:
+                        print(i)
+
+                    print('toBeKeepList is :')
+                    for i in toBeKeepList:
                         print(i)
 
                     totalSize = 0
@@ -2640,10 +2644,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         msgBox.setText(msg)
 
                     print()
-                    print('toBeDelList is :')
+                    '''print('toBeDelList is :')
                     print(toBeDelList)
                     for i in toBeDelList:
                         print(i)
+                    '''
 
                     print()
                     print('Keeping %d Latest Vers ---OR--- verions within %d Latest Days (%s)' %(keepVers, keepDays, str(boundryDate)))
@@ -2659,7 +2664,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     headerContentList.append(str('totalSize in GB (to be deleted): ' + str(totalSize/1024/1024/1024)))
 
                     #writePath = os.path.normpath(r'D:\\')
-                    self.cleanUpWriteToText(saveFullPath, headerContentList, toBeDelList)
+                    self.cleanUpWriteToText(saveFullPath, headerContentList, toBeDelList, toBeKeepList)
 
     def checkVerFolderFormat(self, inName):
         print('my checkVerFolderFormat')
@@ -2687,6 +2692,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         keepDays = inKeepDays
 
         delVersPath = []
+        keepVersPath = []
 
         msgBox = QMessageBox()
         msgBox.setStandardButtons(QMessageBox.NoButton)
@@ -2714,6 +2720,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         folderOnlyList.append(j)
 
                     unKeepFolderList = []
+                    keepFolderList = []
                     keptVerNumList = []
                     counter = 0
 
@@ -2721,39 +2728,47 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                     for j in folderOnlyList[::]:
 
+                        # to identify "CompMaster" and "_LayerMask"
                         previousJ = folderOnlyList[folderOnlyList.index(j)-1]
+                        print('j in folderOnlyList : {} in {}'.format(j, folderOnlyList))
+                        print('previousJ : {}'.format(previousJ))
                         #print(f'j is {j}, index is {folderOnlyList.index(j)}, j-1 is {folderOnlyList[folderOnlyList.index(j)-1]}, j[0:5] is {j[0:5]}, previousJ is {previousJ[0:5]}')
 
                         if counter < keepVers:
                             if j[0:5] != previousJ[0:5]:
                                 counter += 1
                                 keptVerNumList.append(j[0:5])
+                                keepFolderList.append(j)
                             else:
                                 pass
                                 keptVerNumList.append(j[0:5])
+                                keepFolderList.append(j)
                         else:
                             if j[0:5] == previousJ[0:5] and j[0:5] in keptVerNumList:
                                 continue
                             else:
                                 unKeepFolderList.append(j)
 
-
-                print('folderOnlyList : {} {}'.format(len(folderOnlyList), folderOnlyList))
+                print('folderOnlyList   : {} {}'.format(len(folderOnlyList), folderOnlyList))
+                print('keepFolderList   : {} {}'.format(len(keepFolderList), keepFolderList))
                 print('unKeepFolderList : {} {}'.format(len(unKeepFolderList), unKeepFolderList))
+
+                for l in keepFolderList:
+                    keepVersPath.append(os.path.normpath(os.path.join(theCompOutputPath, l)))
 
                 for k in unKeepFolderList:
                     if self.isEarlierThanKeepDays(os.path.join(theCompOutputPath, k), keepDays):
                         #print('Earlier.\n')
                         delVersPath.append(os.path.normpath(os.path.join(theCompOutputPath, k)))
                     else:
-                        #print('Not Earlier.\n')
-                        pass
+                        keepVersPath.append(os.path.normpath(os.path.join(theCompOutputPath, l)))
+
             QApplication.processEvents()
             msgBox.setText(theCompOutputPath)
 
 
         msgBox.close()
-        return delVersPath
+        return delVersPath, keepVersPath
 
 
     def isEarlierThanKeepDays(self, inPath, inKeepDays):
@@ -2834,7 +2849,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         return total_size
 
-    def cleanUpWriteToText(self, inPath, inHeader, inDelList):
+    def cleanUpWriteToText(self, inPath, inHeader, inDelList, inKeepList):
         print('my cleanUpWriteToText')
         import datetime
 
@@ -2846,7 +2861,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         for lines in inHeader:
             f.writelines('<bigK_header>...' + lines + '\n')
         for lines in inDelList:
-            f.writelines(lines + '\n')
+            f.writelines('< del* >' + lines + '\n')
+        for lines in inKeepList:
+            f.writelines('< Keep >' + lines + '\n')
         f.close()
         #print('Text File written to <%s>' %os.path.join(inPath, filename))
         print('Text File written to <%s>' %inPath)
@@ -2900,13 +2917,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         counter = 0
         for line in f:
-            if not line.startswith('<bigK_header>'):
-                counter += 1
-                targetPath = line.rstrip('\n')
-                linePaths.append(targetPath)
-                print(str(counter) + 'line :' + targetPath)
-                #ref : https://thispointer.com/python-how-to-delete-a-directory-recursively-using-shutil-rmtree/
-                shutil.rmtree(targetPath, ignore_errors=True)
+            if not line.startswith('<bigK_header>') or not line.startswith('< KEEP >'):
+                if line.startswith('< del* >'):
+                    counter += 1
+                    targetPath = line.rstrip('\n')
+                    linePaths.append(targetPath)
+                    print(str(counter) + 'line :' + targetPath)
+                    #ref : https://thispointer.com/python-how-to-delete-a-directory-recursively-using-shutil-rmtree/
+                    shutil.rmtree(targetPath, ignore_errors=True)
 
         print('End of cleanUpDelAction.')
 
