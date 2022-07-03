@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20220503b'
+winTitlePrefix = 'BigKeeper_20220703a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -244,6 +244,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3C_action)
         self.listWidget_3.itemClicked.connect(self.listWidget_shotTask_action)
         self.pushButton_listWidget1Refresh.clicked.connect(self.listWidget_1_appear)
+
+        self.listWidget_1.setSelectionMode(QListWidget.ExtendedSelection)
 
 
         #nukeLabel = self.envRead('NUKE', 'label')
