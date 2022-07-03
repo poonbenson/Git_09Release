@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20220703a'
+winTitlePrefix = 'BigKeeper_20220703c'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -172,7 +172,6 @@ print(cacheProjName)
 
 
 
-
 # The QT MainWindow Class
 class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
@@ -192,6 +191,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             window = BigMainWindow()
             window.show()
 
+    def printdbug(self, isToken, inText):
+        if isToken:
+            print(inText)
 
     def SoftwareMainWindow(self):
         self.main_window_ptr = QApplication.activeWindow()
@@ -239,6 +241,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.comboBoxProjects.activated[str].connect(self.comboBoxAction2) #show content of the items as a string
 
         self.listWidget_1.itemClicked.connect(self.listWidget_2_appear2)
+        self.listWidget_1.itemClicked.connect(self.listWidget_1_receivedList)
+
         self.listWidget_2.itemClicked.connect(self.listWidget_3_appear)
         #self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3B_action)
         self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3C_action)
@@ -404,7 +408,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_genWriteCompMasterV.setText('CompMaster-V')
 
         #Cmd Tab
-        self.pushButton_sortoutfile.clicked.connect(lambda: self.cleanUpCompOutput())
+        self.pushButton_sortoutfile.clicked.connect(lambda: self.cleanUpCompOutput(self.listWidget_1.selectedItems()))
         self.pushButton_exeDel.clicked.connect(lambda: self.cleanUpDelAction())
 
 
@@ -577,9 +581,21 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_num8.clicked.connect(lambda: self.openScheduleLink())
         self.pushButton_num8.setText('openScheduleLink')
         '''
-        self.pushButton_num7.clicked.connect(lambda: self.deadlineCoreOverride())
-        self.pushButton_num7.setText('CPU_Deadline')
+        self.pushButton_num7.clicked.connect(lambda: self.listWidget_1_receivedListB())
+        self.pushButton_num7.setText('listMulti')
 
+    def listWidget_1_receivedList(self, item):
+        print('my listWidget_1_receivedList')
+        print(item.text())
+        #print(self.listWidget_1.)
+        for i in self.listWidget_1.selectedItems():
+            print(i.text())
+
+    def listWidget_1_receivedListB(self):
+        print('my listWidget_1_receivedListB')
+
+        for i in self.listWidget_1.selectedItems():
+            print(i.text())
 
 
     def deadlineCoreOverride(self):
@@ -1015,6 +1031,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def listWidget_2_appear2(self, item2):
         print('listWidget_2_appear2')
+
+        #self.printdbug()
+
         self.listWidget_3.clear()
         print(item2)
         self.selProjScnItem = item2
@@ -2573,22 +2592,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             os.path.normpath
             i.knob('file').setValue(updatedContent)
 
-    def cleanUpCompOutput(self):
-        import datetime
-
+    def cleanUpCompOutput(self, inScns):
         print('my cleanUpCompOutput')
 
-        #keepVers = 84
-        #keepDays = 365
-
-        '''checking = True
-        while checking:
-            keepVers = (input('How many Latest VERSIONS to keep? (int, eg:5) -----> :'))
-            try:
-                keepVers = int(keepVers)
-                checking = False
-            except:
-                checking = True'''
+        import datetime
 
         # ref : https://pythonspot.com/pyqt5-input-dialog/
         keepVers, VersOkPressed = QInputDialog.getInt(self, 'Input :', 'How many Latest VERSIONS to be kept and protected?', 10, 1, 100, 1)
@@ -2600,74 +2607,91 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             if DaysOkPressed:
                 print('keepDays inputed : %d' %keepDays)
 
+                showAskPath = True
+                for selectedScn in inScns:
+
+                    timerStart = datetime.datetime.now()
+
+                    # Calculate boundary data (currentTime - KeepDays)
+                    currentTimeStamp = datetime.datetime.now().timestamp()
+                    currentTimeStamp_YYYYmmddHHMMSS = datetime.datetime.fromtimestamp(currentTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
+                    print(currentTimeStamp_YYYYmmddHHMMSS)
+                    value_currentTimeStamp_YYYYmmddHHMMSS = datetime.datetime.strptime(currentTimeStamp_YYYYmmddHHMMSS , '%Y-%m-%d %H:%M:%S')
+                    DayValue = datetime.timedelta(days=keepDays)
+                    boundryDate = value_currentTimeStamp_YYYYmmddHHMMSS - DayValue
+                    print('boundryDate is : ')
+                    print(boundryDate)
+                    saveNameCurrentTimeStamp = 'toBeDel_' + selectedScn.text() + '_' + datetime.datetime.fromtimestamp(currentTimeStamp).strftime('-D%Y-%m-%d_T%H%M%S')
+
+                    if showAskPath:
+                        saveFullPath = None
+                        saveFullPath = self.askSaveFile(saveNameCurrentTimeStamp)
+                        saveDirPath = os.path.dirname(saveFullPath)
+                    else:
+                        saveFullPath = os.path.join(saveDirPath, saveNameCurrentTimeStamp + '.txt')
+
+                    if saveFullPath != None:
+
+                        sourceCheckPath = os.path.join(self.selProjScnPath, selectedScn.text())
+                        print('<><><><><>')
+                        print(selectedScn.text())
+                        print(sourceCheckPath)
+                        print('<><><><><>')
+
+                        toBeDelList, toBeKeepList = self.cleanUpSortOutDelVers(sourceCheckPath, keepVers, keepDays)
+
+                        print('toBeDelList is :')
+                        for i in toBeDelList:
+                            print(i)
+
+                        print('toBeKeepList is :')
+                        for i in toBeKeepList:
+                            print(i)
+
+                        totalSize = 0
+
+                        print()
+
+                        msgBox = QMessageBox()
+                        msgBox.setStandardButtons(QMessageBox.NoButton)
+                        msgBox.show()
+
+                        for i in toBeDelList:
+                            print(i)
+                            size = self.cleanUpCheckFolderSize(i)
+                            print('Path : ' + i + '     Size in MB : ' + str(size/1024/1024))
+                            totalSize += size
+                            QApplication.processEvents()
+                            #msgBox.setText(os.path.normpath(i))
+                            msg = 'Path : ' + str(i) + '     Size in MB : ' + str(size/1024/1024)
+                            msgBox.setText(msg)
+
+                        print()
+                        '''print('toBeDelList is :')
+                        print(toBeDelList)
+                        for i in toBeDelList:
+                            print(i)
+                        '''
+
+                        print()
+                        print('Keeping %d Latest Vers ---OR--- verions within %d Latest Days (%s)' %(keepVers, keepDays, str(boundryDate)))
+                        print('totalSize is :')
+                        print('totalSize in MB (to be deleted) : ' + str(totalSize/1024/1024))
+                        print('totalSize in GB (to be deleted) : ' + str(totalSize/1024/1024/1024))
+                        timerEnd = datetime.datetime.now()
+                        print(timerEnd - timerStart)
+
+                        headerContentList = []
+                        headerContentList.append(str('Keeping %d Latest Vers ---OR--- verions within %d Latest Days (%s)' %(keepVers, keepDays, str(boundryDate))))
+                        headerContentList.append(str('totalSize in MB (to be deleted): ' + str(totalSize/1024/1024)))
+                        headerContentList.append(str('totalSize in GB (to be deleted): ' + str(totalSize/1024/1024/1024)))
+
+                        #writePath = os.path.normpath(r'D:\\')
+                        self.cleanUpWriteToText(saveFullPath, headerContentList, toBeDelList, toBeKeepList)
+
+                        showAskPath = False
 
 
-                timerStart = datetime.datetime.now()
-
-                # Calculate boundary data (currentTime - KeepDays)
-                currentTimeStamp = datetime.datetime.now().timestamp()
-                currentTimeStamp_YYYYmmddHHMMSS = datetime.datetime.fromtimestamp(currentTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
-                print(currentTimeStamp_YYYYmmddHHMMSS)
-                value_currentTimeStamp_YYYYmmddHHMMSS = datetime.datetime.strptime(currentTimeStamp_YYYYmmddHHMMSS , '%Y-%m-%d %H:%M:%S')
-                DayValue = datetime.timedelta(days=keepDays)
-                boundryDate = value_currentTimeStamp_YYYYmmddHHMMSS - DayValue
-                print('boundryDate is : ')
-                print(boundryDate)
-                saveNameCurrentTimeStamp = 'toBeDel' + datetime.datetime.fromtimestamp(currentTimeStamp).strftime('-D%Y-%m-%d_T%H%M%S')
-
-                saveFullPath = None
-                saveFullPath = self.askSaveFile(saveNameCurrentTimeStamp)
-                if saveFullPath != None:
-
-                    toBeDelList, toBeKeepList = self.cleanUpSortOutDelVers(self.selProjScnShotPath, keepVers, keepDays)
-                    print('toBeDelList is :')
-                    for i in toBeDelList:
-                        print(i)
-
-                    print('toBeKeepList is :')
-                    for i in toBeKeepList:
-                        print(i)
-
-                    totalSize = 0
-
-                    print()
-
-                    msgBox = QMessageBox()
-                    msgBox.setStandardButtons(QMessageBox.NoButton)
-                    msgBox.show()
-
-                    for i in toBeDelList:
-                        print(i)
-                        size = self.cleanUpCheckFolderSize(i)
-                        print('Path : ' + i + '     Size in MB : ' + str(size/1024/1024))
-                        totalSize += size
-                        QApplication.processEvents()
-                        #msgBox.setText(os.path.normpath(i))
-                        msg = 'Path : ' + str(i) + '     Size in MB : ' + str(size/1024/1024)
-                        msgBox.setText(msg)
-
-                    print()
-                    '''print('toBeDelList is :')
-                    print(toBeDelList)
-                    for i in toBeDelList:
-                        print(i)
-                    '''
-
-                    print()
-                    print('Keeping %d Latest Vers ---OR--- verions within %d Latest Days (%s)' %(keepVers, keepDays, str(boundryDate)))
-                    print('totalSize is :')
-                    print('totalSize in MB (to be deleted) : ' + str(totalSize/1024/1024))
-                    print('totalSize in GB (to be deleted) : ' + str(totalSize/1024/1024/1024))
-                    timerEnd = datetime.datetime.now()
-                    print(timerEnd - timerStart)
-
-                    headerContentList = []
-                    headerContentList.append(str('Keeping %d Latest Vers ---OR--- verions within %d Latest Days (%s)' %(keepVers, keepDays, str(boundryDate))))
-                    headerContentList.append(str('totalSize in MB (to be deleted): ' + str(totalSize/1024/1024)))
-                    headerContentList.append(str('totalSize in GB (to be deleted): ' + str(totalSize/1024/1024/1024)))
-
-                    #writePath = os.path.normpath(r'D:\\')
-                    self.cleanUpWriteToText(saveFullPath, headerContentList, toBeDelList, toBeKeepList)
 
     def checkVerFolderFormat(self, inName):
         print('my checkVerFolderFormat')
@@ -2701,8 +2725,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         msgBox.setStandardButtons(QMessageBox.NoButton)
         msgBox.show()
 
+        print('**********')
+        print(inPathRoot)
+        print('**********')
+
         # for loop of each SHOT
-        for i in self.listShot:
+        #for i in self.listShot:
+        for i  in os.listdir(inPathRoot):
             thePath = os.path.join(inPathRoot, i)
             print(thePath)
 
@@ -2889,11 +2918,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def askSaveFile(self, inName):
 
-
             # ref : https://pythonspot.com/pyqt5-file-dialog/
             options = QFileDialog.Options()
             #options |= QFileDialog.DontUseNativeDialog
-            fileName, _ = QFileDialog.getSaveFileName(self,"QFileDialog.getSaveFileName()",inName,"All Files (*);;Text Files (*.txt)", options=options)
+            fileNamePrefix = inName
+            fileName, _ = QFileDialog.getSaveFileName(self,"QFileDialog.getSaveFileName()", fileNamePrefix,"All Files (*);;Text Files (*.txt)", options=options)
             if fileName:
                 print(fileName)
                 return fileName
