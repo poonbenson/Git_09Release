@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20220703c'
+winTitlePrefix = 'BigKeeper_20220703d'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2931,37 +2931,65 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-    def cleanUpDelAction(self, *inFile):
+    def cleanUpDelAction(self):
         print('my cleanUpDelAction')
 
         import shutil
 
+        '''
         theFile = self.askOpenFile()
         print(theFile)
         print(type(theFile))
+        '''
+        answerFolder = QInputDialog.getText(self, 'Input Folder Path', 'Please input the folder path containing ALL toBeDel_xxxxxxx.txt\n\n\n\n***** this is DELETE action. *****\n\n\n',QLineEdit.Normal)
+        print(answerFolder[0])
+        print(type(answerFolder[0]))
 
-        f = open(theFile, 'r')
-
-        linePaths = []
+        allFiles = os.listdir(answerFolder[0])
         counter = 0
+        delConfirm = False
+        delToken = False
+
+        # create _done directory to store the .txt
+        doneFolder = os.path.join(answerFolder[0], '_done')
+        if not os.path.exists(doneFolder):
+            os.mkdir(doneFolder)
+            print(doneFolder ,  " --- Created ")
+
+        while delToken == False:
+            inputCheck = QInputDialog.getText(self, 'Double Confirmation', 'If you confirm to batch delete all files.\n\n input the following correctly:\n\n"Confirm to delete a lot of files."\n\n\n',QLineEdit.Normal)
+            if inputCheck[0] == 'Confirm to delete a lot of files.':
+                delConfirm = True
+                delToken = True
+
+        if delConfirm == True:
+            for file in allFiles:
+
+                theFile = os.path.join(answerFolder[0], file)
+                print(theFile)
+
+                if theFile.endswith('.txt'):
+                    f = open(theFile, 'r')
+                    linePaths = []
+                    for line in f:
+                        if not line.startswith('<bigK_header>') or not line.startswith('< KEEP >'):
+                            if line.startswith('< del* >'):
+                                counter += 1
+                                targetPath = line.lstrip('< del* >').rstrip('\n')
+                                linePaths.append(targetPath)
+                                print(str(counter) + 'line :' + targetPath)
+                                #ref : https://thispointer.com/python-how-to-delete-a-directory-recursively-using-shutil-rmtree/
+                                shutil.rmtree(targetPath, ignore_errors=True)
+                    f.close()
+
+                    shutil.move(theFile, doneFolder)
 
 
-
-        counter = 0
-        for line in f:
-            if not line.startswith('<bigK_header>') or not line.startswith('< KEEP >'):
-                if line.startswith('< del* >'):
-                    counter += 1
-                    targetPath = line.rstrip('\n')
-                    linePaths.append(targetPath)
-                    print(str(counter) + 'line :' + targetPath)
-                    #ref : https://thispointer.com/python-how-to-delete-a-directory-recursively-using-shutil-rmtree/
-                    shutil.rmtree(targetPath, ignore_errors=True)
 
         print('End of cleanUpDelAction.')
 
 
-        f.close()
+
 
 
 
