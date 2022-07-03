@@ -245,8 +245,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.listWidget_3.itemClicked.connect(self.listWidget_shotTask_action)
         self.pushButton_listWidget1Refresh.clicked.connect(self.listWidget_1_appear)
 
-        #self.listWidget_1.setSelectionMode(QListWidget.ExtendedSelection)
-
 
         #nukeLabel = self.envRead('NUKE', 'label')
         #mayaLabel = self.envRead('MAYA', 'label')
