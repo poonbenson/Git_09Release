@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20220703d'
+winTitlePrefix = 'BigKeeper_20220713a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -52,6 +52,7 @@ pathOfDeveloper = r'N:\bpPipeline\bigKeeperPy\repo_01Developer'
 pathOfTester = r'N:\bpPipeline\bigKeeperPy\repo_03Tester'
 pathOfRelease = r'N:\bpPipeline\bigKeeperPy\repo_09Release'
 pathOfEnvIni = r'N:\bpPipeline\bigKeeperPyIni\env.ini'
+
 
 
 
@@ -2596,6 +2597,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print('my cleanUpCompOutput')
 
         import datetime
+        totalSortoutCompSizeGB = 0
 
         # ref : https://pythonspot.com/pyqt5-input-dialog/
         keepVers, VersOkPressed = QInputDialog.getInt(self, 'Input :', 'How many Latest VERSIONS to be kept and protected?', 10, 1, 100, 1)
@@ -2678,6 +2680,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         print('totalSize is :')
                         print('totalSize in MB (to be deleted) : ' + str(totalSize/1024/1024))
                         print('totalSize in GB (to be deleted) : ' + str(totalSize/1024/1024/1024))
+                        totalSortoutCompSizeGB  += totalSize/1024/1024/1024
                         timerEnd = datetime.datetime.now()
                         print(timerEnd - timerStart)
 
@@ -2690,6 +2693,20 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         self.cleanUpWriteToText(saveFullPath, headerContentList, toBeDelList, toBeKeepList)
 
                         showAskPath = False
+
+                        totalSizeLogFilePath = os.path.join(saveDirPath, 'sizeLog.txt')
+                        f = open(totalSizeLogFilePath, 'w')
+                        f.write(str(totalSortoutCompSizeGB))
+                        f.close()
+
+
+
+
+        print('\n\n')
+        print(f'****************************************')
+        print(f'**  Total sortout size (GB): {totalSortoutCompSizeGB}')
+        print(f'****************************************')
+        print('\n\n')
 
 
 
