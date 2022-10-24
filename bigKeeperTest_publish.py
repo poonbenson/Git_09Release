@@ -1348,10 +1348,18 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def versionUpSaveWIP(self):
         print('my versionUpSaveWIP')
         if in_nuke:
+            bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
+            thisWipVer = bigKInfo.currentThisWipVerNum()
+            print(thisWipVer)
             nukescripts.script.script_version_up()
-            self.nukeUpdateMetadataNodeFps()
-            self.nukeUpdateWriteNodeVer()
-            nuke.scriptSave()
+
+            bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
+            print(bigKInfo.currentThisWipVerNum())
+            if thisWipVer != bigKInfo.currentThisWipVerNum():
+                print('another WIP ver.')
+                self.nukeUpdateMetadataNodeFps()
+                self.nukeUpdateWriteNodeVer()
+                nuke.scriptSave()
 
             nukeEnv = nuke.env
             isAssist = nukeEnv['assist']
