@@ -1361,15 +1361,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 self.nukeUpdateWriteNodeVer()
                 nuke.scriptSave()
 
-            nukeEnv = nuke.env
-            isAssist = nukeEnv['assist']
+                nukeEnv = nuke.env
+                isAssist = nukeEnv['assist']
 
-            if isAssist:
-                theMessage = 'Be Careful !\nBe Careful !!\nBe Careful !!!\n' + 'Currently in < Nuke Assist >.\n\n' + 'Only <Nuke Script WIP version _v#### > and <fps metadata> are updated.\n\nNone of <Write Nodes> are updated. Therefore :\n\n'+ '     1) Do not render this nuke script verion.\n' + '     2) Before submit render, you must <Version Up> in Nuke or NukeX to align the write node version number.'
-                QMessageBox.information(self, 'WARNING !!! ', theMessage)
-            else:
-                theMessage = 'WIP version up, Done.\n\nbigK_Write nodes --- version numbers aligned.\nbigK_ModifyMetadata nodes --- fps metadata aligned to Project Setting.'
-                QMessageBox.information(self, 'version up33 ', theMessage)
+                if isAssist:
+                    theMessage = 'Be Careful !\nBe Careful !!\nBe Careful !!!\n' + 'Currently in < Nuke Assist >.\n\n' + 'Only <Nuke Script WIP version _v#### > and <fps metadata> are updated.\n\nNone of <Write Nodes> are updated. Therefore :\n\n'+ '     1) Do not render this nuke script verion.\n' + '     2) Before submit render, you must <Version Up> in Nuke or NukeX to align the write node version number.'
+                    QMessageBox.information(self, 'WARNING !!! ', theMessage)
+                else:
+                    theMessage = 'WIP version up, Done.\n\nbigK_Write nodes --- version numbers aligned.\nbigK_ModifyMetadata nodes --- fps metadata aligned to Project Setting.'
+                    QMessageBox.information(self, 'version up33 ', theMessage)
 
 
         elif in_houdini:
