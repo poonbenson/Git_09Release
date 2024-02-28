@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240224a'
+winTitlePrefix = 'BigKeeper_20240228a'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2791,13 +2791,20 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         print('previousJ : {}'.format(previousJ))
                         #print(f'j is {j}, index is {folderOnlyList.index(j)}, j-1 is {folderOnlyList[folderOnlyList.index(j)-1]}, j[0:5] is {j[0:5]}, previousJ is {previousJ[0:5]}')
 
+
+                        ###     Capri Modified on 20230308  --- Start
+                        ###     modified:   keep version based on master version
+                        ###     added:  check and keep latest layer's layermask version
+
                         if counter < keepVers:
                             if j[0:5] != previousJ[0:5]:
-                                counter += 1
+                                if not j.find("_LayerMask") > 0:
+                                    counter += 1
                                 keptVerNumList.append(j[0:5])
                                 keepFolderList.append(j)
                             else:
                                 pass
+                                counter += 1
                                 keptVerNumList.append(j[0:5])
                                 keepFolderList.append(j)
                         else:
@@ -2805,6 +2812,49 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                                 continue
                             else:
                                 unKeepFolderList.append(j)
+
+                        unKeepFolderList.sort()
+                        keepFolderList.sort()
+
+
+                        layerMaskFolders = []
+
+                        for compVer in folderOnlyList:
+                            if compVer.endswith('_LayerMask') == True:
+                                layerMaskFolders.append(compVer)
+
+                        layerMaskLayer = []
+
+                        for layerMaskVer in layerMaskFolders:
+                            if layerMaskVer not in keepFolderList:
+                                layerMask = os.listdir(os.path.join(theCompOutputPath, layerMaskVer))
+                                for layer in layerMask:
+                                    layerMaskLayer.append(layer)
+
+                            elif layerMaskVer in keepFolderList:
+                                pass
+
+                        layerMaskLayer = list(dict.fromkeys(layerMaskLayer))
+
+                        layerMaskFolders.sort(reverse = True)
+
+                        for layerMask in layerMaskLayer:
+                            for layerMaskVer in layerMaskFolders:
+                                checkLayerMaskExists = os.path.isdir(os.path.join(theCompOutputPath, layerMaskVer, layerMask))
+
+                                if checkLayerMaskExists == True:
+                                    if layerMaskVer in unKeepFolderList:
+                                        unKeepFolderList.remove(layerMaskVer)
+                                        keepFolderList.insert(0, layerMaskVer)
+                                    break
+
+                        unKeepFolderList.sort()
+                        keepFolderList.sort()
+
+
+
+                        ###     Capri Modified on 20230308  --- End
+
 
                 print('folderOnlyList   : {} {}'.format(len(folderOnlyList), folderOnlyList))
                 print('keepFolderList   : {} {}'.format(len(keepFolderList), keepFolderList))
