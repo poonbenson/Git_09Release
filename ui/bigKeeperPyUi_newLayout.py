@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v142.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v143.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -477,7 +477,11 @@ class Ui_MainWindow(object):
         self.pushButton_LaunchNukeAssist13_0_v2.setGeometry(QRect(150, 60, 41, 31))
         self.pushButton_LaunchMaya2022_update0 = QPushButton(self.groupBox)
         self.pushButton_LaunchMaya2022_update0.setObjectName(u"pushButton_LaunchMaya2022_update0")
-        self.pushButton_LaunchMaya2022_update0.setGeometry(QRect(50, 30, 181, 31))
+        self.pushButton_LaunchMaya2022_update0.setGeometry(QRect(50, 30, 141, 31))
+        font4 = QFont()
+        font4.setPointSize(8)
+        font4.setStyleStrategy(QFont.PreferAntialias)
+        self.pushButton_LaunchMaya2022_update0.setFont(font4)
         self.pushButton_mayaOther = QPushButton(self.groupBox)
         self.pushButton_mayaOther.setObjectName(u"pushButton_mayaOther")
         self.pushButton_mayaOther.setGeometry(QRect(230, 30, 16, 31))
@@ -514,6 +518,13 @@ class Ui_MainWindow(object):
         self.pushButton_LaunchGpuCoreController = QPushButton(self.groupBox)
         self.pushButton_LaunchGpuCoreController.setObjectName(u"pushButton_LaunchGpuCoreController")
         self.pushButton_LaunchGpuCoreController.setGeometry(QRect(140, 160, 91, 31))
+        self.pushButton_LaunchMayaLegacySelection = QPushButton(self.groupBox)
+        self.pushButton_LaunchMayaLegacySelection.setObjectName(u"pushButton_LaunchMayaLegacySelection")
+        self.pushButton_LaunchMayaLegacySelection.setGeometry(QRect(190, 30, 41, 31))
+        font5 = QFont()
+        font5.setPointSize(6)
+        font5.setStyleStrategy(QFont.PreferAntialias)
+        self.pushButton_LaunchMayaLegacySelection.setFont(font5)
         self.pushButton_LaunchNuke13_0_v2.raise_()
         self.pushButton_LaunchNukeStudio13_0_v2.raise_()
         self.pushButton_LaunchNukeX13_0_v2.raise_()
@@ -531,6 +542,7 @@ class Ui_MainWindow(object):
         self.pushButton_hieroPlayerOther.raise_()
         self.pushButton_LaunchCpuCoreController.raise_()
         self.pushButton_LaunchGpuCoreController.raise_()
+        self.pushButton_LaunchMayaLegacySelection.raise_()
 
         self.verticalLayout_11.addWidget(self.groupBox)
 
@@ -1054,7 +1066,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(1)
+        self.tabWidget_2.setCurrentIndex(5)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1249,6 +1261,11 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.pushButton_LaunchGpuCoreController.setText(QCoreApplication.translate("MainWindow", u"Deadline GPU\n"
 "Controller", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_LaunchMayaLegacySelection.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_LaunchMayaLegacySelection", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_LaunchMayaLegacySelection.setText(QCoreApplication.translate("MainWindow", u"Legacy\n"
+"Sel Disp", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabLauncher), QCoreApplication.translate("MainWindow", u"Launcher", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_miscCookbook.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWritePrerend", None))

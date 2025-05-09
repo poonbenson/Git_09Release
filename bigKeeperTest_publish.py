@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250114'
+winTitlePrefix = 'BigKeeper_20250509'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -293,6 +293,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_launchHoudini1.setText(self.envRead('HOUDINI', 'label'))
 
 
+        self.pushButton_LaunchMayaLegacySelection.clicked.connect(self.launchMayaLegacySelection)
+        self.pushButton_mayaOther.setText(self.envRead('MAYA', 'Legacy\nSelDisplay'))
         self.pushButton_mayaOther.clicked.connect(self.launchStudioEnvMayaFolder)
         self.pushButton_mayaOther.setText(self.envRead('MAYA', 'batFolderPathLabel'))
         self.pushButton_nukeOther.clicked.connect(self.launchStudioEnvNukeFolder)
@@ -846,6 +848,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def launchStudioEnvHoudini(self):
         theCmd = 'start {}'.format(os.path.join(self.envRead('HOUDINI', 'batPath'), 'studioEnv.bat'))
+        println(theCmd)
+        os.system(theCmd)
+
+    def launchMayaLegacySelection(self):
+        theCmd = 'start {}'.format(os.path.join(self.envRead('MAYA', 'batPath'), 'studioEnv_LegacySelDisplay.bat'))
         println(theCmd)
         os.system(theCmd)
 
