@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250509'
+winTitlePrefix = 'BigKeeper_20250611'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -1013,6 +1013,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.selProjRootPath = os.path.normpath(os.path.join(splitDrive, os.path.sep, splitTail[1], splitTail[2], splitTail[3]))
             self.printEcho('self.selProjRootPath : {}'.format(self.selProjRootPath))
 
+            self.listWidget_3.clear()
+            self.listWidget_2.clear()
+            self.listWidget_1.clear()
 
             self.printEcho('self.subDict[self.selProjName]:' + self.subDict[self.selProjName]) # eg. kfcPoke
             self.printEcho('self.subDict[self.selProjPath]:' + self.subDict[self.selProjPath]) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/
@@ -1030,9 +1033,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho(listSeq) # eg. ['animaticSeq', 'balloonSeq', 'edits', 'socialSeq', 'testSeq', 'turnTableSeq', 'tvcSeq']
             self.list1Entries = []
             self.list1Entries = listSeq
-            self.listWidget_3.clear()
-            self.listWidget_2.clear()
-            self.listWidget_1.clear()
+
             self.listWidget_1.addItems(self.list1Entries)
             self.locationPath = self.subDict[self.selProjPath]
             self.lineEdit_Location.setText(self.locationPath)
