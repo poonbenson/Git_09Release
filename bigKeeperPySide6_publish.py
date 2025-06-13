@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250613B'
+winTitlePrefix = 'BigKeeper_20250613C'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -2886,7 +2886,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         '''
 
 
-        bd = nukescripts.nukescripts.autoBackdrop()
+        bd = nukescripts.autoBackdrop()
 
         bd.setXpos(int(xpMin-marginWidth/2 + rightOffSetSpace * 1.8))
         bd.setYpos(int(ypMin-marginHeight/2 - yLabelSpace))
