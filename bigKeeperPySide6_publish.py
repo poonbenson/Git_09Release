@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250613'
+winTitlePrefix = 'BigKeeper_20250613B'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -1584,6 +1584,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             keywords.append(i.replace('\n', ""))
 
         self.printEcho(keywords)
+        self.prerendKeywordsContent = keywords
 
         self.prerendKeywordUi.label.setText('Input a sub-name for sub-folderName and sub-framename :')
         self.prerendKeywordUi.comboBox.addItems(keywords)
@@ -1607,6 +1608,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def prerendKeywordAction(self, item):
         println('\ndef >>>>> prerendKeywordAction')
         self.printEcho(item)
+
+        item = self.prerendKeywordsContent[item]
 
         self.prerendKeywordUi.lineEdit.setText(item)
         keywordLength = len(self.prerendKeywordUi.lineEdit.text())
