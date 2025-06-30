@@ -1,0 +1,58 @@
+
+
+def main():
+
+    try:
+        del release_mode
+    except NameError:
+        pass
+    finally:
+        print('current dir(): after')
+        print(dir())
+
+    print('===== release mode =====')
+    import sys
+
+    targetRemovePath = "N:\\bpPipeline\\bigKeeperPy\\repo_01Developer"
+    targetAppendPath = "N:\\bpPipeline\\bigKeeperPy\\repo_09Release"
+    noOfTargetRemovePath = sys.path.count(targetRemovePath)
+    if noOfTargetRemovePath > 0:
+        for i in range(0, noOfTargetRemovePath):
+            sys.path.remove(targetRemovePath)
+
+    targetRemovePath = "N:\\bpPipeline\\bigKeeperPy\\repo_03Tester"
+    targetAppendPath = "N:\\bpPipeline\\bigKeeperPy\\repo_09Release"
+    noOfTargetRemovePath = sys.path.count(targetRemovePath)
+    if noOfTargetRemovePath > 0:
+        for i in range(0, noOfTargetRemovePath):
+            sys.path.remove(targetRemovePath)
+
+    targeRemoveModule = 'developerPySide6_mode'
+    targeImportModule = 'releasePySide6_mode'
+    try:
+        del sys.modules[targeRemoveModule]
+        del sys.modules['bigKeeperPySide6_publish']
+    except:
+        pass
+
+    targeRemoveModule = 'testerPySide6_mode'
+    targeImportModule = 'releasePySide6_mode'
+    try:
+        del sys.modules[targeRemoveModule]
+        del sys.modules['bigKeeperPySide6_publish']
+    except:
+        pass
+
+
+
+    sys.path.append(targetAppendPath)
+    #import bigKeeperTest_publish
+    #from devbigKeeperTest_publish import BigMainWindow
+    from bigKeeperPySide6_publish import BigMainWindow
+
+    sys.path.remove(targetAppendPath)
+    #BigMainWindow.show_window()
+    BigMainWindow.show_window()
+
+if __name__ == '__main__':
+    main()
