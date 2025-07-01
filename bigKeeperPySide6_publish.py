@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250613C'
+winTitlePrefix = 'BigKeeper_20250701'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -926,7 +926,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         if in_maya:
             from daniel import sceneUpdate_maya as susu
         elif in_nuke:
-            from daniel import sceneUpdate_nuke as susu
+            from daniel import sceneUpdatePySide6_nuke as susu
         else:
             from daniel import sceneUpdate as susu
         susu.run()
