@@ -116,7 +116,7 @@ import bigKeeperInfoGlobal_published
 sys.path.append(uiPath)
 sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
 
-# For Pyside2 UI
+# For PySide2 UI
 #import bigKeeperPyUi_newLayout as UiPy
 #import childMenu as UiPyChild # path : N:\BigKeeper         WIP : N:\BigKeeper\py\pySide2UI\ui
 #import listView_dev as UiList
@@ -127,15 +127,15 @@ sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
 #import presetWindow as UiPreset
 
 
-# For Pyside6 UI
-import bigKeeperPyUi_QT6_newLayout as UiPy
-import childMenu_QT6 as UiPyChild # path : N:\BigKeeper         WIP : N:\BigKeeper\py\pySide2UI\ui
-import listView_dev_QT6 as UiList
-import DialogWindow_QT6 as UiDialog # path : N:\BigKeeper\py\pySide2UI\ui        WIP : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\ui
-import doneWindow_QT6 as UiDone
-import nukeReadNodeFrameInOut_QT6 as UiNukeTemp
-import newTaskWindow_QT6 as UiNewTask
-import presetWindow_QT6 as UiPreset
+# For PySide6 UI
+import bigKeeperPyUi_PySide6_newLayout as UiPy
+import childMenu_PySide6 as UiPyChild # path : N:\BigKeeper         WIP : N:\BigKeeper\py\pySide2UI\ui
+import listView_dev_PySide6 as UiList
+import DialogWindow_PySide6 as UiDialog # path : N:\BigKeeper\py\pySide2UI\ui        WIP : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\ui
+import doneWindow_PySide6 as UiDone
+import nukeReadNodeFrameInOut_PySide6 as UiNukeTemp
+import newTaskWindow_PySide6 as UiNewTask
+import presetWindow_PySide6 as UiPreset
 
 sys.path.remove(uiPath)
 sys.path.remove(r'N:\bpPipeline\bigKeeperPy\py\pySide2UI\ui')
