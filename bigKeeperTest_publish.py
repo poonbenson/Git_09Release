@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250805b'
+winTitlePrefix = 'BigKeeper_20250805c'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -1266,6 +1266,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         def updateSelectedAction():
             selectedItem = []
+            itemsToBeTakenAway = []
             for i in range(self.sceneUpdateUi.listWidget.count()):
                 listedEachItem = self.sceneUpdateUi.listWidget.item(i)
                 if listedEachItem.checkState() == Qt.Checked:
@@ -1285,69 +1286,19 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     currentLongwithTail = splitParts[3]
                     newLongwithTail = splitParts[6]
 
-                    perSelectedAction(currentNodeName, currentLongwithTail, newLongwithTail)
+                    if perSelectedAction(currentNodeName, currentLongwithTail, newLongwithTail):
+                        itemsToBeTakenAway.append(i)
+
+            print('{} Nodes updated.'.format(len(itemsToBeTakenAway)))
+
+            for j in sorted(itemsToBeTakenAway, reverse=True):
+                print(j)
+                self.sceneUpdateUi.listWidget.takeItem(j)
+            print('{} Row of listwidget removed.'.format(len(itemsToBeTakenAway)))
 
 
             #self.printEcho(selectedItem)
-        ''' xxx
-        def transform_path_last_occurrence(sourcePath, varA, varB):
-            # Split the path into parts
-            parts = sourcePath.split('/')
 
-            # Find the last index where varA appears
-            last_index = max(i for i, part in enumerate(parts) if varA in part)
-
-            # Replace varA with varB only at that index
-            parts[last_index] = parts[last_index].replace(varA, varB)
-
-            # Rebuild the path
-            outcome = '/'.join(parts)
-            return outcome
-        '''
-
-        '''
-        def transform_path_last_occurrence(sourcePath, varA, varB):
-
-
-            print('sourcePath : ' + sourcePath)
-            print(os.sep)
-            print('sourcePath (normpath): ' + os.path.normpath(sourcePath))
-            print(varA)
-            print(varB)
-
-            splitPath = os.path.normpath(sourcePath)
-            print(splitPath)
-
-            splitPath = os.path.split(os.path.normpath(sourcePath))
-            splitPath = os.path.split(splitPath[0])
-            print(splitPath)
-
-            outcome = os.path.normpath(sourcePath).replace(os.sep, '/')
-            print('outcome : ' + outcome)
-
-            return outcome
-        '''
-
-        '''
-        def perSelectedAction(inNodeName, inVerBasename, inBasename):
-            # Final Original file path
-            theNode = nuke.toNode(inNodeName)
-            theNodeName = theNode.knob('name').value()
-            theNodeFilepath = theNode.knob('file').value()
-
-            print('perSelectedAction :')
-            print(theNodeFilepath)
-            print(inVerBasename)
-            print(inBasename)
-
-            #updatedContent = (transform_path_last_occurrence(theNodeFilepath, inVerBasename, inBasename))
-
-            print(updatedContent)
-            theNode.knob('file').setValue(updatedContent)
-            print('Update Done.')
-
-            #replace inVerBasename by inBasename
-        '''
 
         def perSelectedAction(inNodeName, inCurrent, inNew):
             # Final Original file path
@@ -1362,10 +1313,19 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             print(inNew)
 
             updatedContent = theNodeFilepath.replace(inCurrent, inNew)
-
             theNode.knob('file').setValue(updatedContent)
-            print('Update Done.')
+
+            print('line1345')
+            print(theNode.knob('file').value())
             print(updatedContent)
+
+            if theNode.knob('file').value() == updatedContent:
+                print('checked, < {} > is updated.'.format(inNodeName))
+                return True
+            else:
+                print('*** check fail, < {} > update F A I L ! ! ! ***'.format(inNodeName))
+                return False
+
 
 
 
@@ -1748,26 +1708,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     elif versionPatternFrontOrEnd(inVerBasename, inVer) == 'Front':
                         compareBaseNameSplit_noVersion = compareBaseName.removeprefix(compareBaseName[0:len(inVer):])
 
-                    '''
-                    #for ending with v####
-                    if compareBaseName.endswith(compareBaseName[len(inVer) * -1::]):
-                        compareBaseNameSplit_noInVer = compareBaseName.rstrip(compareBaseName[len(inVer) * -1::])
 
-                    #for starting with v####
-                    elif compareBaseName.startswith(compareBaseName[len(inVer) * -1::]):
-                        compareBaseNameSplit_noInVer = compareBaseName.lstrip(compareBaseName[len(inVer) * -1::])
-                    '''
-
-
-                    '''
-                    #for ending with v####
-                    if compareBaseName.endswith(inVerBasenameNoVersion):
-                        compareBaseNameSplit_noInVer = compareBaseName.rstrip(compareBaseName[len(inVer) * -1::])
-
-                    #for starting with v####
-                    elif compareBaseName.startswith(inVerBasenameNoVersion):
-                        compareBaseNameSplit_noInVer = compareBaseName.lstrip(compareBaseName[len(inVer) * -1::])
-                    '''
 
 
 
@@ -1917,7 +1858,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             print(latestVerBaseName)
             return latestVerPathPattern, str(latestVerBaseName)
 
-        # Body ====================================================================================
+        # Body ============================
 
         initializeUi()
 
@@ -1996,19 +1937,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             #print(os.path.normpath(dictFoundVersionNodes.get(keyNodeName)[2]))
             latestVersionPath = isLatestVersion(keyNodeName, dictFoundVersionNodes.get(keyNodeName)[0], dictFoundVersionNodes.get(keyNodeName)[1],dictFoundVersionNodes.get(keyNodeName)[2], dictFoundVersionNodes.get(keyNodeName)[3])
 
-            '''
-            print(keyNodeName)
-            print(dictFoundVersionNodes.get(keyNodeName)[0])
-            print(dictFoundVersionNodes.get(keyNodeName)[1])
-            print(dictFoundVersionNodes.get(keyNodeName)[2])
-            print(dictFoundVersionNodes.get(keyNodeName)[3])
-            print(dictFoundVersionNodes.get(keyNodeName)[4])
-            print(dictFoundVersionNodes.get(keyNodeName)[5])
-            print('latestVersionPath')
-            print(latestVersionPath)
-            print(latestVersionPath[0])
-            print(latestVersionPath[1])
-            '''
 
             dictFoundVersionNodes[keyNodeName].append(latestVersionPath[0])
             dictFoundVersionNodes[keyNodeName].append(latestVersionPath[1])
