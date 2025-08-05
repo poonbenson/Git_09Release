@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250805d'
+winTitlePrefix = 'BigKeeper_20250805e'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -1307,21 +1307,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             for i in range(self.sceneUpdateUi.listWidget.count()):
                 listedEachItem = self.sceneUpdateUi.listWidget.item(i)
                 if listedEachItem.checkState() == Qt.Checked:
-                    selectedItem.append(self.sceneUpdateUi.listWidget.item(i).text())
-                    print(self.sceneUpdateUi.listWidget.item(i).text())
 
-                    '''
-                    readNodeName_verBasename_newBasename = (self.sceneUpdateUi.listWidget.item(i).text()).split('\n')
-                    print(readNodeName_verBasename_newBasename)
-                    readNodeName = readNodeName_verBasename_newBasename[1]
-                    verBasename = readNodeName_verBasename_newBasename[2]
-                    newBasename  = readNodeName_verBasename_newBasename[4]
-                    '''
+                    currentNodeName     = self.sceneUpdateUi.listWidget.item(i).data(role1Nodename)
+                    currentLongwithTail = self.sceneUpdateUi.listWidget.item(i).data(role3CurrentLongWithTail)
+                    newLongwithTail     = self.sceneUpdateUi.listWidget.item(i).data(role5LatestLongWithTail)
+                    self.printEcho(currentNodeName)
+                    self.printEcho(currentLongwithTail)
+                    self.printEcho(newLongwithTail)
 
-                    splitParts = (self.sceneUpdateUi.listWidget.item(i).text()).split('\n')
-                    currentNodeName = splitParts[1][2:-2:1]
-                    currentLongwithTail = splitParts[3]
-                    newLongwithTail = splitParts[6]
 
                     if perSelectedAction(currentNodeName, currentLongwithTail, newLongwithTail):
                         itemsToBeTakenAway.append(i)
