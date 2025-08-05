@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250804a'
+winTitlePrefix = 'BigKeeper_20250805b'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -10,8 +10,6 @@ println('PYTHON version : {}'.format(sys.version))
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
-
-
 
 # To import PySide2 QT modules
 '''
@@ -276,7 +274,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
         #self.comboBoxProjects.activated.connect(self.comboBoxAction1) #show position of the items
-        self.comboBoxProjects.activated[int].connect(self.comboBoxAction2) #show content of the items as a string
+
+        #PySide2 works as String
+        #self.comboBoxProjects.activated[str].connect(self.comboBoxAction2) #show content of the items as a string
+        #PySide6 not works as String but int
+        self.comboBoxProjects.activated[int].connect(self.comboBoxAction2) #show content of the items as a int
 
         self.listWidget_1.itemClicked.connect(self.listWidget_2_appear2)
         self.listWidget_1.itemClicked.connect(self.listWidget_1_receivedList)
@@ -1031,7 +1033,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def comboBoxAction2(self, item):
         if item != " ":
-
+			# to fix : PySide2 as String, PySide6 as Int
             # if item is from QCombox will be (int), if item from previous proj cache will be (str).
             if type(item) == int:
                 # convert item (int) to item (str)
@@ -1411,7 +1413,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             for i in range(self.sceneUpdateUi.listWidget.count()):
                 listedEachItem = self.sceneUpdateUi.listWidget.item(i)
                 if inMode == 'selectAll':
-                    listedEachItem.setCheckState(Qt.Checked)
+                    if listedEachItem.flags() & Qt.ItemIsUserCheckable:
+                        listedEachItem.setCheckState(Qt.Checked)
                 elif inMode == 'deSelectAll':
                     listedEachItem.setCheckState(Qt.Unchecked)
         '''
@@ -1435,18 +1438,20 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         def findNodeWithFileKnob():
             """
-            Finds all nodes in the Nuke script that are of a specified type (Read,
-            ReadGeo, DeepRead, AudioRead) and prints their name and the value of
-            their 'file' knob.
+            Finds all nodes in the Nuke script that are of a specified type :
+                 (include: Read, DeepRead, AudioRead /
+                  exclude: ReadGeo, Camera)
+            and prints their name and the value of their 'file' knob.
             """
             # 1. A tuple to store the target node classes.
             # Using a tuple for performance as it's immutable.
-            target_node_classes = ('Read', 'ReadGeo2', 'DeepRead', 'AudioRead')
+            # do not include node type because it collapse when update without open Nuke script: 'Camera3', ''ReadGeo2', 'Axis3', 'Axis4', 'Light3')
+            target_node_classes = ('Read', 'DeepRead', 'AudioRead')
 
             # 2. Find all nodes in the script, including those inside groups.
             all_nodes = nuke.allNodes(recurseGroups=True)
 
-            self.printEcho("--- Finding Read Nodes ---")
+            self.printEcho("--- Finding ('Read', 'DeepRead', 'AudioRead') Node Classes ---")
 
             # A counter for found nodes.
             found_nodes_count = 0
@@ -1758,7 +1763,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-                print('check if-condition 1 of 5')
+                print('check if-condition 1 of 6')
                 '''
                 check the < number of Digit > of the VerBasename:
                                         v#### == v####
@@ -1805,7 +1810,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-                    print('check if-condition 2 of 5')
+                    print('check if-condition 2 of 6')
                     '''
                     check basename without Version :
                                           <Empty> == <Empty> (eg. v####)
@@ -1841,7 +1846,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-                        print('check if-condition 3 of 5')
+                        print('check if-condition 3 of 6')
                         '''
                         check version pattern starts with "v" or "V"
                                         v???? == v????
@@ -1858,7 +1863,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-                            print('check if-condition 4 of 5')
+                            print('check if-condition 4 of 6')
                             '''
                             check version pattern starts with "v" or "V"
                                             ?#### == ?####
@@ -1877,28 +1882,32 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
+                                print('check if-condition 5 of 6')
+                                '''
+                                check if compareVerPathPattern exist?
+
+                                '''
+                                if os.path.isdir(compareVerPathPattern):
+                                    # check the compare Paths
+                                    listFiles = os.listdir(compareVerPathPattern)
+                                    #print(listFiles)
 
 
-                                # check the compare Paths
-                                listFiles = os.listdir(compareVerPathPattern)
-                                #print(listFiles)
+                                    for listedfile in listFiles:
 
+                                        #print('nameStemPattern : {}'.format(nameStemPattern(listedfile)))
 
-                                for listedfile in listFiles:
-
-                                    #print('nameStemPattern : {}'.format(nameStemPattern(listedfile)))
-
-                                    '''
-                                    print('{} vs {}'.format(listedfile, inVerFullpath_stem + '.'))
-                                    if listedfile.startswith(inVerFullpath_stem + '.'):
-                                        print('                         : {}'.format(inVerFullpath_stem))
-                                        print('Matched pattern filename : {}'.format(listedfile))
-                                        break
                                         '''
+                                        print('{} vs {}'.format(listedfile, inVerFullpath_stem + '.'))
+                                        if listedfile.startswith(inVerFullpath_stem + '.'):
+                                            print('                         : {}'.format(inVerFullpath_stem))
+                                            print('Matched pattern filename : {}'.format(listedfile))
+                                            break
+                                            '''
 
-                                    #print('{} vs {}'.format(nameStemPattern(listedfile) + '.',     inVerFullpath_stem + '.'))
-                                    #if (nameStemPattern(listedfile) + '.') == (inVerFullpath_stem + '.'):
-                                    #print('{} vs {}'.format(nameStemPattern(listedfile) + '.',     nameStemPattern(inVerFullpath_name) + '.'))
+                                        #print('{} vs {}'.format(nameStemPattern(listedfile) + '.',     inVerFullpath_stem + '.'))
+                                        #if (nameStemPattern(listedfile) + '.') == (inVerFullpath_stem + '.'):
+                                        #print('{} vs {}'.format(nameStemPattern(listedfile) + '.',     nameStemPattern(inVerFullpath_name) + '.'))
 
 
 
@@ -1907,34 +1916,36 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-                                    print('check if-condition 5 of 5')
-                                    if (nameStemPattern(listedfile) + '.') == (nameStemPattern(inVerFullpath_name) + '.'):
-                                        #print('                         : {}'.format(nameStemPattern(listedfile) + '.'))
-                                        #print('Matched pattern filename : {}'.format(listedfile))
+                                        print('check if-condition 6 of 6')
+                                        if (nameStemPattern(listedfile) + '.') == (nameStemPattern(inVerFullpath_name) + '.'):
+                                            #print('                         : {}'.format(nameStemPattern(listedfile) + '.'))
+                                            #print('Matched pattern filename : {}'.format(listedfile))
 
-                                        latestVerPathPattern = compareVerPathPattern
-                                        latestVerBaseName = compareBaseName
+                                            latestVerPathPattern = compareVerPathPattern
+                                            latestVerBaseName = compareBaseName
 
-                                        print('<><>'*80 + '\n' + latestVerPathPattern +'\n' + '<><>'*80)
-                                        print('latestVerBaseName FOUND :' + latestVerBaseName)
+                                            print('<><>'*80 + '\n' + latestVerPathPattern +'\n' + '<><>'*80)
+                                            print('latestVerBaseName FOUND :' + latestVerBaseName)
+                                            break
+                                        else:
+                                            #print('No Match pattern filename : x x x')
+
+                                            pass
+
+
+                                    if latestVerBaseName != None:
+                                        #print('269 break')
                                         break
-                                    else:
-                                        #print('No Match pattern filename : x x x')
-
-                                        pass
-
-
-                                if latestVerBaseName != None:
-                                    #print('269 break')
-                                    break
+                                else:
+                                    print('Failed after check if-condition 5 of 6')
                             else:
-                                print('Failed after check if-condition 4 of 5')
+                                print('Failed after check if-condition 4 of 6')
                         else:
-                            print('Failed after check if-condition 3 of 5')
+                            print('Failed after check if-condition 3 of 6')
                     else:
-                        print('Failed after check if-condition 2 of 5')
+                        print('Failed after check if-condition 2 of 6')
                 else:
-                    print('Failed after check if-condition 1 of 5')
+                    print('Failed after check if-condition 1 of 6')
 
 
             print('Latest WIP folder :')
@@ -2067,7 +2078,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             separator.setSizeHint(QSize(0, 1))
             #separator.setBackground(QColor("black"))
             separator.setBackground(QColor(50, 50, 50, 255)) #RGBA 0-255
-            #separator.setFlags(Qt.NoItemFlags)
+            separator.setFlags(Qt.NoItemFlags)
             self.sceneUpdateUi.listWidget.addItem(separator)
 
         self.sceneUpdateUi.show()
@@ -2393,6 +2404,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             keywords.append(i.replace('\n', ""))
 
         self.printEcho(keywords)
+        #for PySide6
         self.prerendKeywordsContent = keywords
 
         self.prerendKeywordUi.label.setText('Input a sub-name for sub-folderName and sub-framename :')
@@ -2411,6 +2423,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.prerendKeywordUi.pushButton_2.clicked.connect(lambda : self.nukeBornWriteNode('Prerend', self.prerendKeywordUi.lineEdit.text()))
         #self.prerendKeywordUi.pushButton_2.clicked.connect(lambda : self.prerendKeywordUi.close())
         self.prerendKeywordUi.pushButton_3.clicked.connect(lambda : self.prerendKeywordUi.close())
+
+        # for PySide2 as str
+        #self.prerendKeywordUi.comboBox.activated[str].connect(self.prerendKeywordAction)
+        # for PySide6 as int
         self.prerendKeywordUi.comboBox.activated[int].connect(self.prerendKeywordAction)
 
 
@@ -2418,6 +2434,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> prerendKeywordAction')
         self.printEcho(item)
 
+		# PySide6
         item = self.prerendKeywordsContent[item]
 
         self.prerendKeywordUi.lineEdit.setText(item)
@@ -2473,6 +2490,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             keywords.append(i.replace('\n', ""))
 
         self.printEcho(keywords)
+
+        # for PySide6
         self.newTaskKeywordsContent = keywords
 
         self.newTaskKeywordUi.label.setText('Input a sub-name for sub-folderName and sub-framename :')
@@ -2492,6 +2511,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.newTaskKeywordUi.pushButton_2.clicked.connect(lambda : self.newTaskOKButtonAction(self.newTaskKeywordUi.lineEdit.text()))
         self.newTaskKeywordUi.pushButton_3.clicked.connect(lambda : self.newTaskKeywordUi.close())
+        # for PySide2 as str
+        #self.newTaskKeywordUi.comboBox.activated[str].connect(self.newTaskKeywordAction)
+        # for PySide6 as int
         self.newTaskKeywordUi.comboBox.activated[int].connect(self.newTaskKeywordAction)
 
 
@@ -2499,6 +2521,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> newTaskKeywordAction')
         self.printEcho(item)
 
+		# for PySide6
         item = self.newTaskKeywordsContent[item]
 
         self.newTaskKeywordUi.lineEdit.setText(item)
@@ -5116,6 +5139,7 @@ class subListView(UiList.Ui_MainWindow, QMainWindow):
         super(subListView, self).__init__(parent)
         self.setupUi(self)
         self.setWindowModality(Qt.ApplicationModal)
+
 
 class SceneUpDateListView(UiListB.Ui_MainWindow, QMainWindow):
     def __init__(self, parent = None):
