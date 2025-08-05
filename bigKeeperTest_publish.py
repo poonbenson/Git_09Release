@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250805e'
+winTitlePrefix = 'BigKeeper_20250805f'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -1358,6 +1358,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('value in role3CurrentLongWithTail   : {}'.format(inItem.data(role3CurrentLongWithTail)))
             self.printEcho('value in role4LatestBasename        : {}'.format(inItem.data(role4LatestBasename)))
             self.printEcho('value in role5LatestLongWithTail    : {}'.format(inItem.data(role5LatestLongWithTail)))
+            self.printEcho('value in role6NodeClass             : {}'.format(inItem.data(role6NodeClass)))
 
 
         def findNodeWithFileKnob():
@@ -1877,24 +1878,28 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             # .items() gives us both the key (nodeName) and value (filePath) for each entry.
             for nodeName in foundNodeNamesWithFileKnob:
                 theNode = nuke.toNode(nodeName)
+                theNodeClass = theNode.Class()
                 theNodeName = theNode.knob('name').value()
                 theNodeFilepath = theNode.knob('file').value()
                 print()
                 print(f"Node Name: {theNodeName}")
+                print(f"Node Class : {theNodeClass}")
                 print(f"File Path: {theNodeFilepath}")
+
 
                 versionPathInfo = CheckVerPath(theNodeFilepath)
                 print('versionPathInfo :')
-                print(versionPathInfo[0])
-                print(versionPathInfo[1])
-                print(versionPathInfo[2])
-                print(versionPathInfo[3])
-                print(versionPathInfo[4])
-                print(versionPathInfo[5])
+                print(f'versionPathInfo[0] : {versionPathInfo[0]}')
+                print(f'versionPathInfo[1] : {versionPathInfo[1]}')
+                print(f'versionPathInfo[2] : {versionPathInfo[2]}')
+                print(f'versionPathInfo[3] : {versionPathInfo[3]}')
+                print(f'versionPathInfo[4] : {versionPathInfo[4]}')
+                print(f'versionPathInfo[5] : {versionPathInfo[5]}')
+
 
 
                 if versionPathInfo[0] != None:
-                    dictFoundVersionNodes.update({nodeName : [versionPathInfo[0], versionPathInfo[1], versionPathInfo[2], os.path.normpath(theNodeFilepath), versionPathInfo[3], versionPathInfo[4]]})
+                    dictFoundVersionNodes.update({nodeName : [versionPathInfo[0], versionPathInfo[1], versionPathInfo[2], os.path.normpath(theNodeFilepath), versionPathInfo[3], versionPathInfo[4], theNodeClass]})
 
                 print()
                 print("-" * 20)
@@ -1916,8 +1921,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #                                           3 currentVersion Basename Longpath with tail> N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0011\pearlA_rlyr\pearlA_rlyr.Cryptomatte.%04d.exr
         #                                           4 currentVersion Fullpath                   > N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0011\pearlA_rlyr
         #                                           5 currentVersion filename                   > None
-        #                                           6 LatestVersion Basename Longpath with tail > N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0021\pearlA_rlyr
-        #                                           7 LatestVersion Basename                    > five0010_lightPearl_wip_v0021
+        #                                           6 Node Class                                > Read
+        #                                           7 LatestVersion Basename Longpath with tail > N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0021\pearlA_rlyr
+        #                                           8 LatestVersion Basename                    > five0010_lightPearl_wip_v0021
         #                                           ]
 
 
@@ -1937,6 +1943,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         role3CurrentLongWithTail    = Qt.UserRole + 3
         role4LatestBasename         = Qt.UserRole + 4
         role5LatestLongWithTail     = Qt.UserRole + 5
+        role6NodeClass              = Qt.UserRole + 6
 
         for keyNodeName in listFoundVersionNodeName:
             print('\nisLatestVersion(keyNodeName, dictFoundVersionNodes.get(keyNodeName)[0], dictFoundVersionNodes.get(keyNodeName)[1], dictFoundVersionNodes.get(keyNodeName)[2], dictFoundVersionNodes.get(keyNodeName)[3])')
@@ -1964,18 +1971,18 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             item = QListWidgetItem()
             item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
             item.setCheckState(Qt.Checked)
-            #item.setText('\n' + keyNodeName + '\n' + dictFoundVersionNodes.get(keyNodeName)[1] + '\n' + latestVersionPath[1] + '\n' + str(latestVersionPath[0]) + '\n')
-            #showText = (f'\n{keyNodeName}\n{dictFoundVersionNodes.get(keyNodeName)[1]}\n---\n{latestVersionPath[1]}\n{str(latestVersionPath[0])}\n')
 
             showCurrentLongWithTail = str(dictFoundVersionNodes.get(keyNodeName)[4]).replace(os.sep, '/')
-            showNewLongWithTail     = str(dictFoundVersionNodes.get(keyNodeName)[6]).replace(os.sep, '/')
-            showText = (f'\n< {keyNodeName} >\n{dictFoundVersionNodes.get(keyNodeName)[1]}\n{showCurrentLongWithTail}\n---\n{dictFoundVersionNodes.get(keyNodeName)[7]}\n{showNewLongWithTail}\n')
+            showNewLongWithTail     = str(dictFoundVersionNodes.get(keyNodeName)[7]).replace(os.sep, '/')
+            showText = (f'\n< {keyNodeName} >      [{dictFoundVersionNodes.get(keyNodeName)[6]}]\n{dictFoundVersionNodes.get(keyNodeName)[1]}\n{showCurrentLongWithTail}\n---\n{dictFoundVersionNodes.get(keyNodeName)[8]}\n{showNewLongWithTail}\n')
             item.setText(showText)
+
             item.setData(role1Nodename              , keyNodeName)
             item.setData(role2CurrentBasename       , dictFoundVersionNodes.get(keyNodeName)[1])
             item.setData(role3CurrentLongWithTail   , showCurrentLongWithTail)
-            item.setData(role4LatestBasename        , dictFoundVersionNodes.get(keyNodeName)[7])
+            item.setData(role4LatestBasename        , dictFoundVersionNodes.get(keyNodeName)[8])
             item.setData(role5LatestLongWithTail    , showNewLongWithTail)
+            item.setData(role6NodeClass             , dictFoundVersionNodes.get(keyNodeName)[6])
 
 
             self.sceneUpdateUi.listWidget.addItem(item)
