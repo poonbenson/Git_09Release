@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250805c'
+winTitlePrefix = 'BigKeeper_20250805d'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -1261,6 +1261,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             self.sceneUpdateUi.listWidget.itemClicked.connect(itemClickedAction)
 
+
         def updateAllAction():
             self.printEcho(self.sceneUpdateUi.listWidget.count())
 
@@ -1358,7 +1359,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         def itemClickedAction(inItem):
             self.printEcho('inItem : {}'.format(inItem))
-            self.printEcho('inItem.text() Clicked: {}'.format(inItem.text()))
+            self.printEcho('inItem.text() Clicked               : {}'.format(inItem.text()))
+            self.printEcho('value in role1Nodename              : {}'.format(inItem.data(role1Nodename)))
+            self.printEcho('value in role2CurrentBasename       : {}'.format(inItem.data(role2CurrentBasename)))
+            self.printEcho('value in role3CurrentLongWithTail   : {}'.format(inItem.data(role3CurrentLongWithTail)))
+            self.printEcho('value in role4LatestBasename        : {}'.format(inItem.data(role4LatestBasename)))
+            self.printEcho('value in role5LatestLongWithTail    : {}'.format(inItem.data(role5LatestLongWithTail)))
+
 
         def findNodeWithFileKnob():
             """
@@ -1916,8 +1923,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #                                           3 currentVersion Basename Longpath with tail> N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0011\pearlA_rlyr\pearlA_rlyr.Cryptomatte.%04d.exr
         #                                           4 currentVersion Fullpath                   > N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0011\pearlA_rlyr
         #                                           5 currentVersion filename                   > None
-        #                                           6 LatestVersion Basename                    > N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0021\pearlA_rlyr
-        #                                           7 LatestVersion Basename Longpath with tail > five0010_lightPearl_wip_v0021
+        #                                           6 LatestVersion Basename Longpath with tail > N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0021\pearlA_rlyr
+        #                                           7 LatestVersion Basename                    > five0010_lightPearl_wip_v0021
         #                                           ]
 
 
@@ -1931,6 +1938,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
         counter = 0
+
+        role1Nodename               = Qt.UserRole + 1
+        role2CurrentBasename        = Qt.UserRole + 2
+        role3CurrentLongWithTail    = Qt.UserRole + 3
+        role4LatestBasename         = Qt.UserRole + 4
+        role5LatestLongWithTail     = Qt.UserRole + 5
+
         for keyNodeName in listFoundVersionNodeName:
             print('\nisLatestVersion(keyNodeName, dictFoundVersionNodes.get(keyNodeName)[0], dictFoundVersionNodes.get(keyNodeName)[1], dictFoundVersionNodes.get(keyNodeName)[2], dictFoundVersionNodes.get(keyNodeName)[3])')
             #print(dictFoundVersionNodes.get(keyNodeName)[2])
@@ -1964,6 +1978,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             showNewLongWithTail     = str(dictFoundVersionNodes.get(keyNodeName)[6]).replace(os.sep, '/')
             showText = (f'\n< {keyNodeName} >\n{dictFoundVersionNodes.get(keyNodeName)[1]}\n{showCurrentLongWithTail}\n---\n{dictFoundVersionNodes.get(keyNodeName)[7]}\n{showNewLongWithTail}\n')
             item.setText(showText)
+            item.setData(role1Nodename              , keyNodeName)
+            item.setData(role2CurrentBasename       , dictFoundVersionNodes.get(keyNodeName)[1])
+            item.setData(role3CurrentLongWithTail   , showCurrentLongWithTail)
+            item.setData(role4LatestBasename        , dictFoundVersionNodes.get(keyNodeName)[7])
+            item.setData(role5LatestLongWithTail    , showNewLongWithTail)
+
+
             self.sceneUpdateUi.listWidget.addItem(item)
 
             separator = QListWidgetItem()
