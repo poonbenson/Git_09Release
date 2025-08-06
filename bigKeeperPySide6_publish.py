@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250806d'
+winTitlePrefix = 'BigKeeper_20250806e'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -1306,6 +1306,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.sceneUpdateUi.listWidget.itemClicked.connect(itemClickedAction)
 
 
+            self.sceneUpdateUi.pushButton_exec_1.setVisible(False)
+            self.sceneUpdateUi.pushButton_exec_5.setVisible(False)
+
+
         def updateAllAction():
             self.printEcho(self.sceneUpdateUi.listWidget.count())
 
@@ -1927,6 +1931,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             # Loop through every single row in the QListWidget
             print('self.sceneUpdateUi.listWidget.count() :: {}'.format(self.sceneUpdateUi.listWidget.count()))
 
+            outdatedCounter = 0
+
             for i in range(self.sceneUpdateUi.listWidget.count()):
                 print('=====>>>>> i : {}'.format(i))
                 item = self.sceneUpdateUi.listWidget.item(i)
@@ -1957,6 +1963,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 is_visible = False
                 if status == "OutDated" and show_outdated:
                     is_visible = True
+                    outdatedCounter += 1
                 elif status == "up-to-date" and show_up_to_date:
                     is_visible = True
                     FontObject = QFont()
@@ -1979,6 +1986,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         separator_item.setHidden(not is_visible)
 
                 print('i : {} <<<<<=====\n'.format(i))
+
+            self.sceneUpdateUi.TextLabel.setText('Number of Out Dated Node : {}'.format(outdatedCounter))
 
         # Body ============================
 
