@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250805f'
+winTitlePrefix = 'BigKeeper_20250806b'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -1295,6 +1295,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.sceneUpdateUi.pushButton_exec_5.setText('Toggle All')
             self.sceneUpdateUi.pushButton_exec_5.clicked.connect(toggleAllAction)
 
+            self.sceneUpdateUi.checkBox_1.setText('Out Dated')
+            self.sceneUpdateUi.checkBox_1.setChecked(True)
+            self.sceneUpdateUi.checkBox_1.stateChanged.connect(apply_filter)
+
+            self.sceneUpdateUi.checkBox_2.setText('Up-To-Date')
+            self.sceneUpdateUi.checkBox_2.setChecked(False)
+            self.sceneUpdateUi.checkBox_2.stateChanged.connect(apply_filter)
+
             self.sceneUpdateUi.listWidget.itemClicked.connect(itemClickedAction)
 
 
@@ -1323,8 +1331,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             for j in sorted(itemsToBeTakenAway, reverse=True):
                 print(j)
-                self.sceneUpdateUi.listWidget.takeItem(j)
+                #self.sceneUpdateUi.listWidget.takeItem(j)
+                self.sceneUpdateUi.listWidget.item(j).setData(roleStatus, "up-to-date")
+                self.sceneUpdateUi.listWidget.item(j).setData(role2CurrentBasename, self.sceneUpdateUi.listWidget.item(j).data(role4LatestBasename))
+                self.sceneUpdateUi.listWidget.item(j).setData(role3CurrentLongWithTail, self.sceneUpdateUi.listWidget.item(j).data(role5LatestLongWithTail))
             print('{} Row of listwidget removed.'.format(len(itemsToBeTakenAway)))
+
+            apply_filter()
 
 
             #self.printEcho(selectedItem)
@@ -1381,20 +1394,24 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         def toggleAllAction():
             for i in range(self.sceneUpdateUi.listWidget.count()):
                 listedEachItem = self.sceneUpdateUi.listWidget.item(i)
-                if listedEachItem.checkState() == Qt.Checked:
-                    listedEachItem.setCheckState(Qt.Unchecked)
-                else:
-                    listedEachItem.setCheckState(Qt.Checked)
+                if listedEachItem.data(roleStatus) != "separatorItem":
+                    if listedEachItem.checkState() == Qt.Checked:
+                        listedEachItem.setCheckState(Qt.Unchecked)
+                    else:
+                        listedEachItem.setCheckState(Qt.Checked)
 
         def itemClickedAction(inItem):
             self.printEcho('inItem : {}'.format(inItem))
             self.printEcho('inItem.text() Clicked               : {}'.format(inItem.text()))
+            self.printEcho('value in roleStatus                 : {}'.format(inItem.data(roleStatus)))
             self.printEcho('value in role1Nodename              : {}'.format(inItem.data(role1Nodename)))
             self.printEcho('value in role2CurrentBasename       : {}'.format(inItem.data(role2CurrentBasename)))
             self.printEcho('value in role3CurrentLongWithTail   : {}'.format(inItem.data(role3CurrentLongWithTail)))
             self.printEcho('value in role4LatestBasename        : {}'.format(inItem.data(role4LatestBasename)))
             self.printEcho('value in role5LatestLongWithTail    : {}'.format(inItem.data(role5LatestLongWithTail)))
             self.printEcho('value in role6NodeClass             : {}'.format(inItem.data(role6NodeClass)))
+            self.printEcho('value in role11DisplayText          : {}'.format(inItem.data(role11DisplayText)))
+
 
 
         def findNodeWithFileKnob():
@@ -1895,6 +1912,52 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             print(latestVerBaseName)
             return latestVerPathPattern, str(latestVerBaseName)
 
+
+        def apply_filter():
+            '''
+            This is the core filtering logic. It loops through all items in the list
+            and hides or shows them based on the filter checkboxes.
+            '''
+            show_outdated = self.sceneUpdateUi.checkBox_1.isChecked()
+            show_up_to_date = self.sceneUpdateUi.checkBox_2.isChecked()
+
+            self.printEcho('show_outdated value   : {}'.format(show_outdated))
+            self.printEcho('show_up_to_date value : {}'.format(show_up_to_date))
+
+            # Loop through every single row in the QListWidget
+            print('self.sceneUpdateUi.listWidget.count() :: {}'.format(self.sceneUpdateUi.listWidget.count()))
+
+            for i in range(self.sceneUpdateUi.listWidget.count()):
+                print('=====>>>>> i : {}'.format(i))
+                item = self.sceneUpdateUi.listWidget.item(i)
+                status = item.data(roleStatus) # Get the status we stored earlier
+                print('item   : {}'.format(item))
+                print('status : {}'.format(status))
+
+                # We handle separators with their preceding item, so we skip them here.
+                if status == "separatorItem":
+                    continue
+
+                # Default to hidden, then show if it matches a checked filter
+                is_visible = False
+                if status == "OutDated" and show_outdated:
+                    is_visible = True
+                elif status == "up-to-date" and show_up_to_date:
+                    is_visible = True
+
+                # Set the item's visibility based on the logic above
+                item.setHidden(not is_visible)
+
+                # Now, handle the separator that follows the item.
+                # Check if there is a next item and if it's our separator.
+                if (i + 1) < self.sceneUpdateUi.listWidget.count():
+                    separator_item = self.sceneUpdateUi.listWidget.item(i + 1)
+                    if separator_item.data(roleStatus) == "separatorItem":
+                        # Hide or show the separator to match the item above it
+                        separator_item.setHidden(not is_visible)
+
+                print('i : {} <<<<<=====\n'.format(i))
+
         # Body ============================
 
         initializeUi()
@@ -1958,7 +2021,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #                                           4 currentVersion Fullpath                   > N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0011\pearlA_rlyr
         #                                           5 currentVersion filename                   > None
         #                                           6 Node Class                                > Read
-        #                                           7 LatestVersion Basename Longpath with tail > N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0021\pearlA_rlyr
+        #                                           7 LatestVersion Fullpath                    > N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0021\pearlA_rlyr
         #                                           8 LatestVersion Basename                    > five0010_lightPearl_wip_v0021
         #                                           ]
 
@@ -1974,12 +2037,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         counter = 0
 
+        roleStatus                  = Qt.UserRole
         role1Nodename               = Qt.UserRole + 1
         role2CurrentBasename        = Qt.UserRole + 2
         role3CurrentLongWithTail    = Qt.UserRole + 3
         role4LatestBasename         = Qt.UserRole + 4
         role5LatestLongWithTail     = Qt.UserRole + 5
         role6NodeClass              = Qt.UserRole + 6
+        role11DisplayText            = Qt.UserRole + 11
+
 
         for keyNodeName in listFoundVersionNodeName:
             print('\nisLatestVersion(keyNodeName, dictFoundVersionNodes.get(keyNodeName)[0], dictFoundVersionNodes.get(keyNodeName)[1], dictFoundVersionNodes.get(keyNodeName)[2], dictFoundVersionNodes.get(keyNodeName)[3])')
@@ -2000,9 +2066,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 counterFor += 1
             print()
 
-
-
-
             counter += 1
             item = QListWidgetItem()
             item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
@@ -2010,15 +2073,55 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             showCurrentLongWithTail = str(dictFoundVersionNodes.get(keyNodeName)[4]).replace(os.sep, '/')
             showNewLongWithTail     = str(dictFoundVersionNodes.get(keyNodeName)[7]).replace(os.sep, '/')
-            showText = (f'\n< {keyNodeName} >      [{dictFoundVersionNodes.get(keyNodeName)[6]}]\n{dictFoundVersionNodes.get(keyNodeName)[1]}\n{showCurrentLongWithTail}\n---\n{dictFoundVersionNodes.get(keyNodeName)[8]}\n{showNewLongWithTail}\n')
-            item.setText(showText)
+            #showText = (f'\n< {keyNodeName} >      [{dictFoundVersionNodes.get(keyNodeName)[6]}]\n{dictFoundVersionNodes.get(keyNodeName)[1]}\n{showCurrentLongWithTail}\n---\n{dictFoundVersionNodes.get(keyNodeName)[8]}\n{showNewLongWithTail}\n')
+            #item.setText(showText)
 
+            print('<{}>'.format(showCurrentLongWithTail))
+            print(type(showCurrentLongWithTail))
+            print('          vs')
+            print(type(showNewLongWithTail))
+            print('<{}>'.format(showNewLongWithTail))
+
+
+            if showCurrentLongWithTail == showNewLongWithTail:
+                showStatus = "up-to-date"
+                item.setBackground(QColor(20, 250, 20, 20)) #RGBA 0-255
+                #item.setTextColor(QColor(20, 255, 20, 255)) #RGBA 0-255
+
+
+            else:
+                outDatedFont = QFont()
+                outDatedFont.setBold(True)
+                showStatus = "OutDated"
+                item.setBackground(QColor(255, 10, 10, 125)) #RGBA 0-255
+                #item.setTextColor(QColor(250, 20, 20, 255)) #RGBA 0-255
+                item.setFont(outDatedFont)
+
+
+
+            print('showStatus ::: {}'.format(showStatus))
+
+            item.setData(roleStatus                 , showStatus)
             item.setData(role1Nodename              , keyNodeName)
             item.setData(role2CurrentBasename       , dictFoundVersionNodes.get(keyNodeName)[1])
             item.setData(role3CurrentLongWithTail   , showCurrentLongWithTail)
             item.setData(role4LatestBasename        , dictFoundVersionNodes.get(keyNodeName)[8])
             item.setData(role5LatestLongWithTail    , showNewLongWithTail)
             item.setData(role6NodeClass             , dictFoundVersionNodes.get(keyNodeName)[6])
+
+
+            showText = (f'\n'
+                        f'< {item.data(role1Nodename)} >               [{item.data(role6NodeClass)}]\n'
+                        f'{item.data(role2CurrentBasename)}     :::     {item.data(role4LatestBasename)}\n'
+                        f'\n'
+                        f'Latest path : {item.data(role5LatestLongWithTail)}'
+                        f'\n')
+
+            item.setData(role11DisplayText           , showText)
+            item.setText(item.data(role11DisplayText))
+
+
+
 
 
             self.sceneUpdateUi.listWidget.addItem(item)
@@ -2028,9 +2131,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             #separator.setBackground(QColor("black"))
             separator.setBackground(QColor(50, 50, 50, 255)) #RGBA 0-255
             separator.setFlags(Qt.NoItemFlags)
+            separator.setData(roleStatus                 , "separatorItem")
             self.sceneUpdateUi.listWidget.addItem(separator)
 
         self.sceneUpdateUi.show()
+        apply_filter()
 
 
 
