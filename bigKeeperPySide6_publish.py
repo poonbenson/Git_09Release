@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250806b'
+winTitlePrefix = 'BigKeeper_20250806c'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -1930,6 +1930,21 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             for i in range(self.sceneUpdateUi.listWidget.count()):
                 print('=====>>>>> i : {}'.format(i))
                 item = self.sceneUpdateUi.listWidget.item(i)
+
+                showText = (f'\n'
+                            f'< {item.data(role1Nodename)} >               [{item.data(role6NodeClass)}]\n'
+                            f'{item.data(role2CurrentBasename)}     :::     {item.data(role4LatestBasename)}\n'
+                            f'\n'
+                            f'Latest path : {item.data(role5LatestLongWithTail)}'
+                            f'\n')
+
+                print(item.data(role2CurrentBasename))
+                print('Updated showText :')
+                print(showText)
+
+                item.setText(showText)
+
+
                 status = item.data(roleStatus) # Get the status we stored earlier
                 print('item   : {}'.format(item))
                 print('status : {}'.format(status))
@@ -1944,6 +1959,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     is_visible = True
                 elif status == "up-to-date" and show_up_to_date:
                     is_visible = True
+                    FontObject = QFont()
+                    FontObject.setBold(False)
+                    item.setBackground(QColor(20, 250, 20, 20)) #RGBA 0-255
+                    #item.setTextColor(QColor(20, 255, 20, 255)) #RGBA 0-255
+                    item.setFont(FontObject)
 
                 # Set the item's visibility based on the logic above
                 item.setHidden(not is_visible)
