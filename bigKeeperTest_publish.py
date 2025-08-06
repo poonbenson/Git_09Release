@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250806c'
+winTitlePrefix = 'BigKeeper_20250806d'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -1928,6 +1928,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     item.setBackground(QColor(20, 250, 20, 20)) #RGBA 0-255
                     #item.setTextColor(QColor(20, 255, 20, 255)) #RGBA 0-255
                     item.setFont(FontObject)
+                    item.setCheckState(Qt.Unchecked)
+                    item.setFlags(Qt.NoItemFlags)
 
                 # Set the item's visibility based on the logic above
                 item.setHidden(not is_visible)
