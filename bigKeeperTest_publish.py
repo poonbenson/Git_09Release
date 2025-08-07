@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250807d'
+winTitlePrefix = 'BigKeeper_20250807e'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -1323,24 +1323,20 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             theNodeName = theNode.knob('name').value()
             theNodeFilepath = theNode.knob('file').value()
 
-            print('perSelectedAction :')
-            print(inNodeName)
-            print(theNodeFilepath)
-            print(inCurrent)
-            print(inNew)
+            self.printEcho('perSelectedAction :')
+            self.printEcho(inNodeName)
+            self.printEcho(theNodeFilepath)
+            self.printEcho(inCurrent)
+            self.printEcho(inNew)
 
             updatedContent = theNodeFilepath.replace(inCurrent, inNew)
             theNode.knob('file').setValue(updatedContent)
 
-            print('line1345')
-            print(theNode.knob('file').value())
-            print(updatedContent)
-
             if theNode.knob('file').value() == updatedContent:
-                print('checked, < {} > is updated.'.format(inNodeName))
+                self.printEcho('checked, < {} > is updated.'.format(inNodeName))
                 return True
             else:
-                print('*** check fail, < {} > update F A I L ! ! ! ***'.format(inNodeName))
+                self.printEcho('*** check fail, < {} > update F A I L ! ! ! ***'.format(inNodeName))
                 return False
 
 
@@ -1494,7 +1490,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 else:
 
                     if pathBasename.lower().startswith('v'):
-                        print('{} - startswith v'.format(pathBasename.lower()))
+                        self.printEcho('{} - startswith v'.format(pathBasename.lower()))
                         if len(pathBasename) > 1 and pathBasename[1].isdigit():
 
                             version_part = 'v'
@@ -1517,12 +1513,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                             break # Stop the loop.
                     else:
-                        print('{} - Not startswith v'.format(pathBasename.lower()))
+                        self.printEcho('{} - Not startswith v'.format(pathBasename.lower()))
 
             return found_version, found_version_basename, found_version_longpath, found_version_fullpath, found_version_filename, found_version_fullparent
 
         def isNumPadPattern(inString):
-            print('\ndef >>>>> isNumPadPattern')
+            #self.printEcho('\ndef >>>>> isNumPadPattern')
             # all number
             # all @
             # all #
@@ -1567,9 +1563,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             return loopToken
 
         def nameStemPattern(inString):
-            print('\ndef >>>>> nameStemPattern')
+            #self.printEcho('\ndef >>>>> nameStemPattern')
 
-            print('inString : {}'.format(inString))
+            #self.printEcho('inString : {}'.format(inString))
             splitedString = inString.split('.')
             splitedString.reverse()
             outputStringList = []
@@ -1602,24 +1598,24 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             return outputString[1::]
 
         def isVersionPattern(inString):
-            print('\ndef >>>>> isVersionPattern')
+            self.printEcho('\ndef >>>>> isVersionPattern')
 
             if inString.startswith('v') or inString.startswith('V'):
-                print('inString : {} is startswith "v" or "V".'.format(inString))
+                self.printEcho('inString : {} is startswith "v" or "V".'.format(inString))
                 if inString[1::].isdigit:
-                    print('inString : {} is startswith "v" or "V" and the rest are isdigit. it is a version pattern.'.format(inString))
+                    self.printEcho('inString : {} is startswith "v" or "V" and the rest are isdigit. it is a version pattern.'.format(inString))
                     returnValue = True
                 else:
-                    print('inString : {} is startswith "v" or "V" and the rest are NOT isdigit. NOT version pattern.'.format(inString))
+                    self.printEcho('inString : {} is startswith "v" or "V" and the rest are NOT isdigit. NOT version pattern.'.format(inString))
                     returnValue = False
             else:
-                print('inString : {} is not startswith "v" or "V". NOT version pattern'.format(inString))
+                self.printEcho('inString : {} is not startswith "v" or "V". NOT version pattern'.format(inString))
                 returnValue = False
 
             return returnValue
 
         def versionPatternFrontOrEnd(inStringA, inStringB):
-            print('\ndef >>>>> versionPatternFrontOrEnd')
+            self.printEcho('\ndef >>>>> versionPatternFrontOrEnd')
 
             if inStringA.endswith(inStringB):
                 return 'End'
@@ -1630,9 +1626,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
         def isLatestVersion(inNodeName, inVer, inVerBasename, inVerLongpath, inVerFullpath):
-            print('\ndef >>>>> isLatestVersion')
-
-            print('---\ninNodeName : {}\ninVer: {}\ninVerBasename : {}\ninVerLongpath : {}\ninVerFullpath : {}\n---'.format(inNodeName, inVer, inVerBasename, inVerLongpath, inVerFullpath))
+            println('\ndef >>>>> isLatestVersion')
+            println('\n\n\n\n\ninNodeName : {}\ninVer: {}\ninVerBasename : {}\ninVerLongpath : {}\ninVerFullpath : {}\n---'.format(inNodeName, inVer, inVerBasename, inVerLongpath, inVerFullpath))
 
             ''' Result example:
             ---
@@ -1665,31 +1660,23 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             '''
             inVerPathObjLong = pathlib.Path(inVerLongpath)
-            print('inVerPathObjLong.parent : {}'.format(inVerPathObjLong.parent))
-
             inVerLongpath_tail = inVerFullpath[len(str(inVerLongpath))::]
-            print('inVerLongpath_tail : {}'.format(inVerLongpath_tail))
-
             inVerFullpath_name = os.path.basename(inVerFullpath)
-            print('inVerFullpath_name : {}'.format(inVerFullpath_name))
-
             inVerFullpath_stem = os.path.basename(inVerFullpath).split('.')[0]
-            print('inVerFullpath_stem : {}'.format(inVerFullpath_stem))
-
 
 
 
             # use parent path to find all versions
             listFolders = os.listdir(inVerPathObjLong.parent)
             listFolders.sort()
-            print(listFolders)
+            self.printEcho(listFolders)
 
 
 
             # check path match without Basename
             #       find out index number of inVerBasename from the listFrolder
             inVerBasenameIndex = listFolders.index(inVerBasename)
-            print('inVerBasenameIndex : {}'.format(inVerBasenameIndex))
+            self.printEcho('inVerBasenameIndex : {}'.format(inVerBasenameIndex))
 
             inVerBasenameNoVersion = inVerBasename.removesuffix(inVer)
             if inVerBasenameNoVersion != inVerBasename:
@@ -1697,15 +1684,16 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             else:
                 inVerBasenameNoVersion = inVerBasename.removeprefix(inVer)
                 versionIsSuffix = False
-            print('inVerBasenameNoVersion : {}'.format(inVerBasenameNoVersion))
-            print()
+            self.printEcho('inVerBasenameNoVersion : {}'.format(inVerBasenameNoVersion))
+            self.printEcho('\n')
+
 
             latestVerPathPattern = None
 
             # Reverse the List to start backward from the highest version
             listFolders.sort(reverse = True)
             for i in listFolders:
-                print('\ni :' + i)
+                println('\ni : <folder> ' + i)
                 #compareBaseName = listFolders[i + (inVerBasenameIndex + 1)]
                 compareBaseName = i
                 latestVerBaseName = None
@@ -1717,21 +1705,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-                print('check if-condition 1 of 6')
+                self.printEcho('check if-condition 1 of 6')
                 '''
                 check the < number of Digit > of the VerBasename:
                                         v#### == v####
                                   V####_layer == v####_layer
                 five0010_lightPearl_wip_v#### == five0010_lightPearl_wip_v####
                 '''
-                print('if len(compareBaseName) == len(inVerBasename):')
-                print(f'len({compareBaseName}) vs len({inVerBasename})')
                 if len(compareBaseName) == len(inVerBasename):
-                    print(len(inVer))
-                    print(inVerBasenameNoVersion)
 
-                    print('versionPatternFrontOrEnd:')
-                    print(versionPatternFrontOrEnd(inVerBasename, inVer))
 
                     if versionPatternFrontOrEnd(inVerBasename, inVer) == 'End':
                         compareBaseNameSplit_noVersion = compareBaseName.removesuffix(compareBaseName[len(inVer) * -1::])
@@ -1745,7 +1727,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-                    print('check if-condition 2 of 6')
+                    self.printEcho('check if-condition 2 of 6')
                     '''
                     check basename without Version :
                                           <Empty> == <Empty> (eg. v####)
@@ -1753,26 +1735,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                          five0010_lightPearl_wip_ == five0010_lightPearl_wip_
 
                     '''
-                    print('compareBaseNameSplit_noVersion :{}'.format(compareBaseNameSplit_noVersion))
-                    print('inVerBasenameNoVersion :{}'.format(inVerBasenameNoVersion))
                     if compareBaseNameSplit_noVersion == inVerBasenameNoVersion:
 
-                        print(compareBaseName)
-                        print('lstrip /rstrip with : ' + compareBaseNameSplit_noVersion )
                         if versionPatternFrontOrEnd(inVerBasename, inVer) == 'End':
-                            print('line 262')
-                            print(compareBaseName)
-                            print(compareBaseNameSplit_noVersion)
-                            print(compareBaseName.lstrip(compareBaseNameSplit_noVersion))
                             compareBaseNameSplit_AfterInVer = compareBaseName.removeprefix(compareBaseNameSplit_noVersion)
+
                         elif versionPatternFrontOrEnd(inVerBasename, inVer) == 'Front':
-                            print('line 268')
-                            print(compareBaseName)
-                            print(compareBaseNameSplit_noVersion)
-                            print(compareBaseName.rstrip(compareBaseNameSplit_noVersion))
                             compareBaseNameSplit_AfterInVer = compareBaseName.removesuffix(compareBaseNameSplit_noVersion)
-                        print('compareBaseNameSplit_AfterInVer : {}'.format(compareBaseNameSplit_AfterInVer))
-                        print('line274')
+
+                        self.printEcho('compareBaseNameSplit_AfterInVer : {}'.format(compareBaseNameSplit_AfterInVer))
 
 
 
@@ -1781,7 +1752,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-                        print('check if-condition 3 of 6')
+                        self.printEcho('check if-condition 3 of 6')
                         '''
                         check version pattern starts with "v" or "V"
                                         v???? == v????
@@ -1798,26 +1769,25 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-                            print('check if-condition 4 of 6')
+                            self.printEcho('check if-condition 4 of 6')
                             '''
                             check version pattern starts with "v" or "V"
                                             ?#### == ?####
                             '''
-                            if compareBaseNameSplit_AfterInVer[1::].isdigit():
-                                #print('format match.')
                             # To compare if the folder contain the same image sequence
-                                #print(inVerLongpath_tail.rstrip(inVerFullpath_name))
-                                #print(inVerLongpath_tail.rstrip(inVerFullpath_name)[1:-1])
+                            if compareBaseNameSplit_AfterInVer[1::].isdigit():
+
+
                                 inVerPathPattern      =os.path.normpath( os.path.join(inVerPathObjLong.parent, inVerBasename,   inVerLongpath_tail.rstrip(inVerFullpath_name)[1:-1]) )
                                 compareVerPathPattern =os.path.normpath( os.path.join(inVerPathObjLong.parent, compareBaseName, inVerLongpath_tail.rstrip(inVerFullpath_name)[1:-1]) )
-                                print('\ninVerBasename         : {}'.format(inVerBasename))
-                                print('inVerPathPattern      : {}'.format(inVerPathPattern))
-                                print('compareBaseName       : {}'.format(compareBaseName))
-                                print('compareVerPathPattern : {}\n'.format(compareVerPathPattern))
+                                self.printEcho('\ninVerBasename         : {}'.format(inVerBasename))
+                                self.printEcho('inVerPathPattern      : {}'.format(inVerPathPattern))
+                                self.printEcho('compareBaseName       : {}'.format(compareBaseName))
+                                self.printEcho('compareVerPathPattern : {}\n'.format(compareVerPathPattern))
 
 
 
-                                print('check if-condition 5 of 6')
+                                self.printEcho('check if-condition 5 of 6')
                                 '''
                                 check if compareVerPathPattern exist?
 
@@ -1851,7 +1821,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-                                        print('check if-condition 6 of 6')
+                                        self.printEcho('check if-condition 6 of 6')
                                         if (nameStemPattern(listedfile) + '.') == (nameStemPattern(inVerFullpath_name) + '.'):
                                             #print('                         : {}'.format(nameStemPattern(listedfile) + '.'))
                                             #print('Matched pattern filename : {}'.format(listedfile))
@@ -1859,8 +1829,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                                             latestVerPathPattern = compareVerPathPattern
                                             latestVerBaseName = compareBaseName
 
-                                            print('<><>'*80 + '\n' + latestVerPathPattern +'\n' + '<><>'*80)
-                                            print('latestVerBaseName FOUND :' + latestVerBaseName)
+                                            self.printEcho('<><>'*20 + '\n' + latestVerPathPattern +'\n' + '<><>'*20)
+                                            self.printEcho('latestVerBaseName FOUND :' + latestVerBaseName)
                                             break
                                         else:
                                             #print('No Match pattern filename : x x x')
@@ -1872,20 +1842,20 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                                         #print('269 break')
                                         break
                                 else:
-                                    print('Failed after check if-condition 5 of 6')
+                                    println('Failed after check if-condition 5 of 6')
                             else:
-                                print('Failed after check if-condition 4 of 6')
+                                println('Failed after check if-condition 4 of 6')
                         else:
-                            print('Failed after check if-condition 3 of 6')
+                            println('Failed after check if-condition 3 of 6')
                     else:
-                        print('Failed after check if-condition 2 of 6')
+                        println('Failed after check if-condition 2 of 6')
                 else:
-                    print('Failed after check if-condition 1 of 6')
+                    println('Failed after check if-condition 1 of 6')
 
 
-            print('Latest WIP folder :')
-            print(latestVerPathPattern)
-            print(latestVerBaseName)
+            self.printEcho('Latest WIP folder :')
+            self.printEcho(latestVerPathPattern)
+            self.printEcho(latestVerBaseName)
             return latestVerPathPattern, str(latestVerBaseName)
 
 
@@ -1901,18 +1871,18 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('show_up_to_date value : {}'.format(show_up_to_date))
 
             # Loop through every single row in the QListWidget
-            print('self.sceneUpdateUi.listWidget.count() :: {}'.format(self.sceneUpdateUi.listWidget.count()))
+            self.printEcho('self.sceneUpdateUi.listWidget.count() :: {}'.format(self.sceneUpdateUi.listWidget.count()))
 
             outdatedCounter = 0
             FreezedCounter = 0
 
             for i in range(self.sceneUpdateUi.listWidget.count()):
-                print('=====>>>>> i : {}'.format(i))
+
                 item = self.sceneUpdateUi.listWidget.item(i)
 
                 status = item.data(roleStatus) # Get the status we stored earlier
-                print('item   : {}'.format(item))
-                print('status : {}'.format(status))
+                #self.printEcho('item   : {}'.format(item))
+                #self.printEcho('status : {}'.format(status))
 
                 # We handle separators with their preceding item, so we skip them here.
                 if status == "separatorItem":
@@ -1936,7 +1906,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 isNotFreezeStatus = item.data(role7NodeIsNotFreeze)
                 if isNotFreezeStatus == 'Freeze':
                     item.setBackground(QColor(0, 150, 200, 75)) #RGBA 0-255
-                    #item.setBackground(16776960)
                     item.setCheckState(Qt.Unchecked)
                     item.setFlags(Qt.NoItemFlags)
                     FreezedCounter += 1
@@ -1956,9 +1925,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                                 f'\n')
 
 
-                print(item.data(role2CurrentBasename))
-                print('Updated showText :')
-                print(showText)
+                self.printEcho(item.data(role2CurrentBasename))
+                self.printEcho('Updated showText :')
+                self.printEcho(showText)
                 item.setText(showText)
 
 
@@ -1973,8 +1942,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         # Hide or show the separator to match the item above it
                         separator_item.setHidden(not is_visible)
 
-                print('i : {} <<<<<=====\n'.format(i))
-
             self.sceneUpdateUi.TextLabel.setText('Number of Out Dated Node : {}   (included {} freezed))'.format(outdatedCounter, FreezedCounter))
 
         # Body ============================
@@ -1986,13 +1953,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         foundNodeNamesWithFileKnob = (findNodeWithFileKnob())
         foundNodeNamesWithFileKnob.sort()
 
-        print('foundNodeNamesWithFileKnob : {}'.format(foundNodeNamesWithFileKnob))
+        self.printEcho('foundNodeNamesWithFileKnob : {}'.format(foundNodeNamesWithFileKnob))
 
         if not foundNodeNamesWithFileKnob:
-            print("\nNo nodes of the target types were found in the script.")
+            self.printEcho("\nNo nodes of the target types were found in the script.")
         else:
-            print(f"\nFound a total of {len(foundNodeNamesWithFileKnob)} matching nodes. Details below:")
-            print("=" * 40)
+            self.printEcho(f"\nFound a total of {len(foundNodeNamesWithFileKnob)} matching nodes. Details below:")
+            self.printEcho("=" * 40)
 
             # Loop through the dictionary and print the contents.
             # .items() gives us both the key (nodeName) and value (filePath) for each entry.
@@ -2006,31 +1973,26 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 else:
                     theNodeIsNotFreeze = 'Freeze'
 
-                print()
-                print(f"Node Name: {theNodeName}")
-                print(f"Node Class : {theNodeClass}")
-                print(f"File Path: {theNodeFilepath}")
+                self.printEcho(f"Node Name: {theNodeName}")
+                self.printEcho(f"Node Class : {theNodeClass}")
+                self.printEcho(f"File Path: {theNodeFilepath}")
 
 
                 versionPathInfo = CheckVerPath(theNodeFilepath)
-                print('versionPathInfo :')
-                print(f'versionPathInfo[0] : {versionPathInfo[0]}')
-                print(f'versionPathInfo[1] : {versionPathInfo[1]}')
-                print(f'versionPathInfo[2] : {versionPathInfo[2]}')
-                print(f'versionPathInfo[3] : {versionPathInfo[3]}')
-                print(f'versionPathInfo[4] : {versionPathInfo[4]}')
-                print(f'versionPathInfo[5] : {versionPathInfo[5]}')
+                self.printEcho('versionPathInfo :')
+                self.printEcho(f'versionPathInfo[0] : {versionPathInfo[0]}')
+                self.printEcho(f'versionPathInfo[1] : {versionPathInfo[1]}')
+                self.printEcho(f'versionPathInfo[2] : {versionPathInfo[2]}')
+                self.printEcho(f'versionPathInfo[3] : {versionPathInfo[3]}')
+                self.printEcho(f'versionPathInfo[4] : {versionPathInfo[4]}')
+                self.printEcho(f'versionPathInfo[5] : {versionPathInfo[5]}')
 
 
 
                 if versionPathInfo[0] != None:
                     dictFoundVersionNodes.update({nodeName : [versionPathInfo[0], versionPathInfo[1], versionPathInfo[2], os.path.normpath(theNodeFilepath), versionPathInfo[3], versionPathInfo[4], theNodeClass, theNodeIsNotFreeze]})
 
-                print()
-                print("-" * 20)
-
-            print("=" * 40)
-            print("--- Search Complete ---")
+            self.printEcho("--- Search Complete ---")
 
         self.sceneUpdateUi.listWidget.clear()
         listFoundVersionNodeName = []
@@ -2078,7 +2040,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
         for keyNodeName in listFoundVersionNodeName:
-            print('\nisLatestVersion(keyNodeName, dictFoundVersionNodes.get(keyNodeName)[0], dictFoundVersionNodes.get(keyNodeName)[1], dictFoundVersionNodes.get(keyNodeName)[2], dictFoundVersionNodes.get(keyNodeName)[3])')
+            #println('\nisLatestVersion(keyNodeName, dictFoundVersionNodes.get(keyNodeName)[0], dictFoundVersionNodes.get(keyNodeName)[1], dictFoundVersionNodes.get(keyNodeName)[2], dictFoundVersionNodes.get(keyNodeName)[3])')
             #print(dictFoundVersionNodes.get(keyNodeName)[2])
             #print(os.path.normpath(dictFoundVersionNodes.get(keyNodeName)[2]))
             latestVersionPath = isLatestVersion(keyNodeName, dictFoundVersionNodes.get(keyNodeName)[0], dictFoundVersionNodes.get(keyNodeName)[1],dictFoundVersionNodes.get(keyNodeName)[2], dictFoundVersionNodes.get(keyNodeName)[3])
@@ -2087,7 +2049,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             dictFoundVersionNodes[keyNodeName].append(latestVersionPath[0])
             dictFoundVersionNodes[keyNodeName].append(latestVersionPath[1])
 
-            print('\ndictFoundVersionNodes[keyNodeName] :')
+            '''
             counterFor = 0
             for dictValueListItem in dictFoundVersionNodes[keyNodeName]:
                 print(counterFor)
@@ -2095,6 +2057,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 print(dictValueListItem)
                 counterFor += 1
             print()
+            '''
 
             counter += 1
             item = QListWidgetItem()
@@ -2117,15 +2080,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             showCurrentLongWithTail = str(dictFoundVersionNodes.get(keyNodeName)[4]).replace(os.sep, '/')
             showNewLongWithTail     = str(dictFoundVersionNodes.get(keyNodeName)[8]).replace(os.sep, '/')
-            #showText = (f'\n< {keyNodeName} >      [{dictFoundVersionNodes.get(keyNodeName)[6]}]\n{dictFoundVersionNodes.get(keyNodeName)[1]}\n{showCurrentLongWithTail}\n---\n{dictFoundVersionNodes.get(keyNodeName)[8]}\n{showNewLongWithTail}\n')
-            #item.setText(showText)
-
-            print('<{}>'.format(showCurrentLongWithTail))
-            print(type(showCurrentLongWithTail))
-            print('          vs')
-            print(type(showNewLongWithTail))
-            print('<{}>'.format(showNewLongWithTail))
-
 
             if showCurrentLongWithTail == showNewLongWithTail:
                 #upToDateFont = QFont()
@@ -2143,10 +2097,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 item.setBackground(QColor(255, 10, 10, 125)) #RGBA 0-255
                 #item.setTextColor(QColor(250, 20, 20, 255)) #RGBA 0-255
                 item.setFont(outDatedFont)
-
-
-
-            print('showStatus ::: {}'.format(showStatus))
 
             item.setData(roleStatus                 , showStatus)
             item.setData(role1Nodename              , keyNodeName)
