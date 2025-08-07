@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250807b'
+winTitlePrefix = 'BigKeeper_20250807c'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -415,7 +415,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_newShotBatch.setEnabled(False)
 
 
-        self.pushButton_scnUpdate.clicked.connect(self.launchSceneUpdate)
+        self.pushButton_scnUpdate.clicked.connect(self.openSceneUpdate)
+        self.pushButton_scnUpdate.setText('Scene Update NEW')
+        self.pushButton_scnUpdate_2.clicked.connect(self.launchSceneUpdate)
+        self.pushButton_scnUpdate_2.setText('Scene Update OLD')
 
         self.reviveUi = subListView(parent = self)
         self.reviveUi.listWidget.itemDoubleClicked.connect(self.reviveOpenAction)
@@ -1254,7 +1257,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     #if noNeedSceneUpdateToken:
                     try:
                         #disabled this upon Apple and Sally request for a heavy shot.
-                        nuke.onScriptLoad(self.launchSceneUpdate())
+                        #nuke.onScriptLoad(self.launchSceneUpdate())
+                        nuke.onScriptLoad(self.openSceneUpdate())
                         #QMessageBox.information(self, 'Auto Scene Update', 'Check if Scene Update is needed ?')
                     except:
                         self.printEcho('PASS "nuke.onScriptLoad(self.launchSceneUpdate())"')
@@ -2237,7 +2241,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                     try:
                         #disabled this upon Apple and Sally request for a heavy shot.
-                        nuke.onScriptLoad(self.launchSceneUpdate())
+                        #nuke.onScriptLoad(self.launchSceneUpdate())
+                        nuke.onScriptLoad(self.openSceneUpdate())
                         #QMessageBox.information(self, 'Auto Scene Update', 'Check if Scene Update is needed ?')
                     except:
                         self.printEcho('PASS "nuke.onScriptLoad(self.launchSceneUpdate())"')
@@ -2258,7 +2263,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                 try:
                     #disabled this upon Apple and Sally request for a heavy shot.
-                    nuke.onScriptLoad(self.launchSceneUpdate())
+                    #nuke.onScriptLoad(self.launchSceneUpdate())
+                    nuke.onScriptLoad(self.openSceneUpdate())
                     #QMessageBox.information(self, 'Auto Scene Update', 'Check if Scene Update is needed ?')
                 except:
                     self.printEcho('PASS "nuke.onScriptLoad(self.launchSceneUpdate())"')

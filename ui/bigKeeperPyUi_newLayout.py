@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v143.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v144.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -161,6 +161,24 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_14.addLayout(self.horizontalLayout_15)
+
+        self.horizontalLayout_17 = QHBoxLayout()
+        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
+        self.horizontalLayout_17.setSizeConstraint(QLayout.SetMinAndMaxSize)
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_17.addItem(self.horizontalSpacer_5)
+
+        self.pushButton_scnUpdate_2 = QPushButton(self.verticalGroupBox_2)
+        self.pushButton_scnUpdate_2.setObjectName(u"pushButton_scnUpdate_2")
+        sizePolicy1.setHeightForWidth(self.pushButton_scnUpdate_2.sizePolicy().hasHeightForWidth())
+        self.pushButton_scnUpdate_2.setSizePolicy(sizePolicy1)
+        self.pushButton_scnUpdate_2.setMinimumSize(QSize(91, 0))
+
+        self.horizontalLayout_17.addWidget(self.pushButton_scnUpdate_2)
+
+
+        self.verticalLayout_14.addLayout(self.horizontalLayout_17)
 
         self.pushButton_getFrameRange = QPushButton(self.verticalGroupBox_2)
         self.pushButton_getFrameRange.setObjectName(u"pushButton_getFrameRange")
@@ -1105,6 +1123,10 @@ class Ui_MainWindow(object):
         self.pushButton_scnUpdate.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_scnUpdate", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_scnUpdate.setText(QCoreApplication.translate("MainWindow", u"Scene Update", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_scnUpdate_2.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_scnUpdate", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_scnUpdate_2.setText(QCoreApplication.translate("MainWindow", u"Scene Update", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_getFrameRange.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_getFrameRange", None))
 #endif // QT_CONFIG(tooltip)
