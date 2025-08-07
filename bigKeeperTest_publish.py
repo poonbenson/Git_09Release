@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250807c'
+winTitlePrefix = 'BigKeeper_20250807d'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -2099,7 +2099,21 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             counter += 1
             item = QListWidgetItem()
             item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+            item.setFlags(item.flags() & ~Qt.ItemIsSelectable)
             item.setCheckState(Qt.Checked)
+            '''
+            Explanation:
+
+            item.flags(): This gets the current flags of the item.
+
+            &: This is the bitwise AND operator.
+
+            ~: This is the bitwise NOT operator.
+
+            ~Qt.ItemIsSelectable: This creates a bitmask where all bits are 1 except for the one corresponding to Qt.ItemIsSelectable.
+
+            item.flags() & ~Qt.ItemIsSelectable: This operation keeps all the flags that were already set, except for Qt.ItemIsSelectable, which is effectively turned off.
+            '''
 
             showCurrentLongWithTail = str(dictFoundVersionNodes.get(keyNodeName)[4]).replace(os.sep, '/')
             showNewLongWithTail     = str(dictFoundVersionNodes.get(keyNodeName)[8]).replace(os.sep, '/')
