@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250806e'
+winTitlePrefix = 'BigKeeper_20250807b'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -1309,6 +1309,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.sceneUpdateUi.pushButton_exec_1.setVisible(False)
             self.sceneUpdateUi.pushButton_exec_5.setVisible(False)
 
+            filterUiFontObject = QFont()
+            filterUiFontObject.setBold(True)
 
         def updateAllAction():
             self.printEcho(self.sceneUpdateUi.listWidget.count())
@@ -1414,6 +1416,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('value in role4LatestBasename        : {}'.format(inItem.data(role4LatestBasename)))
             self.printEcho('value in role5LatestLongWithTail    : {}'.format(inItem.data(role5LatestLongWithTail)))
             self.printEcho('value in role6NodeClass             : {}'.format(inItem.data(role6NodeClass)))
+            self.printEcho('value in role7NodeIsNotFreeze       : {}'.format(inItem.data(role7NodeIsNotFreeze)))
             self.printEcho('value in role11DisplayText          : {}'.format(inItem.data(role11DisplayText)))
 
 
@@ -1486,7 +1489,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             found_version_longpath = None
             found_version_fullpath = None
             found_version_filename = None
-            found_versoin_fullparent = None
+            found_version_fullparent = None
 
 
             for path in pathObj.parents:
@@ -1540,14 +1543,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                             found_version_longpath = path
                             found_version_fullpath = fullpath
                             found_version_filename = os.path.basename(fullpath)
-                            found_versoin_fullparent = os.path.dirname(fullpath)
+                            found_version_fullparent = os.path.dirname(fullpath)
+
                             # If we found a version pattern, break the for-loop.
 
                             break # Stop the loop.
                     else:
                         print('{} - Not startswith v'.format(pathBasename.lower()))
 
-            return found_version, found_version_basename, found_version_longpath, found_version_fullpath, found_version_filename, found_versoin_fullparent
+            return found_version, found_version_basename, found_version_longpath, found_version_fullpath, found_version_filename, found_version_fullparent
 
         def isNumPadPattern(inString):
             print('\ndef >>>>> isNumPadPattern')
@@ -1932,24 +1936,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             print('self.sceneUpdateUi.listWidget.count() :: {}'.format(self.sceneUpdateUi.listWidget.count()))
 
             outdatedCounter = 0
+            FreezedCounter = 0
 
             for i in range(self.sceneUpdateUi.listWidget.count()):
                 print('=====>>>>> i : {}'.format(i))
                 item = self.sceneUpdateUi.listWidget.item(i)
-
-                showText = (f'\n'
-                            f'< {item.data(role1Nodename)} >               [{item.data(role6NodeClass)}]\n'
-                            f'{item.data(role2CurrentBasename)}     :::     {item.data(role4LatestBasename)}\n'
-                            f'\n'
-                            f'Latest path : {item.data(role5LatestLongWithTail)}'
-                            f'\n')
-
-                print(item.data(role2CurrentBasename))
-                print('Updated showText :')
-                print(showText)
-
-                item.setText(showText)
-
 
                 status = item.data(roleStatus) # Get the status we stored earlier
                 print('item   : {}'.format(item))
@@ -1974,6 +1965,35 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     item.setCheckState(Qt.Unchecked)
                     item.setFlags(Qt.NoItemFlags)
 
+                isNotFreezeStatus = item.data(role7NodeIsNotFreeze)
+                if isNotFreezeStatus == 'Freeze':
+                    item.setBackground(QColor(0, 150, 200, 75)) #RGBA 0-255
+                    #item.setBackground(16776960)
+                    item.setCheckState(Qt.Unchecked)
+                    item.setFlags(Qt.NoItemFlags)
+                    FreezedCounter += 1
+
+                    showText = (f'\n'
+                                f'< {item.data(role1Nodename)} >               [{item.data(role6NodeClass)}]               --{item.data(role7NodeIsNotFreeze)}--\n'
+                                f'{item.data(role2CurrentBasename)}     :::     {item.data(role4LatestBasename)}\n'
+                                f'\n'
+                                f'Latest path : {item.data(role5LatestLongWithTail)}'
+                                f'\n')
+                else:
+                    showText = (f'\n'
+                                f'< {item.data(role1Nodename)} >               [{item.data(role6NodeClass)}]\n'
+                                f'{item.data(role2CurrentBasename)}     :::     {item.data(role4LatestBasename)}\n'
+                                f'\n'
+                                f'Latest path : {item.data(role5LatestLongWithTail)}'
+                                f'\n')
+
+
+                print(item.data(role2CurrentBasename))
+                print('Updated showText :')
+                print(showText)
+                item.setText(showText)
+
+
                 # Set the item's visibility based on the logic above
                 item.setHidden(not is_visible)
 
@@ -1987,7 +2007,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                 print('i : {} <<<<<=====\n'.format(i))
 
-            self.sceneUpdateUi.TextLabel.setText('Number of Out Dated Node : {}'.format(outdatedCounter))
+            self.sceneUpdateUi.TextLabel.setText('Number of Out Dated Node : {}   (included {} freezed))'.format(outdatedCounter, FreezedCounter))
 
         # Body ============================
 
@@ -1996,6 +2016,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         dictFoundVersionNodes = {}
 
         foundNodeNamesWithFileKnob = (findNodeWithFileKnob())
+        foundNodeNamesWithFileKnob.sort()
+
         print('foundNodeNamesWithFileKnob : {}'.format(foundNodeNamesWithFileKnob))
 
         if not foundNodeNamesWithFileKnob:
@@ -2011,6 +2033,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 theNodeClass = theNode.Class()
                 theNodeName = theNode.knob('name').value()
                 theNodeFilepath = theNode.knob('file').value()
+                if theNode.knob('file').enabled():
+                    theNodeIsNotFreeze = 'NotFreeze'
+                else:
+                    theNodeIsNotFreeze = 'Freeze'
+
                 print()
                 print(f"Node Name: {theNodeName}")
                 print(f"Node Class : {theNodeClass}")
@@ -2029,7 +2056,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
                 if versionPathInfo[0] != None:
-                    dictFoundVersionNodes.update({nodeName : [versionPathInfo[0], versionPathInfo[1], versionPathInfo[2], os.path.normpath(theNodeFilepath), versionPathInfo[3], versionPathInfo[4], theNodeClass]})
+                    dictFoundVersionNodes.update({nodeName : [versionPathInfo[0], versionPathInfo[1], versionPathInfo[2], os.path.normpath(theNodeFilepath), versionPathInfo[3], versionPathInfo[4], theNodeClass, theNodeIsNotFreeze]})
 
                 print()
                 print("-" * 20)
@@ -2037,9 +2064,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             print("=" * 40)
             print("--- Search Complete ---")
 
-
         self.sceneUpdateUi.listWidget.clear()
-
         listFoundVersionNodeName = []
 
         #dictionary format :
@@ -2052,8 +2077,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #                                           4 currentVersion Fullpath                   > N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0011\pearlA_rlyr
         #                                           5 currentVersion filename                   > None
         #                                           6 Node Class                                > Read
-        #                                           7 LatestVersion Fullpath                    > N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0021\pearlA_rlyr
-        #                                           8 LatestVersion Basename                    > five0010_lightPearl_wip_v0021
+        #                                           7 currentNode theNodeIsNotFreeze            > True
+        #                                           ===== the following will be added later =====
+        #                                           8 LatestVersion Fullpath                    > N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0021\pearlA_rlyr
+        #                                           9 LatestVersion Basename                    > five0010_lightPearl_wip_v0021
+
         #                                           ]
 
 
@@ -2063,8 +2091,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             # for compatible in python 3.6 or before, dictionary is unordered. Use another sorted list to drive dictionary order.
             listFoundVersionNodeName.append(key)
 
-        listFoundVersionNodeName.sort()
 
+
+        listFoundVersionNodeName.sort()
+        # remark : After sorted the order is like < Read1 -> Read18 -> Read2 -> Read3)
 
         counter = 0
 
@@ -2075,7 +2105,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         role4LatestBasename         = Qt.UserRole + 4
         role5LatestLongWithTail     = Qt.UserRole + 5
         role6NodeClass              = Qt.UserRole + 6
-        role11DisplayText            = Qt.UserRole + 11
+        role7NodeIsNotFreeze        = Qt.UserRole + 7
+        role11DisplayText           = Qt.UserRole + 11
 
 
         for keyNodeName in listFoundVersionNodeName:
@@ -2103,7 +2134,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             item.setCheckState(Qt.Checked)
 
             showCurrentLongWithTail = str(dictFoundVersionNodes.get(keyNodeName)[4]).replace(os.sep, '/')
-            showNewLongWithTail     = str(dictFoundVersionNodes.get(keyNodeName)[7]).replace(os.sep, '/')
+            showNewLongWithTail     = str(dictFoundVersionNodes.get(keyNodeName)[8]).replace(os.sep, '/')
             #showText = (f'\n< {keyNodeName} >      [{dictFoundVersionNodes.get(keyNodeName)[6]}]\n{dictFoundVersionNodes.get(keyNodeName)[1]}\n{showCurrentLongWithTail}\n---\n{dictFoundVersionNodes.get(keyNodeName)[8]}\n{showNewLongWithTail}\n')
             #item.setText(showText)
 
@@ -2139,13 +2170,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             item.setData(role1Nodename              , keyNodeName)
             item.setData(role2CurrentBasename       , dictFoundVersionNodes.get(keyNodeName)[1])
             item.setData(role3CurrentLongWithTail   , showCurrentLongWithTail)
-            item.setData(role4LatestBasename        , dictFoundVersionNodes.get(keyNodeName)[8])
+            item.setData(role4LatestBasename        , dictFoundVersionNodes.get(keyNodeName)[9])
             item.setData(role5LatestLongWithTail    , showNewLongWithTail)
             item.setData(role6NodeClass             , dictFoundVersionNodes.get(keyNodeName)[6])
+            item.setData(role7NodeIsNotFreeze       , dictFoundVersionNodes.get(keyNodeName)[7])
 
 
             showText = (f'\n'
-                        f'< {item.data(role1Nodename)} >               [{item.data(role6NodeClass)}]\n'
+                        f'< {item.data(role1Nodename)} >               [{item.data(role6NodeClass)}]          -{item.data(role7NodeIsNotFreeze)}-\n'
                         f'{item.data(role2CurrentBasename)}     :::     {item.data(role4LatestBasename)}\n'
                         f'\n'
                         f'Latest path : {item.data(role5LatestLongWithTail)}'
