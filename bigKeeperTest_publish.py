@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250807e'
+winTitlePrefix = 'BigKeeper_20250808a'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -1382,6 +1382,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('value in role6NodeClass             : {}'.format(inItem.data(role6NodeClass)))
             self.printEcho('value in role7NodeIsNotFreeze       : {}'.format(inItem.data(role7NodeIsNotFreeze)))
             self.printEcho('value in role11DisplayText          : {}'.format(inItem.data(role11DisplayText)))
+
+            theNode = nuke.toNode(inItem.data(role1Nodename))
+            theNode.setSelected(True)
 
 
 
