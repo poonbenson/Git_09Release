@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250808a'
+winTitlePrefix = 'BigKeeper_20250808c'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -1308,10 +1308,18 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.sceneUpdateUi.checkBox_2.stateChanged.connect(apply_filter)
 
             self.sceneUpdateUi.listWidget.itemClicked.connect(itemClickedAction)
+            #self.sceneUpdateUi.listWidget.itemDoubleClicked.connect(itemDoublClickedAction)
 
 
             self.sceneUpdateUi.pushButton_exec_1.setVisible(False)
             self.sceneUpdateUi.pushButton_exec_5.setVisible(False)
+
+            self.sceneUpdateUi.TextLabel_2.setText('Click ::: Zoom to the node\n< Explore > Button ::: Open footage folder in explorer.\n\n ')
+            self.sceneUpdateUi.lineEdit.setText('--- click on the above row to show the path here ---')
+
+            self.sceneUpdateUi.pushButton.clicked.connect(openClickedItemLocationPath)
+            self.sceneUpdateUi.pushButton.setText('explore...')
+
 
             filterUiFontObject = QFont()
             filterUiFontObject.setBold(True)
@@ -1419,9 +1427,29 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('value in role7NodeIsNotFreeze       : {}'.format(inItem.data(role7NodeIsNotFreeze)))
             self.printEcho('value in role11DisplayText          : {}'.format(inItem.data(role11DisplayText)))
 
+            # To unselect nodes, yet to find "select nothing" function
+            nuke.selectAll()
+            nuke.invertSelection()
+
             theNode = nuke.toNode(inItem.data(role1Nodename))
             theNode.setSelected(True)
+            # ref: https://learn.foundry.com/nuke/developers/63/pythondevguide/dag.html
+            nuke.zoom( 1, [ theNode.xpos(), theNode.ypos() ])
 
+            splitParts = str(inItem.data(role3CurrentLongWithTail)).split(inItem.data(role2CurrentBasename))
+            self.sceneUpdateUi.lineEdit.setText(splitParts[0])
+
+
+        def itemDoublClickedAction(inItem):
+                print(inItem.data(role3CurrentLongWithTail))
+                print(inItem.data(role2CurrentBasename))
+                splitParts = str(inItem.data(role3CurrentLongWithTail)).split(inItem.data(role2CurrentBasename))
+                print(splitParts)
+
+                os.startfile(splitParts[0])
+
+        def openClickedItemLocationPath():
+                os.startfile(self.sceneUpdateUi.lineEdit.text())
 
 
         def findNodeWithFileKnob():
@@ -2050,7 +2078,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #                                           ===== the following will be added later =====
         #                                           8 LatestVersion Fullpath                    > N:\mnt\job\24068PantenePokemon\WorkingFile\PantenePokemon\scenes\zzzToliet\bensonPipelineTest\components\lightPearl\images\five0010_lightPearl_wip_v0021\pearlA_rlyr
         #                                           9 LatestVersion Basename                    > five0010_lightPearl_wip_v0021
-
+        #
+        #
         #                                           ]
 
 
