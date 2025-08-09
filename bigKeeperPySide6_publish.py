@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250810a'
+winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
 from inspect import currentframe
