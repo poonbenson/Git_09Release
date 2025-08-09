@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20250808c - For Release'
+winTitlePrefix = 'BigKeeper_20250810a'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -1315,14 +1315,23 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.sceneUpdateUi.pushButton_exec_5.setVisible(False)
 
             self.sceneUpdateUi.TextLabel_2.setText('Click ::: Zoom to the node\n< Explore > Button ::: Open footage folder in explorer.\n\n ')
+            self.sceneUpdateUi.TextLabel_3.setText('Color Code\nRed    ::: Out Dated\nGreen ::: Up-to-date\nBlue    ::: Freeze\n')
             self.sceneUpdateUi.lineEdit.setText('--- click on the above row to show the path here ---')
 
             self.sceneUpdateUi.pushButton.clicked.connect(openClickedItemLocationPath)
             self.sceneUpdateUi.pushButton.setText('explore...')
 
+            self.sceneUpdateUi.pushButton_exec_6.clicked.connect(refreshSceneUpdateUI)
+            self.sceneUpdateUi.pushButton_exec_6.setText('refresh')
+
 
             filterUiFontObject = QFont()
             filterUiFontObject.setBold(True)
+
+        def refreshSceneUpdateUI():
+            self.printEcho('\ndef >>>>> refreshSceneUpdateUI')
+            self.sceneUpdateUi.close()
+            self.openSceneUpdate()
 
         def updateAllAction():
             self.printEcho(self.sceneUpdateUi.listWidget.count())
@@ -1382,12 +1391,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             else:
                 self.printEcho('*** check fail, < {} > update F A I L ! ! ! ***'.format(inNodeName))
                 return False
-
-
-
-
-
-
 
 
         def selectDeselectAllAction(inMode):
