@@ -32,8 +32,8 @@ import xml.etree.ElementTree as ET
 
 # To determine current software environment at
 sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\BigKeeperGlob\wip\published')
-import bigCodingAssistant_publish
-CurrentSoftwareName = bigCodingAssistant_publish.tool().bigCheckSoftware()
+import bigCodingAssistant_published
+CurrentSoftwareName = bigCodingAssistant_published.tool().bigCheckSoftware()
 
 println('PYTHON version : {}'.format(sys.version))
 
@@ -956,14 +956,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def openTeam11Folder(self):
         println('\ndef >>>>> openTeam11Folder')
         thePath = r'N:\mnt\job\21044ChongFilm\Doc\Schedule\_publishPDF\team11'
-        theLastPath = bigCodingAssistant_publish.tool.findLatestFolderVer(thePath)
+        theLastPath = bigCodingAssistant_published.tool.findLatestFolderVer(thePath)
         println(theLastPath)
         os.startfile(os.path.join(thePath, theLastPath))
 
     def openTeam12Folder(self):
         println('\ndef >>>>> openTeam12Folder')
         thePath = r'N:\mnt\job\21044ChongFilm\Doc\Schedule\_publishPDF\team12'
-        theLastPath = bigCodingAssistant_publish.tool.findLatestFolderVer(thePath)
+        theLastPath = bigCodingAssistant_published.tool.findLatestFolderVer(thePath)
         println(theLastPath)
         os.startfile(os.path.join(thePath, theLastPath))
 
