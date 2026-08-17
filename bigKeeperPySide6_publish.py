@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260817a - For Release'
+winTitlePrefix = 'BigKeeper_20260817b - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -533,7 +533,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.updateCurrentOpeningLocationPath()
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget.setTabVisible(2, self.horizontalSlider_echoSwitch.value())
+        #self.tabWidget.setTabVisible(2, self.horizontalSlider_echoSwitch.value())
         self.tabWidget.setTabVisible(3, self.horizontalSlider_echoSwitch.value())
 
 
@@ -725,7 +725,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             println(inText)
 
     def echoSwitchOtherAction(self):
-        self.tabWidget.setTabVisible(2, self.horizontalSlider_echoSwitch.value())
+        #self.tabWidget.setTabVisible(2, self.horizontalSlider_echoSwitch.value())
         self.tabWidget.setTabVisible(3, self.horizontalSlider_echoSwitch.value())
 
 

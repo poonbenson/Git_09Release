@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v144.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v145.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -492,22 +492,23 @@ class Ui_MainWindow(object):
         self.pushButton_LaunchNuke13_0_v2 = QPushButton(self.groupBox)
         self.pushButton_LaunchNuke13_0_v2.setObjectName(u"pushButton_LaunchNuke13_0_v2")
         self.pushButton_LaunchNuke13_0_v2.setGeometry(QRect(50, 60, 61, 31))
+        self.pushButton_LaunchNuke13_0_v2.setFont(font3)
         self.pushButton_LaunchNukeStudio13_0_v2 = QPushButton(self.groupBox)
         self.pushButton_LaunchNukeStudio13_0_v2.setObjectName(u"pushButton_LaunchNukeStudio13_0_v2")
         self.pushButton_LaunchNukeStudio13_0_v2.setGeometry(QRect(190, 60, 41, 31))
+        self.pushButton_LaunchNukeStudio13_0_v2.setFont(font3)
         self.pushButton_LaunchNukeX13_0_v2 = QPushButton(self.groupBox)
         self.pushButton_LaunchNukeX13_0_v2.setObjectName(u"pushButton_LaunchNukeX13_0_v2")
         self.pushButton_LaunchNukeX13_0_v2.setGeometry(QRect(110, 60, 41, 31))
+        self.pushButton_LaunchNukeX13_0_v2.setFont(font3)
         self.pushButton_LaunchNukeAssist13_0_v2 = QPushButton(self.groupBox)
         self.pushButton_LaunchNukeAssist13_0_v2.setObjectName(u"pushButton_LaunchNukeAssist13_0_v2")
         self.pushButton_LaunchNukeAssist13_0_v2.setGeometry(QRect(150, 60, 41, 31))
+        self.pushButton_LaunchNukeAssist13_0_v2.setFont(font3)
         self.pushButton_LaunchMaya2022_update0 = QPushButton(self.groupBox)
         self.pushButton_LaunchMaya2022_update0.setObjectName(u"pushButton_LaunchMaya2022_update0")
         self.pushButton_LaunchMaya2022_update0.setGeometry(QRect(50, 30, 141, 31))
-        font4 = QFont()
-        font4.setPointSize(8)
-        font4.setStyleStrategy(QFont.PreferAntialias)
-        self.pushButton_LaunchMaya2022_update0.setFont(font4)
+        self.pushButton_LaunchMaya2022_update0.setFont(font3)
         self.pushButton_mayaOther = QPushButton(self.groupBox)
         self.pushButton_mayaOther.setObjectName(u"pushButton_mayaOther")
         self.pushButton_mayaOther.setGeometry(QRect(230, 30, 16, 31))
@@ -523,9 +524,11 @@ class Ui_MainWindow(object):
         self.pushButton_dailyFolder = QPushButton(self.groupBox)
         self.pushButton_dailyFolder.setObjectName(u"pushButton_dailyFolder")
         self.pushButton_dailyFolder.setGeometry(QRect(50, 120, 181, 31))
+        self.pushButton_dailyFolder.setFont(font3)
         self.pushButton_launchHoudini1 = QPushButton(self.groupBox)
         self.pushButton_launchHoudini1.setObjectName(u"pushButton_launchHoudini1")
         self.pushButton_launchHoudini1.setGeometry(QRect(50, 90, 181, 31))
+        self.pushButton_launchHoudini1.setFont(font3)
         self.pushButton_houdiniOther = QPushButton(self.groupBox)
         self.pushButton_houdiniOther.setObjectName(u"pushButton_houdiniOther")
         self.pushButton_houdiniOther.setGeometry(QRect(230, 90, 16, 31))
@@ -535,22 +538,25 @@ class Ui_MainWindow(object):
         self.pushButton_LaunchHieroPlayer = QPushButton(self.groupBox)
         self.pushButton_LaunchHieroPlayer.setObjectName(u"pushButton_LaunchHieroPlayer")
         self.pushButton_LaunchHieroPlayer.setGeometry(QRect(250, 60, 41, 31))
+        self.pushButton_LaunchHieroPlayer.setFont(font3)
         self.pushButton_hieroPlayerOther = QPushButton(self.groupBox)
         self.pushButton_hieroPlayerOther.setObjectName(u"pushButton_hieroPlayerOther")
         self.pushButton_hieroPlayerOther.setGeometry(QRect(290, 60, 16, 31))
         self.pushButton_LaunchCpuCoreController = QPushButton(self.groupBox)
         self.pushButton_LaunchCpuCoreController.setObjectName(u"pushButton_LaunchCpuCoreController")
         self.pushButton_LaunchCpuCoreController.setGeometry(QRect(50, 160, 91, 31))
+        self.pushButton_LaunchCpuCoreController.setFont(font3)
         self.pushButton_LaunchGpuCoreController = QPushButton(self.groupBox)
         self.pushButton_LaunchGpuCoreController.setObjectName(u"pushButton_LaunchGpuCoreController")
         self.pushButton_LaunchGpuCoreController.setGeometry(QRect(140, 160, 91, 31))
+        self.pushButton_LaunchGpuCoreController.setFont(font3)
         self.pushButton_LaunchMayaLegacySelection = QPushButton(self.groupBox)
         self.pushButton_LaunchMayaLegacySelection.setObjectName(u"pushButton_LaunchMayaLegacySelection")
         self.pushButton_LaunchMayaLegacySelection.setGeometry(QRect(190, 30, 41, 31))
-        font5 = QFont()
-        font5.setPointSize(6)
-        font5.setStyleStrategy(QFont.PreferAntialias)
-        self.pushButton_LaunchMayaLegacySelection.setFont(font5)
+        font4 = QFont()
+        font4.setPointSize(6)
+        font4.setStyleStrategy(QFont.PreferAntialias)
+        self.pushButton_LaunchMayaLegacySelection.setFont(font4)
         self.pushButton_LaunchNuke13_0_v2.raise_()
         self.pushButton_LaunchNukeStudio13_0_v2.raise_()
         self.pushButton_LaunchNukeX13_0_v2.raise_()
@@ -792,6 +798,94 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.addLayout(self.verticalLayout_5)
 
         self.tabWidget.addTab(self.tab_shotBrowser, "")
+        self.tab_assetBrowser = QWidget()
+        self.tab_assetBrowser.setObjectName(u"tab_assetBrowser")
+        self.verticalLayout_10 = QVBoxLayout(self.tab_assetBrowser)
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.verticalLayout_6 = QVBoxLayout()
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.label_12 = QLabel(self.tab_assetBrowser)
+        self.label_12.setObjectName(u"label_12")
+
+        self.verticalLayout_6.addWidget(self.label_12)
+
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.verticalLayout_7 = QVBoxLayout()
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.label_13 = QLabel(self.tab_assetBrowser)
+        self.label_13.setObjectName(u"label_13")
+
+        self.verticalLayout_7.addWidget(self.label_13)
+
+        self.listWidget_assetType = QListWidget(self.tab_assetBrowser)
+        self.listWidget_assetType.setObjectName(u"listWidget_assetType")
+        self.listWidget_assetType.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
+
+        self.verticalLayout_7.addWidget(self.listWidget_assetType)
+
+
+        self.horizontalLayout_6.addLayout(self.verticalLayout_7)
+
+        self.verticalLayout_8 = QVBoxLayout()
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.label_14 = QLabel(self.tab_assetBrowser)
+        self.label_14.setObjectName(u"label_14")
+
+        self.verticalLayout_8.addWidget(self.label_14)
+
+        self.listWidget_asset = QListWidget(self.tab_assetBrowser)
+        self.listWidget_asset.setObjectName(u"listWidget_asset")
+        self.listWidget_asset.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
+
+        self.verticalLayout_8.addWidget(self.listWidget_asset)
+
+
+        self.horizontalLayout_6.addLayout(self.verticalLayout_8)
+
+        self.verticalLayout_9 = QVBoxLayout()
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.label_15 = QLabel(self.tab_assetBrowser)
+        self.label_15.setObjectName(u"label_15")
+
+        self.verticalLayout_9.addWidget(self.label_15)
+
+        self.listWidget_assetTask = QListWidget(self.tab_assetBrowser)
+        self.listWidget_assetTask.setObjectName(u"listWidget_assetTask")
+        self.listWidget_assetTask.setMinimumSize(QSize(0, 200))
+        self.listWidget_assetTask.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
+
+        self.verticalLayout_9.addWidget(self.listWidget_assetTask)
+
+
+        self.horizontalLayout_6.addLayout(self.verticalLayout_9)
+
+
+        self.verticalLayout_6.addLayout(self.horizontalLayout_6)
+
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_6.addItem(self.verticalSpacer_3)
+
+        self.horizontalLayout_7 = QHBoxLayout()
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.lineEdit_Location_3 = QLineEdit(self.tab_assetBrowser)
+        self.lineEdit_Location_3.setObjectName(u"lineEdit_Location_3")
+
+        self.horizontalLayout_7.addWidget(self.lineEdit_Location_3)
+
+        self.pushButton_20 = QPushButton(self.tab_assetBrowser)
+        self.pushButton_20.setObjectName(u"pushButton_20")
+
+        self.horizontalLayout_7.addWidget(self.pushButton_20)
+
+
+        self.verticalLayout_6.addLayout(self.horizontalLayout_7)
+
+
+        self.verticalLayout_10.addLayout(self.verticalLayout_6)
+
+        self.tabWidget.addTab(self.tab_assetBrowser, "")
         self.tab_developing = QWidget()
         self.tab_developing.setObjectName(u"tab_developing")
         self.layoutWidget_2 = QWidget(self.tab_developing)
@@ -982,94 +1076,6 @@ class Ui_MainWindow(object):
         self.pushButton_CompLatestRv.setObjectName(u"pushButton_CompLatestRv")
         self.pushButton_CompLatestRv.setGeometry(QRect(190, 410, 151, 21))
         self.tabWidget.addTab(self.tab_developing, "")
-        self.tab_assetBrowser = QWidget()
-        self.tab_assetBrowser.setObjectName(u"tab_assetBrowser")
-        self.verticalLayout_10 = QVBoxLayout(self.tab_assetBrowser)
-        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.verticalLayout_6 = QVBoxLayout()
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.label_12 = QLabel(self.tab_assetBrowser)
-        self.label_12.setObjectName(u"label_12")
-
-        self.verticalLayout_6.addWidget(self.label_12)
-
-        self.horizontalLayout_6 = QHBoxLayout()
-        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.verticalLayout_7 = QVBoxLayout()
-        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.label_13 = QLabel(self.tab_assetBrowser)
-        self.label_13.setObjectName(u"label_13")
-
-        self.verticalLayout_7.addWidget(self.label_13)
-
-        self.listWidget_assetType = QListWidget(self.tab_assetBrowser)
-        self.listWidget_assetType.setObjectName(u"listWidget_assetType")
-        self.listWidget_assetType.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
-
-        self.verticalLayout_7.addWidget(self.listWidget_assetType)
-
-
-        self.horizontalLayout_6.addLayout(self.verticalLayout_7)
-
-        self.verticalLayout_8 = QVBoxLayout()
-        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.label_14 = QLabel(self.tab_assetBrowser)
-        self.label_14.setObjectName(u"label_14")
-
-        self.verticalLayout_8.addWidget(self.label_14)
-
-        self.listWidget_asset = QListWidget(self.tab_assetBrowser)
-        self.listWidget_asset.setObjectName(u"listWidget_asset")
-        self.listWidget_asset.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
-
-        self.verticalLayout_8.addWidget(self.listWidget_asset)
-
-
-        self.horizontalLayout_6.addLayout(self.verticalLayout_8)
-
-        self.verticalLayout_9 = QVBoxLayout()
-        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
-        self.label_15 = QLabel(self.tab_assetBrowser)
-        self.label_15.setObjectName(u"label_15")
-
-        self.verticalLayout_9.addWidget(self.label_15)
-
-        self.listWidget_assetTask = QListWidget(self.tab_assetBrowser)
-        self.listWidget_assetTask.setObjectName(u"listWidget_assetTask")
-        self.listWidget_assetTask.setMinimumSize(QSize(0, 200))
-        self.listWidget_assetTask.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
-
-        self.verticalLayout_9.addWidget(self.listWidget_assetTask)
-
-
-        self.horizontalLayout_6.addLayout(self.verticalLayout_9)
-
-
-        self.verticalLayout_6.addLayout(self.horizontalLayout_6)
-
-        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_6.addItem(self.verticalSpacer_3)
-
-        self.horizontalLayout_7 = QHBoxLayout()
-        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.lineEdit_Location_3 = QLineEdit(self.tab_assetBrowser)
-        self.lineEdit_Location_3.setObjectName(u"lineEdit_Location_3")
-
-        self.horizontalLayout_7.addWidget(self.lineEdit_Location_3)
-
-        self.pushButton_20 = QPushButton(self.tab_assetBrowser)
-        self.pushButton_20.setObjectName(u"pushButton_20")
-
-        self.horizontalLayout_7.addWidget(self.pushButton_20)
-
-
-        self.verticalLayout_6.addLayout(self.horizontalLayout_7)
-
-
-        self.verticalLayout_10.addLayout(self.verticalLayout_6)
-
-        self.tabWidget.addTab(self.tab_assetBrowser, "")
 
         self.verticalLayout.addWidget(self.tabWidget)
 
@@ -1091,7 +1097,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(3)
         self.tabWidget_2.setCurrentIndex(5)
 
 
@@ -1381,6 +1387,27 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.pushButton_19.setText(QCoreApplication.translate("MainWindow", u"explore...", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_shotBrowser), QCoreApplication.translate("MainWindow", u"Shot Browser", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u"ASSET BROWSER", None))
+        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Asset Type", None))
+#if QT_CONFIG(tooltip)
+        self.listWidget_assetType.setToolTip(QCoreApplication.translate("MainWindow", u"listWidget_assetType", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Asset", None))
+#if QT_CONFIG(tooltip)
+        self.listWidget_asset.setToolTip(QCoreApplication.translate("MainWindow", u"listWidget_asset", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_15.setText(QCoreApplication.translate("MainWindow", u"Asset Task", None))
+#if QT_CONFIG(tooltip)
+        self.listWidget_assetTask.setToolTip(QCoreApplication.translate("MainWindow", u"listWidget_assetTask", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.lineEdit_Location_3.setToolTip(QCoreApplication.translate("MainWindow", u"lineEdit_Location_3", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.pushButton_20.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_20", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_20.setText(QCoreApplication.translate("MainWindow", u"explore...", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_assetBrowser), QCoreApplication.translate("MainWindow", u"Asset Browser", None))
         self.pushButton_num9.setText(QCoreApplication.translate("MainWindow", u"9", None))
         self.pushButton_num8.setText(QCoreApplication.translate("MainWindow", u"8", None))
         self.pushButton_num7.setText(QCoreApplication.translate("MainWindow", u"7", None))
@@ -1417,27 +1444,6 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.pushButton_CompLatestRv.setText(QCoreApplication.translate("MainWindow", u"tmp.RvCompLastVer", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_developing), QCoreApplication.translate("MainWindow", u"developing", None))
-        self.label_12.setText(QCoreApplication.translate("MainWindow", u"ASSET BROWSER", None))
-        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Asset Type", None))
-#if QT_CONFIG(tooltip)
-        self.listWidget_assetType.setToolTip(QCoreApplication.translate("MainWindow", u"listWidget_assetType", None))
-#endif // QT_CONFIG(tooltip)
-        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Asset", None))
-#if QT_CONFIG(tooltip)
-        self.listWidget_asset.setToolTip(QCoreApplication.translate("MainWindow", u"listWidget_asset", None))
-#endif // QT_CONFIG(tooltip)
-        self.label_15.setText(QCoreApplication.translate("MainWindow", u"Asset Task", None))
-#if QT_CONFIG(tooltip)
-        self.listWidget_assetTask.setToolTip(QCoreApplication.translate("MainWindow", u"listWidget_assetTask", None))
-#endif // QT_CONFIG(tooltip)
-#if QT_CONFIG(tooltip)
-        self.lineEdit_Location_3.setToolTip(QCoreApplication.translate("MainWindow", u"lineEdit_Location_3", None))
-#endif // QT_CONFIG(tooltip)
-#if QT_CONFIG(tooltip)
-        self.pushButton_20.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_20", None))
-#endif // QT_CONFIG(tooltip)
-        self.pushButton_20.setText(QCoreApplication.translate("MainWindow", u"explore...", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_assetBrowser), QCoreApplication.translate("MainWindow", u"developing Browser", None))
 #if QT_CONFIG(tooltip)
         self.horizontalSlider_echoSwitch.setToolTip(QCoreApplication.translate("MainWindow", u"horizontalSlider_echoSwitch", None))
 #endif // QT_CONFIG(tooltip)
