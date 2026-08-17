@@ -1,4 +1,5 @@
-winTitlePrefix = 'BigKeeper_20250810a - For Release'
+winTitlePrefix = 'BigKeeper_20260817a - For Release'
+#winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
 from inspect import currentframe
@@ -3977,22 +3978,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         start_time = time.time()
 
-        ''' #replaced
-        for sourcePath in copySourcePaths:
-            libPath = pathlib.Path(sourcePath)
-            println(libPath)
-            println(libPath.parent)
-            println(os.path.join(currentTaskPath, 'cache', (str(currentVerNumber).zfill(4)), os.path.basename(libPath.parent)))
-            targetPath = os.path.join(currentTaskPath, 'cache', (str(currentVerNumber).zfill(4)), os.path.basename(libPath.parent))
-            println('>>> start {}'.format(targetPath))
-            counter += 1
-            msgBox.setText('Publishing {} of {}:\n\n <......\{}\{}>'.format(counter, totalPaths, os.path.basename(libPath.parent.parent), os.path.basename(libPath.parent)))
-            QApplication.processEvents()
-            destinationPath = shutil.copytree(libPath.parent, targetPath)
-            QApplication.processEvents()
-            println('<<< done. {}'.format(destinationPath))
-        '''
-
         for sourcePath in copySourcePaths:
             self.printEcho('\n\n\n\n\n************************************************\n***\n***\n***\n***\n***\n***\n***\n***        START        \n***\n***\n***\n***\n***\n***\n***\n************************************************\n\n\n\n')
             sourceReadNodeFilePath = pathlib.Path(sourcePath)
@@ -4014,10 +3999,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             originalVerNumber = os.path.normpath(sourcePath).split(os.path.sep)[12]
             self.printEcho(originalVerNumber)
 
-            #orignalVerNum =
-
-            #println(os.path.join(currentTaskPath, 'cache', (str(currentVerNumber).zfill(4)), os.path.basename(sourceReadNodeFilePath.parent)))
-            destinationVerPath = os.path.join(currentTaskPath, 'cache', (str(originalVerNumber).zfill(4)), os.path.basename(sourceReadNodeFilePath.parent))
+            #println(os.path.join(currentTaskPath, 'publishedLightPreRend', (str(currentVerNumber).zfill(4)), os.path.basename(sourceReadNodeFilePath.parent)))
+            destinationVerPath = os.path.join(currentTaskPath, 'publishedLightPreRend', (str(originalVerNumber).zfill(4)), os.path.basename(sourceReadNodeFilePath.parent))
 
 
             listFiles = os.listdir(sourceReadNodeFilePath.parent)
@@ -4047,37 +4030,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('targetFiles :')
             for line in targetFiles:
                 self.printEcho(line)
-
-
-
-            '''
-            #for copy to under according to original images ver Number
-            targetFilesDict = {}
-
-            for file in listFiles:
-                jointFilePath = os.path.join(sourceReadNodeFilePath.parent, file)
-                if not os.path.isdir(jointFilePath):
-                    libPath = pathlib.Path(jointFilePath)
-                    #if libPath.stem.startswith(sourceSeqBaseName):
-                    #println(sourceSeqBaseName)
-                    #println('vs')
-                    #println(findSeqBaseName(jointFilePath))
-                    if findSeqBaseName(jointFilePath) == sourceSeqBaseName:
-                        targetFilesDict[libPath] =
-                        #println('                                      append >>> {}\n'.format(libPath))
-                    else:
-                        #println('                                                            Skipped. --- seqBasename not match.\n')
-                        pass
-                else:
-                    #println('                                                            Skipped. --- It is a folder\n')
-                    pass
-
-            println('targetFiles :')
-            for line in targetFiles:
-                println(line)
-            '''
-
-
 
 
             self.printEcho('>>> start {}'.format(destinationVerPath))
