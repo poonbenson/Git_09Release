@@ -781,10 +781,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_7 = QHBoxLayout()
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.lineEditAsset_Location = QLineEdit(self.tab_assetBrowser)
-        self.lineEditAsset_Location.setObjectName(u"lineEditAsset_Location")
+        self.lineEdit_AssetLocation = QLineEdit(self.tab_assetBrowser)
+        self.lineEdit_AssetLocation.setObjectName(u"lineEdit_AssetLocation")
 
-        self.horizontalLayout_7.addWidget(self.lineEditAsset_Location)
+        self.horizontalLayout_7.addWidget(self.lineEdit_AssetLocation)
 
         self.pushButton_20 = QPushButton(self.tab_assetBrowser)
         self.pushButton_20.setObjectName(u"pushButton_20")
@@ -1203,7 +1203,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(1)
         self.tabWidget_2.setCurrentIndex(5)
 
 
@@ -1486,7 +1486,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.label_thumbAssetTask.setText(QCoreApplication.translate("MainWindow", u"label_thumbTask", None))
 #if QT_CONFIG(tooltip)
-        self.lineEditAsset_Location.setToolTip(QCoreApplication.translate("MainWindow", u"lineEdit_Location", None))
+        self.lineEdit_AssetLocation.setToolTip(QCoreApplication.translate("MainWindow", u"lineEdit_Location", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.pushButton_20.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_19", None))
