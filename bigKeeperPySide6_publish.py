@@ -1009,7 +1009,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         pass
 
 
-    def listWidget_1_appear(self, item):
+    def listWidget_1_appear(self):
         println('\ndef >>>>> listWidget_1_appear ---Sequence')
         self.printEcho(self.selProj)
         folderList = os.listdir(self.selProjScnPath)
@@ -1074,7 +1074,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('self.selProjScnPath:' + self.selProjScnPath) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/scenes
             self.printEcho('self.subDict[self.selProjWipCode]:' + self.subDict[self.selProjWipCode]) # eg. wip
             self.printEcho('self.subDict[self.selProjPublishCode]:' + self.subDict[self.selProjPublishCode]) # eg. published
-            folderList = os.listdir(self.selProjScnPath)
+            '''folderList = os.listdir(self.selProjScnPath)
 
             listSeq = []
             for i in folderList:
@@ -1086,7 +1086,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.list1Entries = []
             self.list1Entries = listSeq
 
-            self.listWidget_1.addItems(self.list1Entries)
+            self.listWidget_1.addItems(self.list1Entries)'''
+            self.listWidget_1_appear()
+
             self.locationPath = self.subDict[self.selProjPath]
             self.lineEdit_Location.setText(self.locationPath)
             self.writeProjCache(self.selProj)
