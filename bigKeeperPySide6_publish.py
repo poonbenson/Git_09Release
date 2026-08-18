@@ -1008,14 +1008,32 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def initializeMainWindow(self):
         pass
 
+    def listTypeConvert(self, inType):
+        println('\ndef >>>>> listTypeConvert')
 
-    def listWidget_1_appear(self):
-        println('\ndef >>>>> listWidget_1_appear ---Sequence')
+        if inType == 'typeScene':
+            listLevel = (self.selProj, self.selProjScnPath)
+        elif inType == 'typeAsset':
+            listLevel = (self.selProj, self.selProjLibPath)
+
+        return listLevel
+
+
+    def listWidget_1_appear(self, inType):
+        println('\ndef >>>>> listWidget_1_appear')
+        self.printEcho(inType)
+        self.printEcho(self.listTypeConvert(inType))
+
+        typeConvertTuple = self.listTypeConvert(inType)
+
         self.printEcho(self.selProj)
-        folderList = os.listdir(self.selProjScnPath)
+        self.printEcho(typeConvertTuple[0])
+        #folderList = os.listdir(self.selProjScnPath)
+        folderList = os.listdir(typeConvertTuple[1])
         listSeq = []
         for i in folderList:
-            if os.path.isdir(os.path.join(self.selProjScnPath, i)):
+            #if os.path.isdir(os.path.join(self.selProjScnPath, i)):
+            if os.path.isdir(os.path.join(typeConvertTuple[1], i)):
                 listSeq.append(i)
         listSeq.sort()
         self.printEcho('listSeq is :')
@@ -1070,7 +1088,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             self.printEcho('self.subDict[self.selProjName]:' + self.subDict[self.selProjName]) # eg. kfcPoke
             self.printEcho('self.subDict[self.selProjPath]:' + self.subDict[self.selProjPath]) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/
+
+            self.selProjLibPath = os.path.normpath(os.path.join(self.subDict[self.selProjPath], self.subDict[self.selProjLibCode]))
             self.selProjScnPath = os.path.normpath(os.path.join(self.subDict[self.selProjPath], self.subDict[self.selProjScnCode]))
+
             self.printEcho('self.selProjScnPath:' + self.selProjScnPath) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/scenes
             self.printEcho('self.subDict[self.selProjWipCode]:' + self.subDict[self.selProjWipCode]) # eg. wip
             self.printEcho('self.subDict[self.selProjPublishCode]:' + self.subDict[self.selProjPublishCode]) # eg. published
@@ -1087,7 +1108,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.list1Entries = listSeq
 
             self.listWidget_1.addItems(self.list1Entries)'''
-            self.listWidget_1_appear()
+            self.listWidget_1_appear('typeScene')
 
             self.locationPath = self.subDict[self.selProjPath]
             self.lineEdit_Location.setText(self.locationPath)
