@@ -292,7 +292,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3B_action)
         self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3C_action)
         self.listWidget_3.setSortingEnabled(True)
-        self.pushButton_listWidget1Refresh.clicked.connect(self.listWidget_1_appear)
+        #self.pushButton_listWidget1Refresh.clicked.connect(self.listWidget_1_appear)
+        self.pushButton_listWidget1Refresh.clicked.connect(lambda : self.listWidget_1_appear('typeScene'))
+        self.pushButton_listWidgetAssetRefresh.clicked.connect(lambda : self.listWidget_1_appear('typeLib'))
 
         self.listWidget_1.setSelectionMode(QListWidget.ExtendedSelection)
 
@@ -690,7 +692,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.pushButton_num3.clicked.connect(lambda: self.cleanUpCheckFolderSize(self.selProjScnShotTaskWIPPath))
         self.pushButton_num2.clicked.connect(lambda : self.prerendKeywordPresetShow())
         self.pushButton_num2.setText('*presetButton*')
-        self.pushButton_num1.clicked.connect(self.listWidget_1_appear)
+        self.pushButton_num1.clicked.connect(lambda : self.listWidget_1_appear('typeScene'))
         self.pushButton_num1.setText('refresh seq')
         self.pushButton_num4.clicked.connect(lambda: self.envRead('NUKE', 'label'))
         self.pushButton_num4.setText('label')
@@ -1013,7 +1015,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         if inType == 'typeScene':
             listLevel = (self.selProj, self.selProjScnPath)
-        elif inType == 'typeAsset':
+        elif inType == 'typeLib':
             listLevel = (self.selProj, self.selProjLibPath)
 
         return listLevel
@@ -1024,33 +1026,45 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho(inType)
         self.printEcho(self.listTypeConvert(inType))
 
-        typeConvertTuple = self.listTypeConvert(inType)
+        cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
 
-        self.printEcho(self.selProj)
-        self.printEcho(typeConvertTuple[0])
+        self.printEcho(cnvtSelProj)
         #folderList = os.listdir(self.selProjScnPath)
-        folderList = os.listdir(typeConvertTuple[1])
+        folderList = os.listdir(cnvtSelProjScnPath)
         listSeq = []
         for i in folderList:
             #if os.path.isdir(os.path.join(self.selProjScnPath, i)):
-            if os.path.isdir(os.path.join(typeConvertTuple[1], i)):
+            if os.path.isdir(os.path.join(cnvtSelProjScnPath, i)):
                 listSeq.append(i)
         listSeq.sort()
         self.printEcho('listSeq is :')
         self.printEcho(listSeq) # eg. ['animaticSeq', 'balloonSeq', 'edits', 'socialSeq', 'testSeq', 'turnTableSeq', 'tvcSeq']
-        self.list1Entries = []
-        self.list1Entries = listSeq
-        #self.listWidget_3.clear()
-        #self.listWidget_2.clear()
-        self.listWidget_1.clear()
-        self.listWidget_1.addItems(self.list1Entries)
-        self.pushButton_newSeq.setEnabled(True)
-        self.pushButton_newShot.setEnabled(False)
-        self.pushButton_newShotBatch.setEnabled(False)
-        self.pushButton_CompLatestRv.setEnabled(False)
-        self.pushButton_shotAction.setEnabled(False)
-        self.pushButton_shotAction2.setEnabled(False)
-        self.pushButton_shotAction3.setEnabled(False)
+
+        if inType == 'typeScene':
+            self.list1Entries = []
+            self.list1Entries = listSeq
+            self.listWidget_1.clear()
+            self.listWidget_1.addItems(self.list1Entries)
+            self.pushButton_newSeq.setEnabled(True)
+            self.pushButton_newShot.setEnabled(False)
+            self.pushButton_newShotBatch.setEnabled(False)
+            self.pushButton_CompLatestRv.setEnabled(False)
+            self.pushButton_shotAction.setEnabled(False)
+            self.pushButton_shotAction2.setEnabled(False)
+            self.pushButton_shotAction3.setEnabled(False)
+        elif inType == 'typeLib':
+            self.list1Entries = []
+            self.list1Entries = listSeq
+            self.listWidget_AssetType.clear()
+            self.listWidget_AssetType.addItems(self.list1Entries)
+            self.pushButton_newSeq.setEnabled(True)
+            self.pushButton_newShot.setEnabled(False)
+            self.pushButton_newShotBatch.setEnabled(False)
+            self.pushButton_CompLatestRv.setEnabled(False)
+            self.pushButton_shotAction.setEnabled(False)
+            self.pushButton_shotAction2.setEnabled(False)
+            self.pushButton_shotAction3.setEnabled(False)
+
 
 
     def comboBoxAction2(self, item):
@@ -1082,6 +1096,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.selProjRootPath = os.path.normpath(os.path.join(splitDrive, os.path.sep, splitTail[1], splitTail[2], splitTail[3]))
             self.printEcho('self.selProjRootPath : {}'.format(self.selProjRootPath))
 
+            #===== typeScene Section =====
             self.listWidget_3.clear()
             self.listWidget_2.clear()
             self.listWidget_1.clear()
@@ -1095,23 +1110,35 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('self.selProjScnPath:' + self.selProjScnPath) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/scenes
             self.printEcho('self.subDict[self.selProjWipCode]:' + self.subDict[self.selProjWipCode]) # eg. wip
             self.printEcho('self.subDict[self.selProjPublishCode]:' + self.subDict[self.selProjPublishCode]) # eg. published
-            '''folderList = os.listdir(self.selProjScnPath)
 
-            listSeq = []
-            for i in folderList:
-                if os.path.isdir(os.path.join(self.selProjScnPath, i)):
-                    listSeq.append(i)
-            listSeq.sort()
-            self.printEcho('listSeq is :')
-            self.printEcho(listSeq) # eg. ['animaticSeq', 'balloonSeq', 'edits', 'socialSeq', 'testSeq', 'turnTableSeq', 'tvcSeq']
-            self.list1Entries = []
-            self.list1Entries = listSeq
-
-            self.listWidget_1.addItems(self.list1Entries)'''
             self.listWidget_1_appear('typeScene')
-
             self.locationPath = self.subDict[self.selProjPath]
             self.lineEdit_Location.setText(self.locationPath)
+            #===== end of typeScene Section =====
+
+
+            #===== typeLib Section =====
+            self.listWidget_AssetTask.clear()
+            self.listWidget_Asset.clear()
+            self.listWidget_AssetType.clear()
+
+            self.printEcho('self.subDict[self.selProjName]:' + self.subDict[self.selProjName]) # eg. kfcPoke
+            self.printEcho('self.subDict[self.selProjPath]:' + self.subDict[self.selProjPath]) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/
+
+            self.selProjLibPath = os.path.normpath(os.path.join(self.subDict[self.selProjPath], self.subDict[self.selProjLibCode]))
+            self.selProjScnPath = os.path.normpath(os.path.join(self.subDict[self.selProjPath], self.subDict[self.selProjScnCode]))
+
+            self.printEcho('self.selProjScnPath:' + self.selProjScnPath) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/scenes
+            self.printEcho('self.subDict[self.selProjWipCode]:' + self.subDict[self.selProjWipCode]) # eg. wip
+            self.printEcho('self.subDict[self.selProjPublishCode]:' + self.subDict[self.selProjPublishCode]) # eg. published
+
+            self.listWidget_1_appear('typeLib')
+            self.locationPath = self.subDict[self.selProjPath]
+            self.lineEdit_Location.setText(self.locationPath)
+
+            #===== end of typeLib Section =====
+
+
             self.writeProjCache(self.selProj)
 
 
