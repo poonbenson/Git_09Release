@@ -287,7 +287,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.listWidget_AssetType.setSortingEnabled(True)
 
         self.listWidget_2.itemClicked.connect(lambda : self.listWidget_3_appear(self.listWidget_2.currentItem(), 'typeScene'))
+        self.listWidget_Asset.itemClicked.connect(lambda : self.listWidget_3_appear(self.listWidget_Asset.currentItem(), 'typeLib'))
         self.listWidget_2.setSortingEnabled(True)
+        self.listWidget_Asset.setSortingEnabled(True)
 
         self.listWidget_3.itemClicked.connect(self.listWidget_shotTask_action)
         #self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3B_action)
@@ -1256,6 +1258,26 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.pushButton_shotAction.setEnabled(False)
             self.pushButton_shotAction2.setEnabled(False)
             self.pushButton_shotAction3.setEnabled(False)
+        elif inType == 'typeLib':
+            self.printEcho(item3.text())
+            self.selShot = item3.text()
+            self.selProjAssetTypeAssetTaskPath = os.path.join(self.selProjAssetTypeAssetPath, item3.text(), "components")
+            folderList = os.listdir(self.selProjAssetTypeAssetTaskPath)
+            listTask = []
+            for i in folderList:
+                if os.path.isdir(os.path.join(self.selProjAssetTypeAssetTaskPath, i)):
+                    listTask.append(str(i))
+            self.printEcho(listTask)
+            listTask.sort()
+            self.listWidget_AssetTask.clear()
+            self.listWidget_AssetTask.addItems(listTask)
+            self.locationPath = os.path.join(self.selProjAssetTypeAssetPath, item3.text())
+            self.lineEdit_assetLocation.setText(self.locationPath)
+            self.pushButton_newAssetTask.setDisabled(False)
+            #self.pushButton_CompLatestRv.setEnabled(False)
+            self.pushButton_assetAction.setEnabled(False)
+            self.pushButton_assetAction2.setEnabled(False)
+            self.pushButton_assetAction3.setEnabled(False)
 
 
     def listWidget_3C_action(self, item):
