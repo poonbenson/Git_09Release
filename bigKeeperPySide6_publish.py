@@ -1040,6 +1040,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho('listSeq is :')
         self.printEcho(listSeq) # eg. ['animaticSeq', 'balloonSeq', 'edits', 'socialSeq', 'testSeq', 'turnTableSeq', 'tvcSeq']
 
+        # Decided to code seperately, Asset Tab and Shot Tab do not have to be the same layout
         if inType == 'typeScene':
             self.list1Entries = []
             self.list1Entries = listSeq
@@ -1096,6 +1097,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.selProjRootPath = os.path.normpath(os.path.join(splitDrive, os.path.sep, splitTail[1], splitTail[2], splitTail[3]))
             self.printEcho('self.selProjRootPath : {}'.format(self.selProjRootPath))
 
+            # Decided to code seperately, Asset Tab and Shot Tab do not have to be the same layout
             #===== typeScene Section =====
             self.listWidget_3.clear()
             self.listWidget_2.clear()
@@ -1116,7 +1118,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.lineEdit_Location.setText(self.locationPath)
             #===== end of typeScene Section =====
 
-
+            # Decided to code seperately, Asset Tab and Shot Tab do not have to be the same layout
             #===== typeLib Section =====
             self.listWidget_AssetTask.clear()
             self.listWidget_Asset.clear()
@@ -1135,9 +1137,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.listWidget_1_appear('typeLib')
             self.locationPath = self.subDict[self.selProjPath]
             self.lineEdit_Location.setText(self.locationPath)
-
             #===== end of typeLib Section =====
-
 
             self.writeProjCache(self.selProj)
 
