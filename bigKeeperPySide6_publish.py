@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260817b - WIP'
+winTitlePrefix = 'BigKeeper_20260818k - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -383,7 +383,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_action1.clicked.connect(self.myAction3)
         #self.pushButton_action1.clicked.connect(self.dialog)
 
-        self.pushButton_19.clicked.connect(self.myAction5)
+        self.pushButton_19.clicked.connect(lambda : self.myAction5('typeScene'))
+        self.pushButton_20.clicked.connect(lambda : self.myAction5('typeLib'))
         self.pushButton_Location_2.clicked.connect(self.openCurrentOpeningLocationPath)
         self.pushButton_versionUp.clicked.connect(lambda : self.versionUpSaveWIP(True))
         self.pushButton_versionUp.setStyleSheet("background-color:rgb(204,153,128); color:rgb(136, 77, 85)")
@@ -2470,6 +2471,28 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.listFile = self.listOutFilesInFolder(True)
             self.listFile.sort()
 
+        elif inType == 'typeLib':
+
+            self.printEcho(self.selProjAssetTypeAssetTaskPath)
+            self.printEcho(item.text())
+            self.printEcho(self.subDict[self.selProjWipCode])
+
+            self.selProjScnShotTaskWIPPath = os.path.join(self.selProjAssetTypeAssetTaskPath, item.text(), self.subDict[self.selProjWipCode])
+            self.printEcho(self.selProjScnShotTaskWIPPath)
+
+            self.locationPath = os.path.join(self.selProjAssetTypeAssetTaskPath, item.text())
+            self.printEcho(self.locationPath)
+            self.lineEdit_AssetLocation.setText(self.locationPath)
+            self.printEcho(os.listdir(os.path.join(self.locationPath, self.subDict[self.selProjWipCode])))
+            self.selTask = item.text()
+            #self.pushButton_CompLatestRv.setEnabled(True)
+            self.pushButton_assetAction.setEnabled(True)
+            self.pushButton_assetAction2.setEnabled(True)
+            self.pushButton_assetAction3.setEnabled(True)
+
+            self.listFile = self.listOutFilesInFolder(True)
+            self.listFile.sort()
+
         #return item
 
     def myAction1(self):
@@ -2492,9 +2515,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> myAction4')
         self.childUi.show()
 
-    def myAction5(self):
+    def myAction5(self, inType):
         println('\ndef >>>>> myAction5')
-        os.startfile(self.locationPath)
+        if inType == 'typeScene':
+            os.startfile(self.locationPath)
+        elif inType == 'typeLib':
+            os.startfile(self.locationPath)
 
     def openCurrentOpeningLocationPath(self):
         println('\ndef >>>>> openCurrentOpeningLocationPath')
