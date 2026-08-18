@@ -281,9 +281,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #PySide6 not works as String but int
         self.comboBoxProjects.activated[int].connect(self.comboBoxAction2) #show content of the items as a int
 
-        self.listWidget_1.itemClicked.connect(self.listWidget_2_appear2)
-        #self.listWidget_1.itemClicked.connect(self.listWidget_1_receivedList)
+        self.listWidget_1.itemClicked.connect(lambda : self.listWidget_2_appear2(self.listWidget_1.currentItem(), 'typeScene'))
+        self.listWidget_AssetType.itemClicked.connect(lambda : self.listWidget_2_appear2(self.listWidget_AssetType.currentItem(), 'typeLib'))
         self.listWidget_1.setSortingEnabled(True)
+        self.listWidget_AssetType.setSortingEnabled(True)
 
         self.listWidget_2.itemClicked.connect(self.listWidget_3_appear)
         self.listWidget_2.setSortingEnabled(True)
@@ -1163,34 +1164,70 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-    def listWidget_2_appear2(self, item2):
-        println('listWidget_2_appear2 ---Shot')
+    def listWidget_2_appear2(self, item2, inType):
+        println('listWidget_2_appear2')
+        self.printEcho(inType)
+        self.printEcho(self.listTypeConvert(inType))
 
-        self.listWidget_3.clear()
-        self.printEcho(item2)
-        self.selProjScnItem = item2
-        self.selProjScnName = item2.text()
-        self.selProjScnShotPath = os.path.join(self.selProjScnPath, item2.text())
-        folderList = os.listdir(self.selProjScnShotPath)
-        self.listShot = []
-        for i in folderList:
-            if os.path.isdir(os.path.join(self.selProjScnShotPath, i)):
-                self.listShot.append(str(i))
-        self.printEcho(self.selProjScnShotPath)
-        self.printEcho(self.listShot)
-        self.listShot.sort()
-        self.listWidget_2.clear()
-        self.listWidget_2.addItems(self.listShot)
-        self.locationPath = os.path.join(self.selProjScnPath, item2.text())
-        self.lineEdit_Location.setText(self.locationPath)
-        self.pushButton_newTask.setDisabled(True)
-        self.pushButton_newShot.setEnabled(True)
-        self.pushButton_newShotBatch.setEnabled(True)
-        self.pushButton_sortoutfile.setEnabled(True)
-        self.pushButton_CompLatestRv.setEnabled(False)
-        self.pushButton_shotAction.setEnabled(False)
-        self.pushButton_shotAction2.setEnabled(False)
-        self.pushButton_shotAction3.setEnabled(False)
+        cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
+
+        # Decided to code seperately, Asset Tab and Shot Tab do not have to be the same layout
+        # some self.Variable share the same name, for now. See if it might benefit for easier maintain coding. If not, change it later.
+        if inType == 'typeScene':
+            self.listWidget_3.clear()
+            self.printEcho(item2)
+            self.selProjScnItem = item2
+            self.selProjScnName = item2.text()
+            self.selProjScnShotPath = os.path.join(cnvtSelProjScnPath, item2.text())
+            folderList = os.listdir(self.selProjScnShotPath)
+            self.listShot = []
+            for i in folderList:
+                if os.path.isdir(os.path.join(self.selProjScnShotPath, i)):
+                    self.listShot.append(str(i))
+            self.printEcho(self.selProjScnShotPath)
+            self.printEcho(self.listShot)
+            self.listShot.sort()
+            self.listWidget_2.clear()
+            self.listWidget_2.addItems(self.listShot)
+            self.locationPath = os.path.join(cnvtSelProjScnPath, item2.text())
+            self.lineEdit_Location.setText(self.locationPath)
+            self.pushButton_newTask.setDisabled(True)
+            self.pushButton_newShot.setEnabled(True)
+            self.pushButton_newShotBatch.setEnabled(True)
+            self.pushButton_sortoutfile.setEnabled(True)
+            self.pushButton_CompLatestRv.setEnabled(False)
+            self.pushButton_shotAction.setEnabled(False)
+            self.pushButton_shotAction2.setEnabled(False)
+            self.pushButton_shotAction3.setEnabled(False)
+        elif inType == 'typeLib':
+            self.listWidget_AssetTask.clear()
+            self.printEcho(item2)
+            self.selProjScnItem = item2
+            self.selProjScnName = item2.text()
+            self.selProjScnShotPath = os.path.join(cnvtSelProjScnPath, item2.text())
+            folderList = os.listdir(self.selProjScnShotPath)
+            self.listShot = []
+            for i in folderList:
+                if os.path.isdir(os.path.join(self.selProjScnShotPath, i)):
+                    self.listShot.append(str(i))
+            self.printEcho(self.selProjScnShotPath)
+            self.printEcho(self.listShot)
+            self.listShot.sort()
+            self.listWidget_Asset.clear()
+            self.listWidget_Asset.addItems(self.listShot)
+            self.locationPath = os.path.join(cnvtSelProjScnPath, item2.text())
+            self.lineEdit_Location.setText(self.locationPath)
+
+            self.pushButton_newAssetTask.setDisabled(True)
+            self.pushButton_newAsset.setEnabled(True)
+            self.pushButton_newAssetBatch.setEnabled(True)
+            #self.pushButton_sortoutfile.setEnabled(True)
+            #self.pushButton_CompLatestRv.setEnabled(False)
+            self.pushButton_assetAction.setEnabled(False)
+            self.pushButton_assetAction2.setEnabled(False)
+            self.pushButton_assetAction3.setEnabled(False)
+
+
 
 
     def listWidget_3_appear(self, item3):
