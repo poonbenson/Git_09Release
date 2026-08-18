@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260818k - WIP'
+winTitlePrefix = 'BigKeeper_20260818m - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -196,9 +196,31 @@ elif CurrentSoftwareName == 'python':
     cacheProjName = r'projCache_python.txt'
     wipExtension = r'.py'
 
+themeWindowColor = QColor(239, 239, 239)
+themeBaseColor = QColor(255, 255, 255)
+themeTextColor = QColor(0, 0, 0)
+themeHighlightColor = QColor(48, 140, 198)
+themeDisabledTextColor = QColor(190, 190, 190)
+
+def standalonePaletteBuild():
+    palette = QApplication.style().standardPalette()
+    palette.setColor(QPalette.Window, themeWindowColor)
+    palette.setColor(QPalette.WindowText, themeTextColor)
+    palette.setColor(QPalette.Base, themeBaseColor)
+    palette.setColor(QPalette.ToolTipText, themeTextColor)
+    palette.setColor(QPalette.Text, themeTextColor)
+    palette.setColor(QPalette.Button, themeWindowColor)
+    palette.setColor(QPalette.ButtonText, themeTextColor)
+    palette.setColor(QPalette.Highlight, themeHighlightColor)
+    palette.setColor(QPalette.Disabled, QPalette.Text, themeDisabledTextColor)
+    palette.setColor(QPalette.Disabled, QPalette.ButtonText, themeDisabledTextColor)
+    return palette
+
 if in_python:
     try:
         app = QApplication()
+        app.setStyle('Fusion')
+        app.setPalette(standalonePaletteBuild())
     except:
         pass
 else:
