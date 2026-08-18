@@ -286,7 +286,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.listWidget_1.setSortingEnabled(True)
         self.listWidget_AssetType.setSortingEnabled(True)
 
-        self.listWidget_2.itemClicked.connect(self.listWidget_3_appear)
+        self.listWidget_2.itemClicked.connect(lambda : self.listWidget_3_appear(self.listWidget_2.currentItem(), 'typeScene'))
         self.listWidget_2.setSortingEnabled(True)
 
         self.listWidget_3.itemClicked.connect(self.listWidget_shotTask_action)
@@ -1015,7 +1015,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> listTypeConvert')
 
         if inType == 'typeScene':
-            listLevel = (self.selProj, self.selProjScnPath)
+            listLevel = (self.selProj, self.selProjScnPath, self.selProjScnShotPath)
         elif inType == 'typeLib':
             listLevel = (self.selProj, self.selProjLibPath)
 
@@ -1027,7 +1027,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho(inType)
         self.printEcho(self.listTypeConvert(inType))
 
-        cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
+        cnvtSelProj, cnvtSelProjScnPath, cnvtSelProjScnShotPath = self.listTypeConvert(inType)
 
         self.printEcho(cnvtSelProj)
         #folderList = os.listdir(self.selProjScnPath)
@@ -1169,7 +1169,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho(inType)
         self.printEcho(self.listTypeConvert(inType))
 
-        cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
+        cnvtSelProj, cnvtSelProjScnPath, cnvtSelProjScnShotPath = self.listTypeConvert(inType)
 
         # Decided to code seperately, Asset Tab and Shot Tab do not have to be the same layout
         # some self.Variable share the same name, for now. See if it might benefit for easier maintain coding. If not, change it later.
@@ -1230,14 +1230,16 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-    def listWidget_3_appear(self, item3):
-        println('\ndef >>>>> listWidget_3_appear ---Task')
+    def listWidget_3_appear(self, item3, inType):
+        println('\ndef >>>>> listWidget_3_appear')
+        self.printEcho(inType)
+        self.printEcho(self.listTypeConvert(inType))
 
-
+        cnvtSelProj, cnvtSelProjScnPath, cnvtSelProjScnShotPath = self.listTypeConvert(inType)
 
         self.printEcho(item3.text())
         self.selShot = item3.text()
-        self.selProjScnShotTaskPath = os.path.join(self.selProjScnShotPath, item3.text(), "components")
+        self.selProjScnShotTaskPath = os.path.join(cnvtSelProjScnShotPath, item3.text(), "components")
         folderList = os.listdir(self.selProjScnShotTaskPath)
         listTask = []
         for i in folderList:
@@ -1247,7 +1249,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         listTask.sort()
         self.listWidget_3.clear()
         self.listWidget_3.addItems(listTask)
-        self.locationPath = os.path.join(self.selProjScnShotPath, item3.text())
+        self.locationPath = os.path.join(cnvtSelProjScnShotPath, item3.text())
         self.lineEdit_Location.setText(self.locationPath)
         self.pushButton_newTask.setDisabled(False)
         self.pushButton_CompLatestRv.setEnabled(False)
