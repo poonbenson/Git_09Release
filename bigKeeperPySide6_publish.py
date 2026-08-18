@@ -1015,7 +1015,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> listTypeConvert')
 
         if inType == 'typeScene':
-            listLevel = (self.selProj, self.selProjScnPath, self.selProjScnShotPath)
+            listLevel = (self.selProj, self.selProjScnPath)
         elif inType == 'typeLib':
             listLevel = (self.selProj, self.selProjLibPath)
 
@@ -1027,7 +1027,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho(inType)
         self.printEcho(self.listTypeConvert(inType))
 
-        cnvtSelProj, cnvtSelProjScnPath, cnvtSelProjScnShotPath = self.listTypeConvert(inType)
+        cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
 
         self.printEcho(cnvtSelProj)
         #folderList = os.listdir(self.selProjScnPath)
@@ -1169,9 +1169,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho(inType)
         self.printEcho(self.listTypeConvert(inType))
 
-        cnvtSelProj, cnvtSelProjScnPath, cnvtSelProjScnShotPath = self.listTypeConvert(inType)
+        cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
 
-        # Decided to code seperately, Asset Tab and Shot Tab do not have to be the same layout
         # some self.Variable share the same name, for now. See if it might benefit for easier maintain coding. If not, change it later.
         if inType == 'typeScene':
             self.listWidget_3.clear()
@@ -1204,13 +1203,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho(item2)
             self.selProjScnItem = item2
             self.selProjScnName = item2.text()
-            self.selProjScnShotPath = os.path.join(cnvtSelProjScnPath, item2.text())
-            folderList = os.listdir(self.selProjScnShotPath)
+            self.selProjAssetTypeAssetPath = os.path.join(cnvtSelProjScnPath, item2.text())
+            folderList = os.listdir(self.selProjAssetTypeAssetPath)
             self.listShot = []
             for i in folderList:
-                if os.path.isdir(os.path.join(self.selProjScnShotPath, i)):
+                if os.path.isdir(os.path.join(self.selProjAssetTypeAssetPath, i)):
                     self.listShot.append(str(i))
-            self.printEcho(self.selProjScnShotPath)
+            self.printEcho(self.selProjAssetTypeAssetPath)
             self.printEcho(self.listShot)
             self.listShot.sort()
             self.listWidget_Asset.clear()
@@ -1235,27 +1234,28 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho(inType)
         self.printEcho(self.listTypeConvert(inType))
 
-        cnvtSelProj, cnvtSelProjScnPath, cnvtSelProjScnShotPath = self.listTypeConvert(inType)
+        cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
 
-        self.printEcho(item3.text())
-        self.selShot = item3.text()
-        self.selProjScnShotTaskPath = os.path.join(cnvtSelProjScnShotPath, item3.text(), "components")
-        folderList = os.listdir(self.selProjScnShotTaskPath)
-        listTask = []
-        for i in folderList:
-            if os.path.isdir(os.path.join(self.selProjScnShotTaskPath, i)):
-                listTask.append(str(i))
-        self.printEcho(listTask)
-        listTask.sort()
-        self.listWidget_3.clear()
-        self.listWidget_3.addItems(listTask)
-        self.locationPath = os.path.join(cnvtSelProjScnShotPath, item3.text())
-        self.lineEdit_Location.setText(self.locationPath)
-        self.pushButton_newTask.setDisabled(False)
-        self.pushButton_CompLatestRv.setEnabled(False)
-        self.pushButton_shotAction.setEnabled(False)
-        self.pushButton_shotAction2.setEnabled(False)
-        self.pushButton_shotAction3.setEnabled(False)
+        if inType == 'typeScene':
+            self.printEcho(item3.text())
+            self.selShot = item3.text()
+            self.selProjScnShotTaskPath = os.path.join(self.selProjScnShotPath, item3.text(), "components")
+            folderList = os.listdir(self.selProjScnShotTaskPath)
+            listTask = []
+            for i in folderList:
+                if os.path.isdir(os.path.join(self.selProjScnShotTaskPath, i)):
+                    listTask.append(str(i))
+            self.printEcho(listTask)
+            listTask.sort()
+            self.listWidget_3.clear()
+            self.listWidget_3.addItems(listTask)
+            self.locationPath = os.path.join(self.selProjScnShotPath, item3.text())
+            self.lineEdit_Location.setText(self.locationPath)
+            self.pushButton_newTask.setDisabled(False)
+            self.pushButton_CompLatestRv.setEnabled(False)
+            self.pushButton_shotAction.setEnabled(False)
+            self.pushButton_shotAction2.setEnabled(False)
+            self.pushButton_shotAction3.setEnabled(False)
 
 
     def listWidget_3C_action(self, item):
