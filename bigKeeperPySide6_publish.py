@@ -383,8 +383,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_action1.clicked.connect(self.myAction3)
         #self.pushButton_action1.clicked.connect(self.dialog)
 
-        self.pushButton_19.clicked.connect(lambda : self.myAction5('typeScene'))
-        self.pushButton_20.clicked.connect(lambda : self.myAction5('typeLib'))
+        self.pushButton_19.clicked.connect(self.assetShotExploreAction)
+        self.pushButton_20.clicked.connect(self.assetShotExploreAction)
         self.pushButton_Location_2.clicked.connect(self.openCurrentOpeningLocationPath)
         self.pushButton_versionUp.clicked.connect(lambda : self.versionUpSaveWIP(True))
         self.pushButton_versionUp.setStyleSheet("background-color:rgb(204,153,128); color:rgb(136, 77, 85)")
@@ -1063,13 +1063,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.list1Entries = listSeq
             self.listWidget_AssetType.clear()
             self.listWidget_AssetType.addItems(self.list1Entries)
-            self.pushButton_newSeq.setEnabled(True)
-            self.pushButton_newShot.setEnabled(False)
-            self.pushButton_newShotBatch.setEnabled(False)
-            self.pushButton_CompLatestRv.setEnabled(False)
-            self.pushButton_shotAction.setEnabled(False)
-            self.pushButton_shotAction2.setEnabled(False)
-            self.pushButton_shotAction3.setEnabled(False)
+            self.pushButton_newType.setEnabled(True)
+            self.pushButton_newAsset.setEnabled(False)
+            self.pushButton_newAssetBatch.setEnabled(False)
+            #self.pushButton_CompLatestRv.setEnabled(False)
+            self.pushButton_assetAction.setEnabled(False)
+            self.pushButton_assetAction2.setEnabled(False)
+            self.pushButton_assetAction3.setEnabled(False)
 
 
 
@@ -1238,7 +1238,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho(inType)
         self.printEcho(self.listTypeConvert(inType))
 
-        cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
+        #this def not needed for now
+        #cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
 
         if inType == 'typeScene':
             self.printEcho(item3.text())
@@ -2443,7 +2444,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def listWidget_shotTask_action(self, item, inType):
         println('\ndef >>>>> listWidget_shotTask_action')
-        println('\ndef >>>>> listWidget_3_appear')
+
         self.printEcho(inType)
         self.printEcho(self.listTypeConvert(inType))
 
@@ -2515,12 +2516,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> myAction4')
         self.childUi.show()
 
-    def myAction5(self, inType):
-        println('\ndef >>>>> myAction5')
-        if inType == 'typeScene':
-            os.startfile(self.locationPath)
-        elif inType == 'typeLib':
-            os.startfile(self.locationPath)
+    def assetShotExploreAction(self, inType):
+        println('\ndef >>>>> assetShotExploreAction')
+        os.startfile(self.locationPath)
 
     def openCurrentOpeningLocationPath(self):
         println('\ndef >>>>> openCurrentOpeningLocationPath')
