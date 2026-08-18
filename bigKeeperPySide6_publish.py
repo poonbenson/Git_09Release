@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260818m - WIP'
+winTitlePrefix = 'BigKeeper_20260818n - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -494,7 +494,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-        self.initDummy()
+
 
         #self.getBigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
 
@@ -545,10 +545,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_exeMove.clicked.connect(lambda: self.cleanUpDelAction('moveAction'))
 
 
-
-
-
-
         # Define a list containing the full paths of Nuke script files
         script_files = [
             r"N:\mnt\job\24901BigPicture_TestProj\WorkingFile\BigPicture24_TestProj\scenes\bensonSeq\bkpy0010\components\comp\wip\bkpy0010_comp_wip_v0017.nk",
@@ -564,8 +560,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.tabWidget.setCurrentIndex(0)
         #self.tabWidget.setTabVisible(2, self.horizontalSlider_echoSwitch.value())
         self.tabWidget.setTabVisible(3, self.horizontalSlider_echoSwitch.value())
-
-
 
         self.pushButton_shotAction.setText('shotActionMenu')
         self.pushButton_shotAction.setEnabled(False)
@@ -631,82 +625,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.shotAction4.setDisabled(True)
 
 
-        '''# ref : https://www.qtcentre.org/threads/34073-QTabWidget-tab-button-color(-how-to-set-)
-        # ref : https://www.youtube.com/watch?v=ou1ynsJxRLA
-        stylesheet = """
-
-        QWidget {
-            background-color: rgba(70,70,70,250);
-            color : rgba(250, 250, 250, 255);
-            font-size: 6pt;
-            text-shadow: none;
-        }
-
-        QPushButton {
-            text-shadow: none;
-        }
-
-        QTabWidget {
-            font-size: 6pt;
-            background-color: rgba(0,100,0,255);
-            border-width: 2px;
-            border-style: solid;
-            border-color: rgba(5, 5, 5, 255);
-        }
-
-        QListWidget {
-           background-color: rgba(0,100,0,255);
-        }
-
-        QTabBar::tab  {
-            background : rgba(90, 90, 90, 255);
-            color : rgba(250, 250, 250, 255);
-        }
-
-        QTabWidget::pane {
-            margin: 1px,1px,1px,1px;
-            background-color: rgba(255,255,255, 255);
-            border: 2px solid rgb(0,149,48);
-            border-bottom-color: rgb(255,255,255);
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
-            border-color: rgba(5, 5, 5, 255);
-            background-color: rgb(255,255,255);
-        }
-
-        QTabBar::tab:selected {
-            color: red;
-            background-color: rgb(255,255,255);
-        }
-
-        """
-        self.setStyleSheet(stylesheet)'''
-
-
-        '''if in_houdini:
-            #ref: https://www.sidefx.com/docs/houdini/hom/hou/qt/styleSheet.html
-            stylesheet = hou.qt.styleSheet()
-            self.setStyleSheet(stylesheet)'''
-
-        # ref : https://www.qtcentre.org/threads/34073-QTabWidget-tab-button-color(-how-to-set-)
-        # ref : https://www.youtube.com/watch?v=ou1ynsJxRLA
         if in_houdini:
-            stylesheet = """
-            QWidget {
-                background-color: rgba(70,70,70,255);
-                color : rgba(250, 250, 250, 255);
-                font-size : 10pt;
-            }
+            # ref: https://www.sidefx.com/docs/houdini/hom/hou/qt/styleSheet.html
+            self.setStyleSheet(hou.qt.styleSheet())
 
-
-
-
-            """
-            self.setStyleSheet(stylesheet)
-            #self.setStyleSheet(hou.qt.styleSheet())
-
-
-
+        self.initDummy()
 
 
     def initDummy(self):
