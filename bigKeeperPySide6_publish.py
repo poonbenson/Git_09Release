@@ -1216,7 +1216,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.listWidget_Asset.clear()
             self.listWidget_Asset.addItems(self.listShot)
             self.locationPath = os.path.join(cnvtSelProjScnPath, item2.text())
-            self.lineEdit_Location.setText(self.locationPath)
+            self.lineEdit_AssetLocation.setText(self.locationPath)
 
             self.pushButton_newAssetTask.setDisabled(True)
             self.pushButton_newAsset.setEnabled(True)
