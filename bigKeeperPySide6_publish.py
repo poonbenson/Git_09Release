@@ -282,7 +282,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.comboBoxProjects.activated[int].connect(self.comboBoxAction2) #show content of the items as a int
 
         self.listWidget_1.itemClicked.connect(self.listWidget_2_appear2)
-        self.listWidget_1.itemClicked.connect(self.listWidget_1_receivedList)
+        #self.listWidget_1.itemClicked.connect(self.listWidget_1_receivedList)
         self.listWidget_1.setSortingEnabled(True)
 
         self.listWidget_2.itemClicked.connect(self.listWidget_3_appear)
@@ -706,7 +706,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_num8.clicked.connect(lambda: self.cleanUpDelAction('moveAction'))
         self.pushButton_num8.setText('moveAction')
 
-        self.pushButton_num7.clicked.connect(lambda: self.listWidget_1_receivedListB())
+        #self.pushButton_num7.clicked.connect(lambda: self.listWidget_1_receivedListB())
         self.pushButton_num7.setText('listMulti')
 
     def printEchoUIFeedback(self):
@@ -729,7 +729,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.tabWidget.setTabVisible(3, self.horizontalSlider_echoSwitch.value())
 
 
-    def listWidget_1_receivedList(self, item):
+    '''def listWidget_1_receivedList(self, item):
         println('\ndef >>>>> listWidget_1_receivedList')
         println(item.text())
         #println(self.listWidget_1.)
@@ -740,7 +740,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> listWidget_1_receivedListB')
 
         for i in self.listWidget_1.selectedItems():
-            println(i.text())
+            println(i.text())'''
 
 
     def deadlineCoreOverride(self):
