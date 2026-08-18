@@ -291,7 +291,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.listWidget_2.setSortingEnabled(True)
         self.listWidget_Asset.setSortingEnabled(True)
 
-        self.listWidget_3.itemClicked.connect(self.listWidget_shotTask_action)
+        self.listWidget_3.itemClicked.connect(lambda : self.listWidget_shotTask_action(self.listWidget_3.currentItem(), 'typeScene'))
+        self.listWidget_AssetTask.itemClicked.connect(lambda : self.listWidget_shotTask_action(self.listWidget_AssetTask.currentItem(), 'typeLib'))
         #self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3B_action)
         self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3C_action)
         self.listWidget_3.setSortingEnabled(True)
@@ -1272,7 +1273,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.listWidget_AssetTask.clear()
             self.listWidget_AssetTask.addItems(listTask)
             self.locationPath = os.path.join(self.selProjAssetTypeAssetPath, item3.text())
-            self.lineEdit_assetLocation.setText(self.locationPath)
+            self.lineEdit_AssetLocation.setText(self.locationPath)
             self.pushButton_newAssetTask.setDisabled(False)
             #self.pushButton_CompLatestRv.setEnabled(False)
             self.pushButton_assetAction.setEnabled(False)
@@ -2439,28 +2440,35 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             hou.hipFile.load(os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
 
 
-    def listWidget_shotTask_action(self, item):
+    def listWidget_shotTask_action(self, item, inType):
         println('\ndef >>>>> listWidget_shotTask_action')
+        println('\ndef >>>>> listWidget_3_appear')
+        self.printEcho(inType)
+        self.printEcho(self.listTypeConvert(inType))
 
-        self.printEcho(self.selProjScnShotTaskPath)
-        self.printEcho(item.text())
-        self.printEcho(self.subDict[self.selProjWipCode])
+        cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
 
-        self.selProjScnShotTaskWIPPath = os.path.join(self.selProjScnShotTaskPath, item.text(), self.subDict[self.selProjWipCode])
-        self.printEcho(self.selProjScnShotTaskWIPPath)
+        if inType == 'typeScene':
 
-        self.locationPath = os.path.join(self.selProjScnShotTaskPath, item.text())
-        self.printEcho(self.locationPath)
-        self.lineEdit_Location.setText(self.locationPath)
-        self.printEcho(os.listdir(os.path.join(self.locationPath, self.subDict[self.selProjWipCode])))
-        self.selTask = item.text()
-        self.pushButton_CompLatestRv.setEnabled(True)
-        self.pushButton_shotAction.setEnabled(True)
-        self.pushButton_shotAction2.setEnabled(True)
-        self.pushButton_shotAction3.setEnabled(True)
+            self.printEcho(self.selProjScnShotTaskPath)
+            self.printEcho(item.text())
+            self.printEcho(self.subDict[self.selProjWipCode])
 
-        self.listFile = self.listOutFilesInFolder(True)
-        self.listFile.sort()
+            self.selProjScnShotTaskWIPPath = os.path.join(self.selProjScnShotTaskPath, item.text(), self.subDict[self.selProjWipCode])
+            self.printEcho(self.selProjScnShotTaskWIPPath)
+
+            self.locationPath = os.path.join(self.selProjScnShotTaskPath, item.text())
+            self.printEcho(self.locationPath)
+            self.lineEdit_Location.setText(self.locationPath)
+            self.printEcho(os.listdir(os.path.join(self.locationPath, self.subDict[self.selProjWipCode])))
+            self.selTask = item.text()
+            self.pushButton_CompLatestRv.setEnabled(True)
+            self.pushButton_shotAction.setEnabled(True)
+            self.pushButton_shotAction2.setEnabled(True)
+            self.pushButton_shotAction3.setEnabled(True)
+
+            self.listFile = self.listOutFilesInFolder(True)
+            self.listFile.sort()
 
         #return item
 
