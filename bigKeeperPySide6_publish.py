@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260819e - WIP'
+winTitlePrefix = 'BigKeeper_20260819g - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -334,6 +334,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_newTask.clicked.connect(self.newTaskKeywordShow)
         self.pushButton_newTask.setDisabled(True)
 
+        self.pushButton_newAssetTask.clicked.connect(self.newTaskKeywordShow)
+        self.pushButton_newAssetTask.setDisabled(True)
+
         #nukeLabel = self.envRead('NUKE', 'label')
         #mayaLabel = self.envRead('MAYA', 'label')
 
@@ -446,6 +449,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_newShot.setEnabled(False)
         self.pushButton_newShotBatch.clicked.connect(self.newShotCreateBatchAction)
         self.pushButton_newShotBatch.setEnabled(False)
+
+        self.pushButton_newType.clicked.connect(self.newSequenceCreateAction)
+        self.pushButton_newType.setEnabled(True)
+        self.pushButton_newAsset.clicked.connect(self.newShotCreateAction)
+        self.pushButton_newAsset.setEnabled(False)
+        self.pushButton_newAssetBatch.clicked.connect(self.newShotCreateBatchAction)
+        self.pushButton_newAssetBatch.setEnabled(False)
+
 
 
         self.pushButton_scnUpdate.clicked.connect(self.openSceneUpdate)
