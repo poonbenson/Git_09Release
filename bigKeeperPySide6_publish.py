@@ -2883,9 +2883,16 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         os.system(theCmd)
 
         if inType == 'typeScene':
-            self.listWidget_1.addItem(inputCheck)
+            targetListWidget = self.listWidget_1
         elif inType == 'typeLib':
-            self.listWidget_AssetType.addItem(inputCheck)
+            targetListWidget = self.listWidget_AssetType
+
+        newItem = QListWidgetItem(inputCheck)
+        targetListWidget.addItem(newItem)
+        targetListWidget.setCurrentItem(newItem)
+        targetListWidget.scrollToItem(newItem)
+
+        self.listWidget_2_appear2(newItem, inType)
 
 
 
