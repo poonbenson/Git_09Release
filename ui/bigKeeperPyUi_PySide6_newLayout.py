@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v149.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v150.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -1215,7 +1215,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(5)
 
 
@@ -1497,7 +1497,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.label_thumbAssetTask.setText(QCoreApplication.translate("MainWindow", u"label_thumbTask", None))
 #if QT_CONFIG(tooltip)
-        self.lineEdit_assetLocation.setToolTip(QCoreApplication.translate("MainWindow", u"lineEdit_AssetLocation", None))
+        self.lineEdit_assetLocation.setToolTip(QCoreApplication.translate("MainWindow", u"lineEdit_assetLocation", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.pushButton_20.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_20", None))
@@ -1566,7 +1566,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.label_thumbTask.setText(QCoreApplication.translate("MainWindow", u"label_thumbTask", None))
 #if QT_CONFIG(tooltip)
-        self.lineEdit_sceneLocation.setToolTip(QCoreApplication.translate("MainWindow", u"lineEdit_Location", None))
+        self.lineEdit_sceneLocation.setToolTip(QCoreApplication.translate("MainWindow", u"lineEdit_sceneLocation", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.pushButton_19.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_19", None))

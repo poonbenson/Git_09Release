@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260819c - WIP'
+winTitlePrefix = 'BigKeeper_20260819d - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -977,7 +977,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def listWidget_1_appear(self, inType):
         println('\ndef >>>>> listWidget_1_appear')
         self.printEcho(inType)
-        self.printEcho(self.listTypeConvert(inType))
+        #self.printEcho(self.listTypeConvert(inType))
 
         cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
 
@@ -1119,7 +1119,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def listWidget_2_appear2(self, item2, inType):
         println('listWidget_2_appear2')
         self.printEcho(inType)
-        self.printEcho(self.listTypeConvert(inType))
+        #self.printEcho(self.listTypeConvert(inType))
 
         cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
 
@@ -1184,7 +1184,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def listWidget_3_appear(self, item3, inType):
         println('\ndef >>>>> listWidget_3_appear')
         self.printEcho(inType)
-        self.printEcho(self.listTypeConvert(inType))
+        #self.printEcho(self.listTypeConvert(inType))
 
         #this def not needed for now
         #cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
@@ -2397,7 +2397,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> listWidget_shotTask_action')
 
         self.printEcho(inType)
-        self.printEcho(self.listTypeConvert(inType))
+        #self.printEcho(self.listTypeConvert(inType))
 
         #this def not needed for now
         #cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
