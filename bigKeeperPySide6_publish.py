@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260819a - WIP'
+winTitlePrefix = 'BigKeeper_20260819c - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -1068,7 +1068,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             self.listWidget_1_appear('typeScene')
             self.sceneLocationPath = self.subDict[self.selProjPath]
-            self.lineEdit_Location.setText(self.sceneLocationPath)
+            self.lineEdit_sceneLocation.setText(self.sceneLocationPath)
             #===== end of typeScene Section =====
 
             # Decided to code seperately, Asset Tab and Shot Tab do not have to be the same layout
@@ -1141,7 +1141,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.listWidget_2.clear()
             self.listWidget_2.addItems(self.listShot)
             self.sceneLocationPath = os.path.join(cnvtSelProjScnPath, item2.text())
-            self.lineEdit_Location.setText(self.sceneLocationPath)
+            self.lineEdit_sceneLocation.setText(self.sceneLocationPath)
             self.pushButton_newTask.setDisabled(True)
             self.pushButton_newShot.setEnabled(True)
             self.pushButton_newShotBatch.setEnabled(True)
@@ -1203,7 +1203,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.listWidget_3.clear()
             self.listWidget_3.addItems(listTask)
             self.sceneLocationPath = os.path.join(self.selProjScnShotPath, item3.text())
-            self.lineEdit_Location.setText(self.sceneLocationPath)
+            self.lineEdit_sceneLocation.setText(self.sceneLocationPath)
             self.pushButton_newTask.setDisabled(False)
             self.pushButton_CompLatestRv.setEnabled(False)
             self.pushButton_shotAction.setEnabled(False)
@@ -2413,7 +2413,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             self.sceneLocationPath = os.path.join(self.selProjScnShotTaskPath, item.text())
             self.printEcho(self.sceneLocationPath)
-            self.lineEdit_Location.setText(self.sceneLocationPath)
+            self.lineEdit_sceneLocation.setText(self.sceneLocationPath)
             self.printEcho(os.listdir(os.path.join(self.sceneLocationPath, self.subDict[self.selProjWipCode])))
             self.selTask = item.text()
             self.pushButton_CompLatestRv.setEnabled(True)

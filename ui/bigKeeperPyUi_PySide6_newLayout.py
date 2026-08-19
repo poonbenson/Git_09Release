@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v148.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v149.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -790,10 +790,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_7 = QHBoxLayout()
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.lineEdit_AssetLocation = QLineEdit(self.tab_assetBrowser)
-        self.lineEdit_AssetLocation.setObjectName(u"lineEdit_AssetLocation")
+        self.lineEdit_assetLocation = QLineEdit(self.tab_assetBrowser)
+        self.lineEdit_assetLocation.setObjectName(u"lineEdit_assetLocation")
 
-        self.horizontalLayout_7.addWidget(self.lineEdit_AssetLocation)
+        self.horizontalLayout_7.addWidget(self.lineEdit_assetLocation)
 
         self.pushButton_20 = QPushButton(self.tab_assetBrowser)
         self.pushButton_20.setObjectName(u"pushButton_20")
@@ -984,10 +984,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.lineEdit_Location = QLineEdit(self.tab_shotBrowser)
-        self.lineEdit_Location.setObjectName(u"lineEdit_Location")
+        self.lineEdit_sceneLocation = QLineEdit(self.tab_shotBrowser)
+        self.lineEdit_sceneLocation.setObjectName(u"lineEdit_sceneLocation")
 
-        self.horizontalLayout_4.addWidget(self.lineEdit_Location)
+        self.horizontalLayout_4.addWidget(self.lineEdit_sceneLocation)
 
         self.pushButton_19 = QPushButton(self.tab_shotBrowser)
         self.pushButton_19.setObjectName(u"pushButton_19")
@@ -1215,7 +1215,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
         self.tabWidget_2.setCurrentIndex(5)
 
 
@@ -1497,7 +1497,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.label_thumbAssetTask.setText(QCoreApplication.translate("MainWindow", u"label_thumbTask", None))
 #if QT_CONFIG(tooltip)
-        self.lineEdit_AssetLocation.setToolTip(QCoreApplication.translate("MainWindow", u"lineEdit_AssetLocation", None))
+        self.lineEdit_assetLocation.setToolTip(QCoreApplication.translate("MainWindow", u"lineEdit_AssetLocation", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.pushButton_20.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_20", None))
@@ -1566,7 +1566,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.label_thumbTask.setText(QCoreApplication.translate("MainWindow", u"label_thumbTask", None))
 #if QT_CONFIG(tooltip)
-        self.lineEdit_Location.setToolTip(QCoreApplication.translate("MainWindow", u"lineEdit_Location", None))
+        self.lineEdit_sceneLocation.setToolTip(QCoreApplication.translate("MainWindow", u"lineEdit_Location", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.pushButton_19.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_19", None))
