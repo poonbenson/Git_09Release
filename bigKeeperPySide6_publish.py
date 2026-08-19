@@ -1010,6 +1010,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.list1Entries = []
             self.list1Entries = listSeq
             self.listWidget_1.clear()
+            self.listWidget_2.clear()
+            self.listWidget_3.clear()
             self.listWidget_1.addItems(self.list1Entries)
             self.pushButton_newSeq.setEnabled(True)
             self.pushButton_newShot.setEnabled(False)
@@ -1022,6 +1024,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.list1Entries = []
             self.list1Entries = listSeq
             self.listWidget_AssetType.clear()
+            self.listWidget_Asset.clear()
+            self.listWidget_AssetTask.clear()
             self.listWidget_AssetType.addItems(self.list1Entries)
             self.pushButton_newType.setEnabled(True)
             self.pushButton_newAsset.setEnabled(False)
