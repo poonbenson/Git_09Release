@@ -1089,7 +1089,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             self.listWidget_1_appear('typeLib')
             self.assetLocationPath = self.subDict[self.selProjPath]
-            self.lineEdit_Location.setText(self.assetLocationPath)
+            self.lineEdit_assetLocation.setText(self.assetLocationPath)
             #===== end of typeLib Section =====
 
             self.writeProjCache(self.selProj)
@@ -1167,7 +1167,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.listWidget_Asset.clear()
             self.listWidget_Asset.addItems(self.listShot)
             self.assetLocationPath = os.path.join(cnvtSelProjScnPath, item2.text())
-            self.lineEdit_AssetLocation.setText(self.assetLocationPath)
+            self.lineEdit_assetLocation.setText(self.assetLocationPath)
 
             self.pushButton_newAssetTask.setDisabled(True)
             self.pushButton_newAsset.setEnabled(True)
@@ -1226,7 +1226,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.selProjScnShotTaskPath = self.selProjAssetTypeAssetTaskPath
 
             self.assetLocationPath = os.path.join(self.selProjAssetTypeAssetPath, item3.text())
-            self.lineEdit_AssetLocation.setText(self.assetLocationPath)
+            self.lineEdit_assetLocation.setText(self.assetLocationPath)
             self.pushButton_newAssetTask.setDisabled(False)
             #self.pushButton_CompLatestRv.setEnabled(False)
             self.pushButton_assetAction.setEnabled(False)
@@ -2399,7 +2399,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho(inType)
         self.printEcho(self.listTypeConvert(inType))
 
-        cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
+        #this def not needed for now
+        #cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
 
         if inType == 'typeScene':
 
@@ -2434,7 +2435,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             self.assetLocationPath = os.path.join(self.selProjAssetTypeAssetTaskPath, item.text())
             self.printEcho(self.assetLocationPath)
-            self.lineEdit_AssetLocation.setText(self.assetLocationPath)
+            self.lineEdit_assetLocation.setText(self.assetLocationPath)
             self.printEcho(os.listdir(os.path.join(self.assetLocationPath, self.subDict[self.selProjWipCode])))
             self.selTask = item.text()
             #self.pushButton_CompLatestRv.setEnabled(True)
