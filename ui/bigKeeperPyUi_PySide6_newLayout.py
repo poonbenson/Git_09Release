@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v151.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v152.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -1215,7 +1215,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(5)
 
 
@@ -1550,7 +1550,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.pushButton_shotAction3.setText(QCoreApplication.translate("MainWindow", u"Action...", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton_newScnTask.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newTask", None))
+        self.pushButton_newScnTask.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newScnTask", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_newScnTask.setText(QCoreApplication.translate("MainWindow", u"New Task", None))
 #if QT_CONFIG(tooltip)

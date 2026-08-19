@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260819p - WIP'
+winTitlePrefix = 'BigKeeper_20260819q - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -597,6 +597,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.assetActionMenu = QMenu(self.pushButton_assetAction)
         self.assetAction1 = QAction('Edit Asset Task', self)
         self.assetActionMenu.addAction(self.assetAction1)
+        self.pushButton_assetAction.setMenu(self.assetActionMenu)
         self.assetAction1.triggered.connect(lambda : self.shotAction1Action('typeLib'))
 
         # set the only active tab in related software.
