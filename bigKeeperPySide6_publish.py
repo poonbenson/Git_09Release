@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260819g - WIP'
+winTitlePrefix = 'BigKeeper_20260819i - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -2874,6 +2874,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     QMessageBox.information(self, 'Ooops!', 'Input Name already exists.')
                 else:
                     passToken = True
+            else:
+                passToken = True
 
         theCmd = 'mkdir {}'.format(newPath)
         self.printEcho(theCmd)
