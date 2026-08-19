@@ -981,7 +981,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         cnvtSelProj, cnvtSelProjScnPath = self.listTypeConvert(inType)
 
-        self.printEcho(cnvtSelProj)
+        self.printEcho(f'converted SelProj        (cnvtSelProj)        : {cnvtSelProj})')
+        self.printEcho(f'converted SelProjScnPath (cnvtSelProjScnPath) : {cnvtSelProjScnPath}')
         #folderList = os.listdir(self.selProjScnPath)
         folderList = os.listdir(cnvtSelProjScnPath)
         listSeq = []
