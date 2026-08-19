@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260819m - WIP'
+winTitlePrefix = 'BigKeeper_20260819o - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -330,7 +330,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.pushButton_newSeq.clicked.connect()
         #self.pushButton_newShot.clicked.connect()
         #self.pushButton_newShotBatch.clicked.connect()
-        #self.pushButton_newScnTask.clicked.connect(self.createShotNewTask_appear)
         #self.pushButton_newScnTask.clicked.connect(self.createShotNewTask_appear)
         self.pushButton_newScnTask.clicked.connect(lambda : self.newTaskKeywordShow('typeScene'))
         self.pushButton_newScnTask.setDisabled(True)
@@ -1021,6 +1020,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.pushButton_shotAction.setEnabled(False)
             self.pushButton_shotAction2.setEnabled(False)
             self.pushButton_shotAction3.setEnabled(False)
+            self.pushButton_newScnTask.setDisabled(True)
+
         elif inType == 'typeLib':
             self.list1Entries = []
             self.list1Entries = listSeq
@@ -1035,6 +1036,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.pushButton_assetAction.setEnabled(False)
             self.pushButton_assetAction2.setEnabled(False)
             self.pushButton_assetAction3.setEnabled(False)
+            self.pushButton_newAssetTask.setDisabled(True)
 
 
 
@@ -2855,7 +2857,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 self.printEcho('Cancelled or empty input. Nothing created.')
                 return
 
-        theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
+        if inType == 'typeScene':
+            theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
+        elif inType == 'typeLib':
+            theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateAsset" {} /E /I'.format(newPath)
+
         self.printEcho(theCmd)
         os.system(theCmd)
 
@@ -2877,10 +2883,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         if inType == 'typeScene':
             targetListWidget = self.listWidget_2
             newParentPath = self.selProjScnShotPath
+            templatePath = r'N:\bpPipeline\bigKeeperPyIni\templateShot'
             dialogTitle = 'Open Shot Name List file'
         elif inType == 'typeLib':
             targetListWidget = self.listWidget_Asset
             newParentPath = self.selProjAssetTypeAssetPath
+            templatePath = r'N:\bpPipeline\bigKeeperPyIni\templateAsset'
             dialogTitle = 'Open Asset Name List file'
 
         # ref: https://www.tutorialspoint.com/pyqt/pyqt_qfiledialog_widget.htm
@@ -2908,7 +2916,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         for i in shotNamesList:
             newPath = os.path.join(newParentPath, i)
-            theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
+            theCmd = r'xcopy "{}" {} /E /I'.format(templatePath, newPath)
             self.printEcho(theCmd)
             os.system(theCmd)
 
