@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260819o - WIP'
+winTitlePrefix = 'BigKeeper_20260819p - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -587,10 +587,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.shotActionMenu.addAction(self.shotAction3)
         self.shotActionMenu.addAction(self.shotAction4)
         self.pushButton_shotAction.setMenu(self.shotActionMenu)
-        self.shotAction1.triggered.connect(self.shotAction1Action)
+        self.shotAction1.triggered.connect(lambda : self.shotAction1Action('typeScene'))
         #self.shotAction2.triggered.connect(self.shotAction2Action)
         self.shotAction3.triggered.connect(self.shotAction3Action)
         self.shotAction4.triggered.connect(self.shotAction4Action)
+
+        self.pushButton_assetAction.setText('assetActionMenu')
+        self.pushButton_assetAction.setEnabled(False)
+        self.assetActionMenu = QMenu(self.pushButton_assetAction)
+        self.assetAction1 = QAction('Edit Asset Task', self)
+        self.assetActionMenu.addAction(self.assetAction1)
+        self.assetAction1.triggered.connect(lambda : self.shotAction1Action('typeLib'))
 
         # set the only active tab in related software.
         tabCount = self.tabWidget_2.count()
@@ -2459,8 +2466,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.selTask = item.text()
             #self.pushButton_CompLatestRv.setEnabled(True)
             self.pushButton_assetAction.setEnabled(True)
-            self.pushButton_assetAction2.setEnabled(True)
-            self.pushButton_assetAction3.setEnabled(True)
+            self.pushButton_assetAction2.setEnabled(False)
+            self.pushButton_assetAction3.setEnabled(False)
 
             self.listFile = self.listOutFilesInFolder(True)
             self.listFile.sort()
@@ -3284,13 +3291,22 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         else:
             QMessageBox.information(self, 'message', "no shot is selected.")
 
-    def shotAction1Action(self):
+    def shotAction1Action(self, inType):
         println('\ndef >>>>> shotAction1Action')
-        if self.listWidget_3.currentRow() > -1:
-            self.printEcho(self.selTask)
-            self.listWidget_3C_action(self.selTask)
-        else:
-            QMessageBox.information(self, 'message', "no task is selected.")
+
+        if inType == 'typeScene':
+            if self.listWidget_3.currentRow() > -1:
+                self.printEcho(self.selTask)
+                self.listWidget_3C_action(self.selTask)
+            else:
+                QMessageBox.information(self, 'message', "no task is selected.")
+
+        elif inType == 'typeLib':
+            if self.listWidget_AssetTask.currentRow() > -1:
+                self.printEcho(self.selTask)
+                self.listWidget_3C_action(self.selTask)
+            else:
+                QMessageBox.information(self, 'message', "no task is selected.")
 
     def shotAction2Action(self):
         println('\ndef >>>>> shotAction2Action')
