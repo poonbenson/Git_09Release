@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260818n - WIP'
+winTitlePrefix = 'BigKeeper_20260819a - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -317,7 +317,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.listWidget_AssetTask.itemClicked.connect(lambda : self.listWidget_shotTask_action(self.listWidget_AssetTask.currentItem(), 'typeLib'))
         #self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3B_action)
         self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3C_action)
+        self.listWidget_AssetTask.itemDoubleClicked.connect(self.listWidget_3C_action)
         self.listWidget_3.setSortingEnabled(True)
+        self.listWidget_AssetTask.setSortingEnabled(True)
+
         #self.pushButton_listWidget1Refresh.clicked.connect(self.listWidget_1_appear)
         self.pushButton_listWidget1Refresh.clicked.connect(lambda : self.listWidget_1_appear('typeScene'))
         self.pushButton_listWidgetAssetRefresh.clicked.connect(lambda : self.listWidget_1_appear('typeLib'))
@@ -405,8 +408,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_action1.clicked.connect(self.myAction3)
         #self.pushButton_action1.clicked.connect(self.dialog)
 
-        self.pushButton_19.clicked.connect(self.assetShotExploreAction)
-        self.pushButton_20.clicked.connect(self.assetShotExploreAction)
+        self.pushButton_19.clicked.connect(lambda : self.assetShotExploreAction('typeScene'))
+        self.pushButton_20.clicked.connect(lambda : self.assetShotExploreAction('typeLib'))
         self.pushButton_Location_2.clicked.connect(self.openCurrentOpeningLocationPath)
         self.pushButton_versionUp.clicked.connect(lambda : self.versionUpSaveWIP(True))
         self.pushButton_versionUp.setStyleSheet("background-color:rgb(204,153,128); color:rgb(136, 77, 85)")
@@ -1064,8 +1067,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('self.subDict[self.selProjPublishCode]:' + self.subDict[self.selProjPublishCode]) # eg. published
 
             self.listWidget_1_appear('typeScene')
-            self.locationPath = self.subDict[self.selProjPath]
-            self.lineEdit_Location.setText(self.locationPath)
+            self.sceneLocationPath = self.subDict[self.selProjPath]
+            self.lineEdit_Location.setText(self.sceneLocationPath)
             #===== end of typeScene Section =====
 
             # Decided to code seperately, Asset Tab and Shot Tab do not have to be the same layout
@@ -1085,8 +1088,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('self.subDict[self.selProjPublishCode]:' + self.subDict[self.selProjPublishCode]) # eg. published
 
             self.listWidget_1_appear('typeLib')
-            self.locationPath = self.subDict[self.selProjPath]
-            self.lineEdit_Location.setText(self.locationPath)
+            self.assetLocationPath = self.subDict[self.selProjPath]
+            self.lineEdit_Location.setText(self.assetLocationPath)
             #===== end of typeLib Section =====
 
             self.writeProjCache(self.selProj)
@@ -1137,8 +1140,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.listShot.sort()
             self.listWidget_2.clear()
             self.listWidget_2.addItems(self.listShot)
-            self.locationPath = os.path.join(cnvtSelProjScnPath, item2.text())
-            self.lineEdit_Location.setText(self.locationPath)
+            self.sceneLocationPath = os.path.join(cnvtSelProjScnPath, item2.text())
+            self.lineEdit_Location.setText(self.sceneLocationPath)
             self.pushButton_newTask.setDisabled(True)
             self.pushButton_newShot.setEnabled(True)
             self.pushButton_newShotBatch.setEnabled(True)
@@ -1163,8 +1166,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.listShot.sort()
             self.listWidget_Asset.clear()
             self.listWidget_Asset.addItems(self.listShot)
-            self.locationPath = os.path.join(cnvtSelProjScnPath, item2.text())
-            self.lineEdit_AssetLocation.setText(self.locationPath)
+            self.assetLocationPath = os.path.join(cnvtSelProjScnPath, item2.text())
+            self.lineEdit_AssetLocation.setText(self.assetLocationPath)
 
             self.pushButton_newAssetTask.setDisabled(True)
             self.pushButton_newAsset.setEnabled(True)
@@ -1199,8 +1202,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             listTask.sort()
             self.listWidget_3.clear()
             self.listWidget_3.addItems(listTask)
-            self.locationPath = os.path.join(self.selProjScnShotPath, item3.text())
-            self.lineEdit_Location.setText(self.locationPath)
+            self.sceneLocationPath = os.path.join(self.selProjScnShotPath, item3.text())
+            self.lineEdit_Location.setText(self.sceneLocationPath)
             self.pushButton_newTask.setDisabled(False)
             self.pushButton_CompLatestRv.setEnabled(False)
             self.pushButton_shotAction.setEnabled(False)
@@ -1219,8 +1222,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             listTask.sort()
             self.listWidget_AssetTask.clear()
             self.listWidget_AssetTask.addItems(listTask)
-            self.locationPath = os.path.join(self.selProjAssetTypeAssetPath, item3.text())
-            self.lineEdit_AssetLocation.setText(self.locationPath)
+            # to commonly use the same Variable, rest of the Action Def will be commonly shared.
+            self.selProjScnShotTaskPath = self.selProjAssetTypeAssetTaskPath
+
+            self.assetLocationPath = os.path.join(self.selProjAssetTypeAssetPath, item3.text())
+            self.lineEdit_AssetLocation.setText(self.assetLocationPath)
             self.pushButton_newAssetTask.setDisabled(False)
             #self.pushButton_CompLatestRv.setEnabled(False)
             self.pushButton_assetAction.setEnabled(False)
@@ -2404,10 +2410,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.selProjScnShotTaskWIPPath = os.path.join(self.selProjScnShotTaskPath, item.text(), self.subDict[self.selProjWipCode])
             self.printEcho(self.selProjScnShotTaskWIPPath)
 
-            self.locationPath = os.path.join(self.selProjScnShotTaskPath, item.text())
-            self.printEcho(self.locationPath)
-            self.lineEdit_Location.setText(self.locationPath)
-            self.printEcho(os.listdir(os.path.join(self.locationPath, self.subDict[self.selProjWipCode])))
+            self.sceneLocationPath = os.path.join(self.selProjScnShotTaskPath, item.text())
+            self.printEcho(self.sceneLocationPath)
+            self.lineEdit_Location.setText(self.sceneLocationPath)
+            self.printEcho(os.listdir(os.path.join(self.sceneLocationPath, self.subDict[self.selProjWipCode])))
             self.selTask = item.text()
             self.pushButton_CompLatestRv.setEnabled(True)
             self.pushButton_shotAction.setEnabled(True)
@@ -2426,10 +2432,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.selProjScnShotTaskWIPPath = os.path.join(self.selProjAssetTypeAssetTaskPath, item.text(), self.subDict[self.selProjWipCode])
             self.printEcho(self.selProjScnShotTaskWIPPath)
 
-            self.locationPath = os.path.join(self.selProjAssetTypeAssetTaskPath, item.text())
-            self.printEcho(self.locationPath)
-            self.lineEdit_AssetLocation.setText(self.locationPath)
-            self.printEcho(os.listdir(os.path.join(self.locationPath, self.subDict[self.selProjWipCode])))
+            self.assetLocationPath = os.path.join(self.selProjAssetTypeAssetTaskPath, item.text())
+            self.printEcho(self.assetLocationPath)
+            self.lineEdit_AssetLocation.setText(self.assetLocationPath)
+            self.printEcho(os.listdir(os.path.join(self.assetLocationPath, self.subDict[self.selProjWipCode])))
             self.selTask = item.text()
             #self.pushButton_CompLatestRv.setEnabled(True)
             self.pushButton_assetAction.setEnabled(True)
@@ -2463,7 +2469,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def assetShotExploreAction(self, inType):
         println('\ndef >>>>> assetShotExploreAction')
-        os.startfile(self.locationPath)
+
+        if  inType == 'typeScene':
+            os.startfile(self.sceneLocationPath)
+        elif  inType == 'typeLib':
+            os.startfile(self.assetLocationPath)
 
     def openCurrentOpeningLocationPath(self):
         println('\ndef >>>>> openCurrentOpeningLocationPath')
