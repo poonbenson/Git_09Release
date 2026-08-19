@@ -445,16 +445,16 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.pushButton_newSeq.clicked.connect(lambda : self.newSequenceCreateAction('typeScene'))
         self.pushButton_newSeq.setEnabled(True)
-        self.pushButton_newShot.clicked.connect(self.newShotCreateAction)
+        self.pushButton_newShot.clicked.connect(lambda : self.newShotCreateAction('typeScene'))
         self.pushButton_newShot.setEnabled(False)
-        self.pushButton_newShotBatch.clicked.connect(self.newShotCreateBatchAction)
+        self.pushButton_newShotBatch.clicked.connect(lambda : self.newShotCreateBatchAction('typeScene'))
         self.pushButton_newShotBatch.setEnabled(False)
 
         self.pushButton_newType.clicked.connect(lambda : self.newSequenceCreateAction('typeLib'))
         self.pushButton_newType.setEnabled(True)
-        self.pushButton_newAsset.clicked.connect(self.newShotCreateAction)
+        self.pushButton_newAsset.clicked.connect(lambda : self.newShotCreateAction('typeLib'))
         self.pushButton_newAsset.setEnabled(False)
-        self.pushButton_newAssetBatch.clicked.connect(self.newShotCreateBatchAction)
+        self.pushButton_newAssetBatch.clicked.connect(lambda : self.newShotCreateBatchAction('typeLib'))
         self.pushButton_newAssetBatch.setEnabled(False)
 
 
