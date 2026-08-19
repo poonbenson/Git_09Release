@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260819i - WIP'
+winTitlePrefix = 'BigKeeper_20260819j - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -2875,7 +2875,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 else:
                     passToken = True
             else:
-                passToken = True
+                self.printEcho('Cancelled or empty input. Nothing created.')
+                return
 
         theCmd = 'mkdir {}'.format(newPath)
         self.printEcho(theCmd)
