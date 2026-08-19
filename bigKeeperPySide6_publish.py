@@ -443,14 +443,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.initializeNewTaskKeywordUi()
 
 
-        self.pushButton_newSeq.clicked.connect(self.newSequenceCreateAction)
+        self.pushButton_newSeq.clicked.connect(lambda : self.newSequenceCreateAction('typeScene'))
         self.pushButton_newSeq.setEnabled(True)
         self.pushButton_newShot.clicked.connect(self.newShotCreateAction)
         self.pushButton_newShot.setEnabled(False)
         self.pushButton_newShotBatch.clicked.connect(self.newShotCreateBatchAction)
         self.pushButton_newShotBatch.setEnabled(False)
 
-        self.pushButton_newType.clicked.connect(self.newSequenceCreateAction)
+        self.pushButton_newType.clicked.connect(lambda : self.newSequenceCreateAction('typeLib'))
         self.pushButton_newType.setEnabled(True)
         self.pushButton_newAsset.clicked.connect(self.newShotCreateAction)
         self.pushButton_newAsset.setEnabled(False)
@@ -2852,19 +2852,26 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-    def newSequenceCreateAction(self):
+    def newSequenceCreateAction(self, inType):
         println('def >>>>> newSequenceCreateAction')
 
         passToken = False
         while passToken == False:
-            inputCheck, ok = QInputDialog.getText(self, 'New Sequence', 'New Sequence Name :',QLineEdit.Normal)
+            if inType == 'typeScene':
+                inputCheck, ok = QInputDialog.getText(self, 'New Sequence', 'New Sequence Name :',QLineEdit.Normal)
+            elif inType == 'typeLib':
+                inputCheck, ok = QInputDialog.getText(self, 'New Asset Type', 'New Asset Type Name :',QLineEdit.Normal)
+
             self.printEcho(inputCheck)
 
             if inputCheck and ok:
-                newPath = os.path.join(self.selProjScnPath, inputCheck)
+                if inType == 'typeScene':
+                    newPath = os.path.join(self.selProjScnPath, inputCheck)
+                elif inType == 'typeLib':
+                    newPath = os.path.join(self.selProjLibPath, inputCheck)
 
                 if os.path.isdir(newPath) == True:
-                    QMessageBox.information(self, 'Ooops!', 'Sequence Name already exists.')
+                    QMessageBox.information(self, 'Ooops!', 'Input Name already exists.')
                 else:
                     passToken = True
 
@@ -2872,7 +2879,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho(theCmd)
         os.system(theCmd)
 
-        self.listWidget_1.addItem(inputCheck)
+        if inType == 'typeScene':
+            self.listWidget_1.addItem(inputCheck)
+        elif inType == 'typeLib':
+            self.listWidget_AssetType.addItem(inputCheck)
+
 
 
 
