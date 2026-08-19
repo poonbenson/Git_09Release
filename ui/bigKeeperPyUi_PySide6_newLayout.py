@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v150.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v151.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -936,12 +936,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.pushButton_shotAction3)
 
-        self.pushButton_newTask = QPushButton(self.tab_shotBrowser)
-        self.pushButton_newTask.setObjectName(u"pushButton_newTask")
-        sizePolicy4.setHeightForWidth(self.pushButton_newTask.sizePolicy().hasHeightForWidth())
-        self.pushButton_newTask.setSizePolicy(sizePolicy4)
+        self.pushButton_newScnTask = QPushButton(self.tab_shotBrowser)
+        self.pushButton_newScnTask.setObjectName(u"pushButton_newScnTask")
+        sizePolicy4.setHeightForWidth(self.pushButton_newScnTask.sizePolicy().hasHeightForWidth())
+        self.pushButton_newScnTask.setSizePolicy(sizePolicy4)
 
-        self.verticalLayout_4.addWidget(self.pushButton_newTask)
+        self.verticalLayout_4.addWidget(self.pushButton_newScnTask)
 
 
         self.horizontalLayout_3.addLayout(self.verticalLayout_4)
@@ -1215,7 +1215,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
         self.tabWidget_2.setCurrentIndex(5)
 
 
@@ -1550,9 +1550,9 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.pushButton_shotAction3.setText(QCoreApplication.translate("MainWindow", u"Action...", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton_newTask.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newTask", None))
+        self.pushButton_newScnTask.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newTask", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_newTask.setText(QCoreApplication.translate("MainWindow", u"New Task", None))
+        self.pushButton_newScnTask.setText(QCoreApplication.translate("MainWindow", u"New Task", None))
 #if QT_CONFIG(tooltip)
         self.label_thumbSeq.setToolTip(QCoreApplication.translate("MainWindow", u"label_thumbSeq", None))
 #endif // QT_CONFIG(tooltip)
