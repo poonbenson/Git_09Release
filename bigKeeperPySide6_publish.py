@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260819j - WIP'
+winTitlePrefix = 'BigKeeper_20260819m - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -2802,53 +2802,96 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.listWidget_3.addItem(inTask)
 
 
-    def newShotCreateAction(self):
+    def newShotCreateAction(self, inType):
         println('def >>>>> newShotCreateAction')
 
         passToken = False
         while passToken == False:
-            inputCheck, ok = QInputDialog.getText(self, 'New Shot', 'New Shot Name :',QLineEdit.Normal)
+            if inType == 'typeScene':
+                inputCheck, ok = QInputDialog.getText(self, 'New Shot', 'New Shot Name :',QLineEdit.Normal)
+            elif inType == 'typeLib':
+                inputCheck, ok = QInputDialog.getText(self, 'New Asset', 'New Asset Name :',QLineEdit.Normal)
+
             self.printEcho(inputCheck)
 
             if inputCheck and ok:
-                newPath = os.path.join(self.selProjScnShotPath, inputCheck)
+                if inType == 'typeScene':
+                    newPath = os.path.join(self.selProjScnShotPath, inputCheck)
+                elif inType == 'typeLib':
+                    newPath = os.path.join(self.selProjAssetTypeAssetPath, inputCheck)
 
                 if os.path.isdir(newPath) == True:
-                    QMessageBox.information(self, 'Ooops!', 'Shot Name already exists.')
+                    QMessageBox.information(self, 'Ooops!', 'Input Name already exists.')
                 else:
                     passToken = True
+            else:
+                self.printEcho('Cancelled or empty input. Nothing created.')
+                return
 
         theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
         self.printEcho(theCmd)
         os.system(theCmd)
 
-        self.listWidget_2.addItem(inputCheck)
+        if inType == 'typeScene':
+            targetListWidget = self.listWidget_2
+        elif inType == 'typeLib':
+            targetListWidget = self.listWidget_Asset
 
-    def newShotCreateBatchAction(self):
+        newItem = QListWidgetItem(inputCheck)
+        targetListWidget.addItem(newItem)
+        targetListWidget.setCurrentItem(newItem)
+        targetListWidget.scrollToItem(newItem)
+
+        self.listWidget_3_appear(newItem, inType)
+
+    def newShotCreateBatchAction(self, inType):
         println('def >>>>> newShotCreateBatchAction')
 
+        if inType == 'typeScene':
+            targetListWidget = self.listWidget_2
+            newParentPath = self.selProjScnShotPath
+            dialogTitle = 'Open Shot Name List file'
+        elif inType == 'typeLib':
+            targetListWidget = self.listWidget_Asset
+            newParentPath = self.selProjAssetTypeAssetPath
+            dialogTitle = 'Open Asset Name List file'
+
         # ref: https://www.tutorialspoint.com/pyqt/pyqt_qfiledialog_widget.htm
-        inputFile, ok= QFileDialog.getOpenFileName(self, 'Open file', 'c:\\', 'Text file (*.txt)')
+        inputFile, selectedFilter = QFileDialog.getOpenFileName(self, dialogTitle, 'c:\\', 'Text file (*.txt)')
 
-        if ok:
-            self.printEcho(inputFile)
+        if inputFile == '':
+            self.printEcho('Cancelled or empty input. Nothing created.')
+            return
 
-            shotNamesList = []
-            f = open(inputFile[0], 'r')
-            for line in f:
-                if line != '\n':
-                    shotNamesList.append(line.rstrip('\n'))
+        self.printEcho(inputFile)
 
-            f.close()
+        shotNamesList = []
+        f = open(inputFile, 'r')
+        for line in f:
+            if line != '\n':
+                shotNamesList.append(line.rstrip('\n'))
 
-            self.printEcho(shotNamesList)
+        f.close()
 
-            for i in shotNamesList:
-                newPath = os.path.join(self.selProjScnShotPath, i)
-                theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
-                self.printEcho(theCmd)
-                os.system(theCmd)
-                self.listWidget_2.addItem(i)
+        self.printEcho(shotNamesList)
+
+        if shotNamesList == []:
+            self.printEcho('No name found in the file. Nothing created.')
+            return
+
+        for i in shotNamesList:
+            newPath = os.path.join(newParentPath, i)
+            theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
+            self.printEcho(theCmd)
+            os.system(theCmd)
+
+            newItem = QListWidgetItem(i)
+            targetListWidget.addItem(newItem)
+
+        targetListWidget.setCurrentItem(newItem)
+        targetListWidget.scrollToItem(newItem)
+
+        self.listWidget_3_appear(newItem, inType)
 
 
 
