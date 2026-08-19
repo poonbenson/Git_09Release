@@ -331,10 +331,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.pushButton_newShot.clicked.connect()
         #self.pushButton_newShotBatch.clicked.connect()
         #self.pushButton_newScnTask.clicked.connect(self.createShotNewTask_appear)
-        self.pushButton_newScnTask.clicked.connect(lambda : self.newTaskKeywordShow(self.pushButton_newScnTask.currentItem(),'typeScene'))
+        #self.pushButton_newScnTask.clicked.connect(self.createShotNewTask_appear)
+        self.pushButton_newScnTask.clicked.connect(lambda : self.newTaskKeywordShow('typeScene'))
         self.pushButton_newScnTask.setDisabled(True)
 
-        self.pushButton_newAssetTask.clicked.connect(lambda : self.newTaskKeywordShow(self.pushButton_newAssetTask.currentItem(),'typeLib'))
+        self.pushButton_newAssetTask.clicked.connect(lambda : self.newTaskKeywordShow('typeLib'))
         self.pushButton_newAssetTask.setDisabled(True)
 
         #nukeLabel = self.envRead('NUKE', 'label')
@@ -2701,20 +2702,24 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-    def newTaskKeywordShow(self):
+    def newTaskKeywordShow(self, inType):
         println('\ndef >>>>> newTaskKeywordShow')
 
-        #getBigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
-        #println(getBigKInfo.currentProjWorkPath())
+        # The OK button of newTaskKeywordUi is connected once at startup in initializeNewTaskKeywordUi,
+        # and the dialog is one shared instance for both tabs. So the tag cannot be passed by lambda,
+        # it has to be kept here for newTaskOKButtonAction and newTaskCreateAction to read.
+        self.newTaskKeywordInType = inType
 
         self.newTaskKeywordUi.comboBox.clear()
         self.newTaskKeywordUi.lineEdit.clear()
 
-        '''
-        with open(os.path.join(getBigKInfo.currentProjWorkPath(), 'compPrerendPreset.txt')) as file:
-            contents = file.readlines()
-        '''
-        bigKeeperPyIniTemplatePath = r'N:\bpPipeline\bigKeeperPyIni\templateShot\components'
+        if inType == 'typeScene':
+            bigKeeperPyIniTemplatePath = r'N:\bpPipeline\bigKeeperPyIni\templateShot\components'
+            self.newTaskKeywordUi.setWindowTitle('New Shot Task Keyword')
+        elif inType == 'typeLib':
+            bigKeeperPyIniTemplatePath = r'N:\bpPipeline\bigKeeperPyIni\templateAsset\components'
+            self.newTaskKeywordUi.setWindowTitle('New Asset Task Keyword')
+
         contents = os.listdir(bigKeeperPyIniTemplatePath)
         for folder in contents:
             if os.path.isdir(os.path.join(bigKeeperPyIniTemplatePath, folder)):
@@ -2778,32 +2783,50 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> newTaskOKButtonAction')
         self.printEcho(item)
 
-
+        inType = self.newTaskKeywordInType
 
         if item != "":
 
-            toBeCreatePath = os.path.join(self.selProjScnShotPath, self.selShot, 'components', item)
-            self.printEcho(self.selProjScnShotPath)
+            if inType == 'typeScene':
+                toBeCreatePath = os.path.join(self.selProjScnShotPath, self.selShot, 'components', item)
+            elif inType == 'typeLib':
+                toBeCreatePath = os.path.join(self.selProjAssetTypeAssetPath, self.selShot, 'components', item)
+
             self.printEcho(toBeCreatePath)
             if os.path.isdir(toBeCreatePath):
                 self.printEcho('toBeCreatePath already exists.')
-                QMessageBox.information(self, 'Path already exists.', 'The task <{}> is already exists'.format('item'))
+                QMessageBox.information(self, 'Path already exists.', 'The task <{}> is already exists'.format(item))
             else:
-                self.newTaskCreateAction(item, toBeCreatePath)
+                self.newTaskCreateAction(item, toBeCreatePath, inType)
                 self.newTaskKeywordUi.close()
         else:
             self.printEcho('empty is not accepted')
             self.newTaskKeywordUi.lineEdit.setFocus()
 
 
-    def newTaskCreateAction(self, inTask, inPath):
+    def newTaskCreateAction(self, inTask, inPath, inType):
         println('def >>>>> newTaskCreateAction')
 
-        theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateTask" {} /E /I'.format(inPath)
+        if inType == 'typeScene':
+            theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShotTask" {} /E /I'.format(inPath)
+        elif inType == 'typeLib':
+            theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateAssetTask" {} /E /I'.format(inPath)
+
+        self.printEcho(theCmd)
         os.system(theCmd)
         self.printEcho('copy done.')
 
-        self.listWidget_3.addItem(inTask)
+        if inType == 'typeScene':
+            targetListWidget = self.listWidget_3
+        elif inType == 'typeLib':
+            targetListWidget = self.listWidget_AssetTask
+
+        newItem = QListWidgetItem(inTask)
+        targetListWidget.addItem(newItem)
+        targetListWidget.setCurrentItem(newItem)
+        targetListWidget.scrollToItem(newItem)
+
+        self.listWidget_shotTask_action(newItem, inType)
 
 
     def newShotCreateAction(self, inType):
