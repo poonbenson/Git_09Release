@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260820c - WIP'
+winTitlePrefix = 'BigKeeper_20260820d'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -2798,29 +2798,110 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.newTaskKeywordUi.lineEdit.setCursorPosition(100)
 
 
+    def nameInputCheck(self, inName):
+        println('def >>>>> nameInputCheck')
+
+        # The single place where the naming rules live. Returns an empty string when the
+        # name is fine, otherwise the reason to show the user. Text only, no disk access.
+
+        allowedCharacters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
+        maximumLength = 28
+        windowsReservedNames = ['CON', 'PRN', 'AUX', 'NUL',
+            'COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7', 'COM8', 'COM9',
+            'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9']
+
+        if inName == '':
+            return 'The name is empty.'
+
+        if inName != inName.strip():
+            return 'The name starts or ends with a space.'
+
+        if len(inName) > maximumLength:
+            return 'The name is {} characters long. Keep it to {} or fewer, the wip path underneath is already deep.'.format(len(inName), maximumLength)
+
+        badCharacters = []
+        for eachCharacter in inName:
+            if eachCharacter not in allowedCharacters and eachCharacter not in badCharacters:
+                badCharacters.append(eachCharacter)
+
+        if badCharacters != []:
+            return '\nNot allowed :  {}\nOnly <Alphabet>, <Number>,  <underscore _ > can be used.'.format(
+                '  '.join(['"{}"'.format(eachCharacter) for eachCharacter in badCharacters]))
+
+        if inName.upper() in windowsReservedNames:
+            return 'The name is reserved by Windows and cannot be used as a folder name.'
+
+        return ''
+
+
+    def namesListCheck(self, inNamesList, inParentPath):
+        println('def >>>>> namesListCheck')
+
+        # Runs the naming rules over every name and also asks whether the folder is
+        # already there. Returns an empty string when every name is good to create,
+        # otherwise one report line per problem, ready to drop into a message box.
+
+        problemLines = []
+
+        for eachName in inNamesList:
+            nameProblem = self.nameInputCheck(eachName)
+
+            if nameProblem != '':
+                problemLines.append('<{}>    >>>    {}'.format(eachName, nameProblem))
+            elif os.path.isdir(os.path.join(inParentPath, eachName)):
+                problemLines.append('<{}>    >>>    Already exists.'.format(eachName))
+
+        for eachLine in problemLines:
+            self.printEcho(eachLine)
+
+        return '\n'.join(problemLines)
+
+
+    def nameInputAsk(self, inDialogTitle, inDialogLabel, inParentPath):
+        println('def >>>>> nameInputAsk')
+
+        # Keeps asking until the name passes, and returns an empty string when the user
+        # cancels. Replaces the passToken loop that used to sit in the two create defs.
+
+        while True:
+            inputName, ok = QInputDialog.getText(self, inDialogTitle, inDialogLabel, QLineEdit.Normal)
+            self.printEcho(inputName)
+
+            if not ok:
+                self.printEcho('Cancelled. Nothing created.')
+                return ''
+
+            problemReport = self.namesListCheck([inputName], inParentPath)
+
+            if problemReport == '':
+                return inputName
+
+            QMessageBox.warning(self, 'Ooops!', '{}\n\n{}'.format(inDialogTitle, problemReport))
+
     def newTaskOKButtonAction(self, item):
         println('\ndef >>>>> newTaskOKButtonAction')
         self.printEcho(item)
 
         inType = self.newTaskKeywordInType
 
-        if item != "":
+        if inType == 'typeScene':
+            newParentPath = os.path.join(self.selProjScnShotPath, self.selShot, 'components')
+        elif inType == 'typeLib':
+            newParentPath = os.path.join(self.selProjAssetTypeAssetPath, self.selShot, 'components')
 
-            if inType == 'typeScene':
-                toBeCreatePath = os.path.join(self.selProjScnShotPath, self.selShot, 'components', item)
-            elif inType == 'typeLib':
-                toBeCreatePath = os.path.join(self.selProjAssetTypeAssetPath, self.selShot, 'components', item)
+        problemReport = self.namesListCheck([item], newParentPath)
 
-            self.printEcho(toBeCreatePath)
-            if os.path.isdir(toBeCreatePath):
-                self.printEcho('toBeCreatePath already exists.')
-                QMessageBox.information(self, 'Path already exists.', 'The task <{}> is already exists'.format(item))
-            else:
-                self.newTaskCreateAction(item, toBeCreatePath, inType)
-                self.newTaskKeywordUi.close()
-        else:
-            self.printEcho('empty is not accepted')
+        if problemReport != '':
+            self.printEcho(problemReport)
+            QMessageBox.warning(self, 'Ooops!', 'New Task\n\n{}'.format(problemReport))
             self.newTaskKeywordUi.lineEdit.setFocus()
+            return
+
+        toBeCreatePath = os.path.join(newParentPath, item)
+        self.printEcho(toBeCreatePath)
+
+        self.newTaskCreateAction(item, toBeCreatePath, inType)
+        self.newTaskKeywordUi.close()
 
 
     def createProgressExecute(self, inCommandPairs, inHeadingText, inTargetListWidget):
@@ -2906,39 +2987,28 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def newShotCreateAction(self, inType):
         println('def >>>>> newShotCreateAction')
 
-        passToken = False
-        while passToken == False:
-            if inType == 'typeScene':
-                inputCheck, ok = QInputDialog.getText(self, 'New Shot', 'New Shot Name :',QLineEdit.Normal)
-            elif inType == 'typeLib':
-                inputCheck, ok = QInputDialog.getText(self, 'New Asset', 'New Asset Name :',QLineEdit.Normal)
-
-            self.printEcho(inputCheck)
-
-            if inputCheck and ok:
-                if inType == 'typeScene':
-                    newPath = os.path.join(self.selProjScnShotPath, inputCheck)
-                elif inType == 'typeLib':
-                    newPath = os.path.join(self.selProjAssetTypeAssetPath, inputCheck)
-
-                if os.path.isdir(newPath) == True:
-                    QMessageBox.information(self, 'Ooops!', 'Input Name already exists.')
-                else:
-                    passToken = True
-            else:
-                self.printEcho('Cancelled or empty input. Nothing created.')
-                return
-
         if inType == 'typeScene':
-            theCmd = r'robocopy "N:\bpPipeline\bigKeeperPyIni\templateShot" "{}" {}'.format(newPath, roboCopyFlags)
+            newParentPath = self.selProjScnShotPath
+            templatePath = r'N:\bpPipeline\bigKeeperPyIni\templateShot'
             targetListWidget = self.listWidget_2
+            dialogLabel = 'New Shot Name :'
             headingText = 'New Shot'
         elif inType == 'typeLib':
-            theCmd = r'robocopy "N:\bpPipeline\bigKeeperPyIni\templateAsset" "{}" {}'.format(newPath, roboCopyFlags)
+            newParentPath = self.selProjAssetTypeAssetPath
+            templatePath = r'N:\bpPipeline\bigKeeperPyIni\templateAsset'
             targetListWidget = self.listWidget_Asset
+            dialogLabel = 'New Asset Name :'
             headingText = 'New Asset'
 
-        newItem = self.createProgressExecute([(inputCheck, theCmd)], headingText, targetListWidget)
+        inputName = self.nameInputAsk(headingText, dialogLabel, newParentPath)
+
+        if inputName == '':
+            return
+
+        newPath = os.path.join(newParentPath, inputName)
+        theCmd = r'robocopy "{}" "{}" {}'.format(templatePath, newPath, roboCopyFlags)
+
+        newItem = self.createProgressExecute([(inputName, theCmd)], headingText, targetListWidget)
 
         if newItem is None:
             self.printEcho('robocopy failed. Nothing was added to the list.')
@@ -2950,7 +3020,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.listWidget_3_appear(newItem, inType)
 
 
-    def existingNamesCheck(self, inNamesList, inParentPath):
+    '''def existingNamesCheck(self, inNamesList, inParentPath):
         println('def >>>>> existingNamesCheck')
 
         existingNames = []
@@ -2959,7 +3029,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 self.printEcho('already exists : {}'.format(eachName))
                 existingNames.append(eachName)
 
-        return existingNames
+        return existingNames'''
 
 
     def newShotCreateBatchAction(self, inType):
@@ -3001,11 +3071,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('No name found in the file. Nothing created.')
             return
 
-        existingNames = self.existingNamesCheck(shotNamesList, newParentPath)
+        problemReport = self.namesListCheck(shotNamesList, newParentPath)
 
-        if existingNames != []:
-            QMessageBox.warning(self, 'Ooops!', '{}\n\nNothing created. These names already exist :\n\n{}\n\nRemove them from the list file, then try again.'.format(
-                headingText, '\n'.join(existingNames)))
+        if problemReport != '':
+            QMessageBox.warning(self, 'Ooops!', '{}\n\nNothing created. Fix the list file, then try again :\n\n{}'.format(
+                headingText, problemReport))
             return
 
         commandPairs = []
@@ -3029,39 +3099,29 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def newSequenceCreateAction(self, inType):
         println('def >>>>> newSequenceCreateAction')
 
-        passToken = False
-        while passToken == False:
-            if inType == 'typeScene':
-                inputCheck, ok = QInputDialog.getText(self, 'New Sequence', 'New Sequence Name :',QLineEdit.Normal)
-            elif inType == 'typeLib':
-                inputCheck, ok = QInputDialog.getText(self, 'New Asset Type', 'New Asset Type Name :',QLineEdit.Normal)
+        if inType == 'typeScene':
+            newParentPath = self.selProjScnPath
+            targetListWidget = self.listWidget_1
+            dialogLabel = 'New Sequence Name :'
+            headingText = 'New Sequence'
+        elif inType == 'typeLib':
+            newParentPath = self.selProjLibPath
+            targetListWidget = self.listWidget_AssetType
+            dialogLabel = 'New Asset Type Name :'
+            headingText = 'New Asset Type'
 
-            self.printEcho(inputCheck)
+        inputName = self.nameInputAsk(headingText, dialogLabel, newParentPath)
 
-            if inputCheck and ok:
-                if inType == 'typeScene':
-                    newPath = os.path.join(self.selProjScnPath, inputCheck)
-                elif inType == 'typeLib':
-                    newPath = os.path.join(self.selProjLibPath, inputCheck)
+        if inputName == '':
+            return
 
-                if os.path.isdir(newPath) == True:
-                    QMessageBox.information(self, 'Ooops!', 'Input Name already exists.')
-                else:
-                    passToken = True
-            else:
-                self.printEcho('Cancelled or empty input. Nothing created.')
-                return
+        newPath = os.path.join(newParentPath, inputName)
 
-        theCmd = 'mkdir {}'.format(newPath)
+        theCmd = 'mkdir "{}"'.format(newPath)
         self.printEcho(theCmd)
         os.system(theCmd)
 
-        if inType == 'typeScene':
-            targetListWidget = self.listWidget_1
-        elif inType == 'typeLib':
-            targetListWidget = self.listWidget_AssetType
-
-        newItem = QListWidgetItem(inputCheck)
+        newItem = QListWidgetItem(inputName)
         targetListWidget.addItem(newItem)
         targetListWidget.setCurrentItem(newItem)
         targetListWidget.scrollToItem(newItem)
