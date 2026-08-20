@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260820k'
+winTitlePrefix = 'BigKeeper_20260820l'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -606,15 +606,21 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_shotAction.setText('shotActionMenu')
         self.pushButton_shotAction.setEnabled(False)
         self.shotActionMenu = QMenu(self.pushButton_shotAction)
+        self.shotTaskTypeAction = QAction('Task Type', self)
         self.shotAction1 = QAction('Edit Shot Task', self)
         #self.shotAction2 = QAction('RV latest Comp Output', self)
         self.shotAction3 = QAction('RV Build & Review Comp Latest ver', self)
         self.shotAction4 = QAction('RV Review Comp Previous ver', self)
+        self.shotActionMenu.addAction(self.shotTaskTypeAction)
+        self.shotActionMenu.addSeparator()
         self.shotActionMenu.addAction(self.shotAction1)
         #self.shotActionMenu.addAction(self.shotAction2)
         self.shotActionMenu.addAction(self.shotAction3)
         self.shotActionMenu.addAction(self.shotAction4)
         self.pushButton_shotAction.setMenu(self.shotActionMenu)
+        # 'Task Type' above is only a placeholder, aboutToShow writes the row before it is seen.
+        self.shotActionMenu.aboutToShow.connect(lambda : self.taskTypeMenuRefresh('typeScene'))
+        self.shotTaskTypeAction.triggered.connect(lambda : self.taskTypeChangeAction('typeScene'))
         self.shotAction1.triggered.connect(lambda : self.shotAction1Action('typeScene'))
         #self.shotAction2.triggered.connect(self.shotAction2Action)
         self.shotAction3.triggered.connect(self.shotAction3Action)
@@ -623,9 +629,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_assetAction.setText('assetActionMenu')
         self.pushButton_assetAction.setEnabled(False)
         self.assetActionMenu = QMenu(self.pushButton_assetAction)
+        self.assetTaskTypeAction = QAction('Task Type', self)
         self.assetAction1 = QAction('Edit Asset Task', self)
+        self.assetActionMenu.addAction(self.assetTaskTypeAction)
+        self.assetActionMenu.addSeparator()
         self.assetActionMenu.addAction(self.assetAction1)
         self.pushButton_assetAction.setMenu(self.assetActionMenu)
+        self.assetActionMenu.aboutToShow.connect(lambda : self.taskTypeMenuRefresh('typeLib'))
+        self.assetTaskTypeAction.triggered.connect(lambda : self.taskTypeChangeAction('typeLib'))
         self.assetAction1.triggered.connect(lambda : self.shotAction1Action('typeLib'))
 
         # set the only active tab in related software.
@@ -2747,6 +2758,157 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.prerendKeywordUi.lineEdit.setFocus()
 
 
+    def taskTypePresetRead(self, inType):
+        println('\ndef >>>>> taskTypePresetRead')
+
+        # The single place that reads the per project Task Type preset. Returns the keywords in
+        # file order with blank lines dropped, and an empty list when the file is not there.
+        # taskTypeNotSelected is kept : New Task needs it as the nothing chosen placeholder.
+        # The picker in taskTypeChangeAction drops it at its own call site.
+
+        if inType == 'typeScene':
+            taskTypePresetName = 'taskTypeShotPreset.txt'
+        elif inType == 'typeLib':
+            taskTypePresetName = 'taskTypeAssetPreset.txt'
+
+        # The project that is selected in the comboBox, not bigKInfo.currentProjWorkPath().
+        # currentProjWorkPath follows the scene that is open in the DCC, which is a different
+        # project when the user browses around, and is meaningless in standalone python.
+        taskTypePresetFullName = os.path.join(self.subDict[self.selProjPath], taskTypePresetName)
+        self.printEcho(taskTypePresetFullName)
+
+        if not os.path.isfile(taskTypePresetFullName):
+            QMessageBox.warning(self, 'Ooops!', 'Task Type preset is missing :\n\n{}'.format(taskTypePresetFullName))
+            return []
+
+        with open(taskTypePresetFullName) as file:
+            contents = file.readlines()
+
+        keywords = []
+
+        for eachLine in contents:
+            eachKeyword = eachLine.replace('\n', "")
+            if eachKeyword != '':
+                keywords.append(eachKeyword)
+
+        self.printEcho(keywords)
+
+        return keywords
+
+
+    def taskTypeRead(self, inTaskPath):
+        println('\ndef >>>>> taskTypeRead')
+
+        # The pipeline step written by newTaskCreateAction, or an empty string when the task was
+        # made before taskType.txt existed. Every task template ships a notes folder, and so do
+        # the tasks made by the older templates, so the folder is there even when the file is not.
+        taskTypeFullName = os.path.join(inTaskPath, 'notes', 'taskType.txt')
+        self.printEcho(taskTypeFullName)
+
+        if not os.path.isfile(taskTypeFullName):
+            return ''
+
+        with open(taskTypeFullName) as file:
+            taskType = file.read().strip()
+
+        return taskType
+
+
+    def taskLocationPathRead(self, inType):
+        println('\ndef >>>>> taskLocationPathRead')
+
+        # sceneLocationPath and assetLocationPath are each tab's own task folder. Reading them
+        # instead of the shared selProjScnShotTaskPath keeps each menu on its own tab.
+        if inType == 'typeScene':
+            taskLocationPath = self.sceneLocationPath
+        elif inType == 'typeLib':
+            taskLocationPath = self.assetLocationPath
+
+        return taskLocationPath
+
+
+    def taskTypeMenuRefresh(self, inType):
+        println('\ndef >>>>> taskTypeMenuRefresh')
+
+        # Connected to the menu's aboutToShow, so the row is read from disk every time the menu
+        # opens. The button carrying the menu stays disabled until a task is picked, so the
+        # location path is always set by the time this runs.
+        taskType = self.taskTypeRead(self.taskLocationPathRead(inType))
+
+        if taskType == '':
+            rowText = '== Create taskType=='
+        else:
+            rowText = 'Task Type :  ' + taskType
+
+        self.printEcho(rowText)
+
+        if inType == 'typeScene':
+            self.shotTaskTypeAction.setText(rowText)
+        elif inType == 'typeLib':
+            self.assetTaskTypeAction.setText(rowText)
+
+
+    def taskTypeChangeAction(self, inType):
+        println('\ndef >>>>> taskTypeChangeAction')
+
+        keywords = self.taskTypePresetRead(inType)
+
+        # taskTypeNotSelected is the New Task placeholder. QInputDialog.getItem has its own
+        # Cancel, so keeping it here would only be a way to write '-----' into the file.
+        keywords = [eachKeyword for eachKeyword in keywords if eachKeyword != taskTypeNotSelected]
+
+        if keywords == []:
+            println('No Task Type to choose from.')
+            return
+
+        taskLocationPath = self.taskLocationPathRead(inType)
+        currentTaskType = self.taskTypeRead(taskLocationPath)
+
+        # Pre-select what the task already holds, so an accidental click followed by OK lands
+        # back on the same value and the early return below writes nothing. getItem can only
+        # offer what is in the list, so a stored type that has since been dropped from the
+        # preset falls back to the first row.
+        if currentTaskType in keywords:
+            currentRow = keywords.index(currentTaskType)
+        else:
+            currentRow = 0
+
+        taskType, ok = QInputDialog.getItem(self, 'Task Type', 'Task Type :', keywords, currentRow, False)
+
+        if not ok:
+            self.printEcho('Cancelled. Task Type is not changed.')
+            return
+
+        if taskType == currentTaskType:
+            self.printEcho('Same Task Type. Nothing is changed.')
+            return
+
+        # Changing the pipeline step of a task that already has one is not a casual edit, so it
+        # is gated by typing the word. Setting one for the first time is not gated, there is no
+        # value to lose. The word is case sensitive on purpose, the point of the gate is to make
+        # the user stop and read. A wrong word just asks again with what was typed still in the
+        # box. getText carries its own Cancel, which is the only way out of the loop.
+        if currentTaskType != '':
+            confirmLabel = 'Task  < {} >\n\nfrom  < {} >\nto      < {} >\n\nType "change" to confirm :'.format(
+                os.path.basename(taskLocationPath), currentTaskType, taskType)
+
+            confirmWord = ''
+
+            while confirmWord.strip() != 'change':
+                confirmWord, ok = QInputDialog.getText(self, 'Confirm Task Type "change"', confirmLabel, QLineEdit.Normal, confirmWord)
+                self.printEcho(confirmWord)
+
+                if not ok:
+                    self.printEcho('Cancelled. Task Type is not changed.')
+                    return
+
+        taskTypeFullName = os.path.join(taskLocationPath, 'notes', 'taskType.txt')
+
+        with open(taskTypeFullName, 'w') as file:
+            file.write(taskType)
+
+        self.printEcho(taskTypeFullName)
+        self.printEcho(taskType)
 
 
     def newTaskKeywordShow(self, inType):
@@ -2761,31 +2923,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.newTaskKeywordUi.lineEdit.clear()
 
         if inType == 'typeScene':
-            taskTypePresetName = 'taskTypeShotPreset.txt'
             self.newTaskKeywordUi.setWindowTitle('New Shot Task')
         elif inType == 'typeLib':
-            taskTypePresetName = 'taskTypeAssetPreset.txt'
             self.newTaskKeywordUi.setWindowTitle('New Asset Task')
 
-        # The project that is selected in the comboBox, not bigKInfo.currentProjWorkPath().
-        # currentProjWorkPath follows the scene that is open in the DCC, which is a different
-        # project when the user browses around, and is meaningless in standalone python.
-        taskTypePresetFullName = os.path.join(self.subDict[self.selProjPath], taskTypePresetName)
-        self.printEcho(taskTypePresetFullName)
+        # taskTypePresetRead raises its own warning naming the missing file and returns an
+        # empty list. taskTypeNotSelected stays in the list here, it is the nothing chosen
+        # placeholder that newTaskOKButtonAction rejects.
+        keywords = self.taskTypePresetRead(inType)
 
-        if not os.path.isfile(taskTypePresetFullName):
-            QMessageBox.warning(self, 'Ooops!', 'Task Type preset is missing :\n\n{}'.format(taskTypePresetFullName))
+        if keywords == []:
             return
-
-        with open(taskTypePresetFullName) as file:
-            contents = file.readlines()
-
-        keywords = []
-
-        for eachLine in contents:
-            keywords.append(eachLine.replace('\n', ""))
-
-        self.printEcho(keywords)
 
         self.newTaskKeywordUi.label.setText('Input task name')
         self.newTaskKeywordUi.label_2.setText('Task Type :')
@@ -2806,6 +2954,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.newTaskKeywordUi.pushButton_2.clicked.connect(lambda : self.newTaskOKButtonAction(self.newTaskKeywordUi.lineEdit.text()))
         self.newTaskKeywordUi.pushButton_3.clicked.connect(lambda : self.newTaskKeywordUi.close())
+
+        # presetWindow_PySide6 is a QMainWindow skeleton, not a QDialog, so it has no default
+        # button and Enter does nothing on its own. Every QInputDialog in this file accepts
+        # Enter, so the name field is wired to the same def the OK button calls.
+        self.newTaskKeywordUi.lineEdit.returnPressed.connect(lambda : self.newTaskOKButtonAction(self.newTaskKeywordUi.lineEdit.text()))
 
 
     '''def newTaskKeywordAction(self, item):
