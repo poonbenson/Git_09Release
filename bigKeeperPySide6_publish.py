@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260820a - WIP'
+winTitlePrefix = 'BigKeeper_20260820c - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -155,6 +155,15 @@ sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\externalPyModule')
 externalToolPath = r'N:\bpPipeline\bigKeeperPy\py\externalTool'
 rvPath = r'C:\Program Files\Shotgun\RV-2021.0.0\bin\rv.exe'
 rvTemplate = r'N:\bpPipeline\rv\_bigkeeperPyData\rv.template'
+roboCopyFlags = r'/E /NFL /NDL /NJH /NJS /MT:16 /R:1 /W:1'
+# robocopy flags shared by every template-tree create.
+# /E   copy sub-folders including the empty ones, which is all these templates are
+# /NFL /NDL /NJH /NJS   silence the file list, folder list, job header and job summary
+# /MT:16   multi-thread
+# /R:1 /W:1   retry once and wait one second. The default is 1,000,000 retries at 30
+#             seconds each, which would hang a create for days on a single locked folder.
+
+
 in_nuke = None
 in_maya = None
 in_houdini = None
@@ -2832,7 +2841,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         for displayName, theCmd in inCommandPairs:
             self.printEcho(theCmd)
 
-            # Popen instead of os.system, so the event loop keeps running while xcopy works
+            # Popen instead of os.system, so the event loop keeps running while robocopy works
             # and the progress window does not go "not responding".
             theProcess = subprocess.Popen(theCmd, shell = True)
             while theProcess.poll() is None:
@@ -2844,14 +2853,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             finishedCount += 1
 
-            # xcopy returns 0 only when it really copied. Without this check the listWidget
-            # shows a row for a folder that was never created.
-            if theProcess.returncode == 0:
+            # robocopy does NOT use the xcopy convention. Below 8 is success
+            # (0 nothing to do, 1 copied, 2 extra, 4 mismatched), 8 and above is a real failure.
+            # Without this check the listWidget shows a row for a folder that was never created.
+            if theProcess.returncode < 8:
                 newItem = QListWidgetItem(displayName)
                 inTargetListWidget.addItem(newItem)
                 QApplication.processEvents()
             else:
-                self.printEcho('FAILED < {} > : xcopy returncode {}'.format(displayName, theProcess.returncode))
+                self.printEcho('FAILED < {} > : robocopy returncode {}'.format(displayName, theProcess.returncode))
                 failedNames.append(displayName)
 
         progressBox.close()
@@ -2873,18 +2883,18 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('def >>>>> newTaskCreateAction')
 
         if inType == 'typeScene':
-            theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShotTask" {} /E /I'.format(inPath)
+            theCmd = r'robocopy "N:\bpPipeline\bigKeeperPyIni\templateShotTask" "{}" {}'.format(inPath, roboCopyFlags)
             targetListWidget = self.listWidget_3
             headingText = 'New Shot Task'
         elif inType == 'typeLib':
-            theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateAssetTask" {} /E /I'.format(inPath)
+            theCmd = r'robocopy "N:\bpPipeline\bigKeeperPyIni\templateAssetTask" "{}" {}'.format(inPath, roboCopyFlags)
             targetListWidget = self.listWidget_AssetTask
             headingText = 'New Asset Task'
 
         newItem = self.createProgressExecute([(inTask, theCmd)], headingText, targetListWidget)
 
         if newItem is None:
-            self.printEcho('xcopy failed. Nothing was added to the list.')
+            self.printEcho('robocopy failed. Nothing was added to the list.')
             return
 
         targetListWidget.setCurrentItem(newItem)
@@ -2920,18 +2930,18 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 return
 
         if inType == 'typeScene':
-            theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
+            theCmd = r'robocopy "N:\bpPipeline\bigKeeperPyIni\templateShot" "{}" {}'.format(newPath, roboCopyFlags)
             targetListWidget = self.listWidget_2
             headingText = 'New Shot'
         elif inType == 'typeLib':
-            theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateAsset" {} /E /I'.format(newPath)
+            theCmd = r'robocopy "N:\bpPipeline\bigKeeperPyIni\templateAsset" "{}" {}'.format(newPath, roboCopyFlags)
             targetListWidget = self.listWidget_Asset
             headingText = 'New Asset'
 
         newItem = self.createProgressExecute([(inputCheck, theCmd)], headingText, targetListWidget)
 
         if newItem is None:
-            self.printEcho('xcopy failed. Nothing was added to the list.')
+            self.printEcho('robocopy failed. Nothing was added to the list.')
             return
 
         targetListWidget.setCurrentItem(newItem)
@@ -3001,12 +3011,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         commandPairs = []
         for i in shotNamesList:
             newPath = os.path.join(newParentPath, i)
-            commandPairs.append((i, r'xcopy "{}" {} /E /I'.format(templatePath, newPath)))
+            commandPairs.append((i, r'robocopy "{}" "{}" {}'.format(templatePath, newPath, roboCopyFlags)))
 
         newItem = self.createProgressExecute(commandPairs, headingText, targetListWidget)
 
         if newItem is None:
-            self.printEcho('Every xcopy failed. Nothing was added to the list.')
+            self.printEcho('Every robocopy failed. Nothing was added to the list.')
             return
 
         targetListWidget.setCurrentItem(newItem)
