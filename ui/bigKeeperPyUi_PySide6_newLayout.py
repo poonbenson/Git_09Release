@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v154.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v155.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -442,8 +442,16 @@ class Ui_MainWindow(object):
         self.verticalLayout_22.setObjectName(u"verticalLayout_22")
         self.horizontalLayout_30 = QHBoxLayout()
         self.horizontalLayout_30.setObjectName(u"horizontalLayout_30")
+        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.horizontalLayout_30.addItem(self.verticalSpacer_4)
+
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_30)
+
+        self.verticalSpacer_7 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_22.addItem(self.verticalSpacer_7)
 
         self.horizontalLayout_31 = QHBoxLayout()
         self.horizontalLayout_31.setObjectName(u"horizontalLayout_31")

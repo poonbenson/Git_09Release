@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260820j'
+winTitlePrefix = 'BigKeeper_20260820k'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -3972,17 +3972,45 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         return isUnique
 
+
+    def nukeAskSubName(self, inDefaultName):
+        println('\ndef >>>>> nukeAskSubName')
+
+        # Keeps asking until the sub-name passes nameInputCheck, the same rules the browser
+        # side uses. Returns an empty string when the user cancels, which nameInputCheck
+        # already rejects as a name, so the two cannot be confused.
+        # No already-exists test here : the folder is only made by the Write node at render
+        # time, so on disk it is supposed to be missing.
+        subName = inDefaultName
+
+        while True:
+            subName, ok = QInputDialog.getText(self, 'sub-name', 'Input a sub-name for sub-folderName and sub-framename', QLineEdit.Normal, subName)
+            self.printEcho(subName)
+
+            if not ok:
+                self.printEcho('Cancelled. Nothing created.')
+                return ''
+
+            nameProblem = self.nameInputCheck(subName)
+
+            if nameProblem == '':
+                return subName
+
+            QMessageBox.warning(self, 'Ooops!', 'sub-name\n\n<{}>    >>>    {}'.format(subName, nameProblem))
+
+
     def nukeAskSuffix(self):
         bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
         self.printEcho(bigKInfo.currentCompIniSuffix())
 
 
-
-
     def nukeBornWriteNode(self, inType, *args):
         println('\ndef >>>>> nukeBornWriteNode')
 
-        answerName = answerSuffix = readyToCreate = None
+        # answerName starts as '' not None, it is fed back into the dialog as the default
+        # text when a clashed path sends the loop round again.
+        answerName = ''
+        answerSuffix = readyToCreate = None
 
         try:
             self.printEcho(args)
@@ -4013,159 +4041,219 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 QMessageBox.information(self, 'message', errorMessage)
             else:
                 bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
-                if inType == 'CompMaster':
-                    self.printEcho(inType)
 
-                    answerName = inType
-                    answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
-                    frameName = str(bigKInfo.currentShot()) + answerSuffix + '.%04d' + '.exr'
-                    verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
-                    targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder, frameName))
-                    checkPath      = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder))
-                    #readyToCreate = True
-                    backdropLabel = inType
+                # The target folder does not exist on disk yet, a Write node only makes it at
+                # render time. So the other Write nodes in this script are the only place a
+                # duplicated target can be found.
+                # canRetry says whether asking again could produce a different path. It is True
+                # only for the types whose folder carries a name the user typed. CompMaster,
+                # CompMaster-V and Prerend build their path from the task, the version and a
+                # preset keyword, so looping there would ask the same question forever.
+                passToken = False
+                canRetry = False
+
+                while passToken == False:
+
+                    if inType == 'CompMaster':
+                        self.printEcho(inType)
+                        canRetry = False
+
+                        answerName = inType
+
+                        if answerSuffix is None:
+                            answerSuffix = bigKInfo.currentCompIniSuffix()
+
+                        answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, answerSuffix)
+
+                        if readyToCreate == False:
+                            println('Suffix dialog cancelled. Nothing is created.')
+                            return
+
+                        frameName = str(bigKInfo.currentShot()) + answerSuffix + '.%04d' + '.exr'
+                        verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
+                        targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder, frameName))
+                        checkPath      = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder))
+                        backdropLabel = inType
 
 
-                elif inType == 'CompMasterToV':
-                    self.printEcho(inType)
+                    elif inType == 'CompMasterToV':
+                        self.printEcho(inType)
+                        canRetry = False
 
-                    answerName = inType
-                    answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
-                    frameName = str(bigKInfo.currentShot()) + answerSuffix + '.%04d' + '.exr'
-                    vDriveFolder = self.vDrivePathRead(os.path.join(bigKInfo.currentProjWorkPath(), 'bigPathsProject.ini'), 'BIGPATHS', 'vOutput')
-                    outputVdriveFolder = os.path.join(vDriveFolder, bigKInfo.currentShot())
+                        answerName = inType
 
-                    targetFilePath = os.path.normpath(os.path.join(outputVdriveFolder, frameName))
-                    checkPath      = outputVdriveFolder
-                    #readyToCreate = True
-                    backdropLabel = inType
+                        if answerSuffix is None:
+                            answerSuffix = bigKInfo.currentCompIniSuffix()
 
-                elif inType == 'LayerMask':
-                    self.printEcho(inType)
-                    answerName, readyToCreate = QInputDialog.getText(self, 'sub-name', 'Input a sub-name for sub-folderName and sub-framename', QLineEdit.Normal)
-                    self.printEcho(answerName)
-                    if readyToCreate == True:
-                        answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
+                        answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, answerSuffix)
 
-                    frameName = str(bigKInfo.currentShot()) + '_' + answerName + answerSuffix + '.%04d' + '.exr'
-                    verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4) + '_' + inType
-                    targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder, answerName, frameName))
-                    checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder, answerName))
-                    backdropLabel = answerName + '_' + inType
+                        if readyToCreate == False:
+                            println('Suffix dialog cancelled. Nothing is created.')
+                            return
 
-                elif inType == freeLayerMaskType:
-                    self.printEcho(inType)
+                        frameName = str(bigKInfo.currentShot()) + answerSuffix + '.%04d' + '.exr'
+                        vDriveFolder = self.vDrivePathRead(os.path.join(bigKInfo.currentProjWorkPath(), 'bigPathsProject.ini'), 'BIGPATHS', 'vOutput')
+                        outputVdriveFolder = os.path.join(vDriveFolder, bigKInfo.currentShot())
 
-                    # Same three answers as LayerMask, but the parent folder is picked by the
-                    # user instead of being <taskPath>\output. Remembered for this session only.
-                    if self.freeLayerMaskLastFolder == '':
-                        self.freeLayerMaskLastFolder = str(bigKInfo.currentTaskPath())
+                        targetFilePath = os.path.normpath(os.path.join(outputVdriveFolder, frameName))
+                        checkPath      = outputVdriveFolder
+                        backdropLabel = inType
 
-                    parentFolder = self.askExistingFolder('Choose the parent folder of this ' + inType + ' output', self.freeLayerMaskLastFolder)
-                    self.printEcho('parentFolder : {}'.format(parentFolder))
+                    elif inType == 'LayerMask':
+                        self.printEcho(inType)
+                        canRetry = True
 
-                    if parentFolder == '':
-                        println('Folder dialog cancelled. Nothing is created.')
+                        answerName = self.nukeAskSubName(answerName)
+
+                        if answerName == '':
+                            println('sub-name dialog cancelled. Nothing is created.')
+                            return
+
+                        if answerSuffix is None:
+                            answerSuffix = bigKInfo.currentCompIniSuffix()
+
+                        answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, answerSuffix)
+
+                        if readyToCreate == False:
+                            println('Suffix dialog cancelled. Nothing is created.')
+                            return
+
+                        frameName = str(bigKInfo.currentShot()) + '_' + answerName + answerSuffix + '.%04d' + '.exr'
+                        verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4) + '_' + inType
+                        targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder, answerName, frameName))
+                        checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder, answerName))
+                        backdropLabel = answerName + '_' + inType
+
+                    elif inType == freeLayerMaskType:
+                        self.printEcho(inType)
+                        canRetry = True
+
+                        # Same three answers as LayerMask, but the parent folder is picked by the
+                        # user instead of being <taskPath>\output. Remembered for this session only,
+                        # so a retry re-opens the dialog on the folder that just clashed.
+                        if self.freeLayerMaskLastFolder == '':
+                            self.freeLayerMaskLastFolder = str(bigKInfo.currentTaskPath())
+
+                        parentFolder = self.askExistingFolder('Choose the parent folder of this ' + inType + ' output', self.freeLayerMaskLastFolder)
+                        self.printEcho('parentFolder : {}'.format(parentFolder))
+
+                        if parentFolder == '':
+                            println('Folder dialog cancelled. Nothing is created.')
+                            return
+
+                        self.freeLayerMaskLastFolder = parentFolder
+
+                        answerName = self.nukeAskSubName(answerName)
+
+                        if answerName == '':
+                            println('sub-name dialog cancelled. Nothing is created.')
+                            return
+
+                        if answerSuffix is None:
+                            answerSuffix = bigKInfo.currentCompIniSuffix()
+
+                        answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, answerSuffix)
+
+                        if readyToCreate == False:
+                            println('Suffix dialog cancelled. Nothing is created.')
+                            return
+
+                        frameName = str(bigKInfo.currentShot()) + '_' + answerName + answerSuffix + '.%04d' + '.exr'
+                        verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4) + '_' + inType
+                        targetFilePath = os.path.normpath(os.path.join(parentFolder, verFolder, answerName, frameName))
+                        checkPath = os.path.normpath(os.path.join(parentFolder, verFolder, answerName))
+                        backdropLabel = answerName + '_' + inType
+
+                    elif inType == 'PreRend':
+                        # *** unknow bug, this elif section need to keep. If this section deleted, the 'Prerend' section will sytax error. To Be Fix.
+                        self.printEcho(inType)
+                        canRetry = True
+
+                        answerName = self.nukeAskSubName(answerName)
+
+                        if answerName == '':
+                            println('sub-name dialog cancelled. Nothing is created.')
+                            return
+
+                        frameName = str(bigKInfo.currentShot()) + '_' + answerName + '.%04d' + '.exr'
+                        verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
+                        targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName, frameName))
+                        checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName))
+                        backdropLabel = answerName + '_' + inType
+                        # *** unknow bug, this elif section need to keep. If this section deleted, the 'Prerend' section will sytax error. To Be Fix.
+
+                    elif inType == 'Prerend':
+                        self.printEcho(inType)
+                        canRetry = False
+
+                        answerName = args[0]
+                        self.printEcho('3 self.prerendKeyword is {}'.format(answerName))
+
+                        if answerSuffix is None:
+                            answerSuffix = bigKInfo.currentCompIniSuffix()
+
+                        answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, answerSuffix)
+
+                        if readyToCreate == False:
+                            println('Suffix dialog cancelled. Nothing is created.')
+                            return
+
+                        frameName = str(bigKInfo.currentShot()) + '_' + answerName + answerSuffix + '.%04d' + '.exr'
+                        verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
+                        targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName, frameName))
+                        checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName))
+                        backdropLabel = answerName + '_' + inType
+
+
+
+                    self.printEcho('checkPath is : ' + checkPath)
+                    checkPath = str(checkPath + os.sep)
+                    self.printEcho('checkPath is : ' + checkPath)
+
+                    # nukeCheckKnobContentUnique raises its own message box naming the clashing
+                    # nodes, so the retry loop needs no extra dialog of its own.
+                    passToken = self.nukeCheckKnobContentUnique('Write', 'file', checkPath)
+
+                    if passToken == False and canRetry == False:
+                        println('Not Unique Path, and < ' + inType + ' > builds its path with nothing to ask again. Nothing is created.')
                         return
 
-                    self.freeLayerMaskLastFolder = parentFolder
+                #newCreatedNodeMetadata = self.nukeBornBigKNode('bigK', 'ModifyMetaData')
+                newCreatedNodeMetadata = self.nukeBornMetadataNode()
+                newCreatedNode = self.nukeBornBigKNode('bigK' +  '_' + answerName, 'Write')
+                newCreatedNode.setInput(0, newCreatedNodeMetadata)
+                newCreatedNode.knob('channels').setValue('rgba')
 
-                    answerName, readyToCreate = QInputDialog.getText(self, 'sub-name', 'Input a sub-name for sub-folderName and sub-framename', QLineEdit.Normal)
-                    self.printEcho(answerName)
+                #targetFilePath = os.path.join(str(bigKInfo.currentTaskPath()), 'output', str(bigKInfo.currentThisWipVerNum(), (str(bigKInfo.currentShot()) + '.%04d' + '.exr')))
+                targetFilePath = targetFilePath.replace(os.sep, '/')
+                newCreatedNode.knob('file').setValue(targetFilePath)
+                newCreatedNode.knob('create_directories').setValue(True)
+                newCreatedNode.knob('metadata').setValue('all metadata')
+                newCreatedNode.knob('noprefix').setValue(True)
 
-                    if readyToCreate == False:
-                        println('sub-name dialog cancelled. Nothing is created.')
-                        return
+                # Stamp the type on the node itself. The node name only carries answerName,
+                # which is the sub-name for LayerMask and Prerend, so the name cannot tell
+                # nukeUpdateWriteNodeVer what kind of Write node this is.
+                newCreatedNode.addKnob(nuke.Text_Knob(bigKWriteTypeKnobName, 'bigK Write Type', inType))
 
-                    answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
+                # addKnob creates the "User" tab and Nuke brings it to the front of the
+                # already open properties panel. Close and reopen so it lands on Write.
+                newCreatedNode.hideControlPanel()
+                newCreatedNode.showControlPanel()
 
-                    if readyToCreate == False:
-                        println('Suffix dialog cancelled. Nothing is created.')
-                        return
+                allNewNodes = [orignalSelNode, newCreatedNodeMetadata, newCreatedNode]
+                self.printEcho(newCreatedNodeMetadata)
+                self.printEcho('***')
+                self.printEcho(newCreatedNode)
+                self.printEcho('*************allNewNodes : ***************************')
+                self.printEcho(allNewNodes)
 
-                    frameName = str(bigKInfo.currentShot()) + '_' + answerName + answerSuffix + '.%04d' + '.exr'
-                    verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4) + '_' + inType
-                    targetFilePath = os.path.normpath(os.path.join(parentFolder, verFolder, answerName, frameName))
-                    checkPath = os.path.normpath(os.path.join(parentFolder, verFolder, answerName))
-                    backdropLabel = answerName + '_' + inType
+                for i in allNewNodes:
+                    i.setSelected(True)
 
-                elif inType == 'PreRend':
-                    # *** unknow bug, this elif section need to keep. If this section deleted, the 'Prerend' section will sytax error. To Be Fix.
-                    self.printEcho(inType)
-                    answerName, readyToCreate = QInputDialog.getText(self, 'sub-name', 'Input a sub-name for sub-folderName and sub-framename', QLineEdit.Normal)
-                    self.printEcho(answerName)
+                newBD = self.nukeBornBackdrop(allNewNodes, backdropLabel, inType, 'BackdropNode')
 
-                    frameName = str(bigKInfo.currentShot()) + '_' + answerName + '.%04d' + '.exr'
-                    verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
-                    targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName, frameName))
-                    checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName))
-                    #readyToCreate = True
-                    backdropLabel = answerName + '_' + inType
-                    # *** unknow bug, this elif section need to keep. If this section deleted, the 'Prerend' section will sytax error. To Be Fix.
-
-                elif inType == 'Prerend':
-                    self.printEcho(inType)
-                    answerName = args[0]
-                    readyToCreate = True
-
-                    self.printEcho('3 self.prerendKeyword is {}'.format(answerName))
-
-                    answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
-                    frameName = str(bigKInfo.currentShot()) + '_' + answerName + answerSuffix + '.%04d' + '.exr'
-                    verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
-                    targetFilePath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName, frameName))
-                    checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'prerend', verFolder, answerName))
-                    backdropLabel = answerName + '_' + inType
-
-
-
-                self.printEcho('checkPath is : ' + checkPath)
-                checkPath = str(checkPath + os.sep)
-                self.printEcho('checkPath is : ' + checkPath)
-                isUnique = self.nukeCheckKnobContentUnique('Write', 'file', checkPath)
-                if isUnique:
-
-                    if readyToCreate :
-                        #newCreatedNodeMetadata = self.nukeBornBigKNode('bigK', 'ModifyMetaData')
-                        newCreatedNodeMetadata = self.nukeBornMetadataNode()
-                        newCreatedNode = self.nukeBornBigKNode('bigK' +  '_' + answerName, 'Write')
-                        newCreatedNode.setInput(0, newCreatedNodeMetadata)
-                        newCreatedNode.knob('channels').setValue('rgba')
-
-                        #targetFilePath = os.path.join(str(bigKInfo.currentTaskPath()), 'output', str(bigKInfo.currentThisWipVerNum(), (str(bigKInfo.currentShot()) + '.%04d' + '.exr')))
-                        targetFilePath = targetFilePath.replace(os.sep, '/')
-                        newCreatedNode.knob('file').setValue(targetFilePath)
-                        newCreatedNode.knob('create_directories').setValue(True)
-                        newCreatedNode.knob('metadata').setValue('all metadata')
-                        newCreatedNode.knob('noprefix').setValue(True)
-
-                        # Stamp the type on the node itself. The node name only carries answerName,
-                        # which is the sub-name for LayerMask and Prerend, so the name cannot tell
-                        # nukeUpdateWriteNodeVer what kind of Write node this is.
-                        newCreatedNode.addKnob(nuke.Text_Knob(bigKWriteTypeKnobName, 'bigK Write Type', inType))
-
-                        # addKnob creates the "User" tab and Nuke brings it to the front of the
-                        # already open properties panel. Close and reopen so it lands on Write.
-                        newCreatedNode.hideControlPanel()
-                        newCreatedNode.showControlPanel()
-                    else:
-                        pass
-
-                    allNewNodes = [orignalSelNode, newCreatedNodeMetadata, newCreatedNode]
-                    self.printEcho(newCreatedNodeMetadata)
-                    self.printEcho('***')
-                    self.printEcho(newCreatedNode)
-                    self.printEcho('*************allNewNodes : ***************************')
-                    self.printEcho(allNewNodes)
-
-                    for i in allNewNodes:
-                        i.setSelected(True)
-
-                    newBD = self.nukeBornBackdrop(allNewNodes, backdropLabel, inType, 'BackdropNode')
-
-                    self.printEcho('original After:::')
-                else:
-                    self.printEcho('Not Unique Path.')
+                self.printEcho('original After:::')
 
                 # setSelected to let user move the position of the created nodes
                 for i in allNewNodes:
