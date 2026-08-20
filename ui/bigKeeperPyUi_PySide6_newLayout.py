@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v153.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v154.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -352,9 +352,11 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_23.addWidget(self.pushButton_genWriteLayerMask)
 
-        self.horizontalSpacer_2 = QSpacerItem(85, 20, QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Minimum)
+        self.pushButton_genWriteFreeLayerMask = QPushButton(self.horizontalLayoutWidget_6)
+        self.pushButton_genWriteFreeLayerMask.setObjectName(u"pushButton_genWriteFreeLayerMask")
+        self.pushButton_genWriteFreeLayerMask.setFont(font3)
 
-        self.horizontalLayout_23.addItem(self.horizontalSpacer_2)
+        self.horizontalLayout_23.addWidget(self.pushButton_genWriteFreeLayerMask)
 
 
         self.verticalLayout_17.addLayout(self.horizontalLayout_23)
@@ -365,7 +367,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_19.addLayout(self.verticalLayout_15)
 
-        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.horizontalSpacer_4 = QSpacerItem(10, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_19.addItem(self.horizontalSpacer_4)
 
@@ -373,6 +375,36 @@ class Ui_MainWindow(object):
         self.verticalLayout_18.setObjectName(u"verticalLayout_18")
         self.verticalLayout_21 = QVBoxLayout()
         self.verticalLayout_21.setObjectName(u"verticalLayout_21")
+        self.verticalLayout_19 = QVBoxLayout()
+        self.verticalLayout_19.setObjectName(u"verticalLayout_19")
+        self.label_21 = QLabel(self.horizontalLayoutWidget_6)
+        self.label_21.setObjectName(u"label_21")
+        sizePolicy3.setHeightForWidth(self.label_21.sizePolicy().hasHeightForWidth())
+        self.label_21.setSizePolicy(sizePolicy3)
+        self.label_21.setFont(font2)
+
+        self.verticalLayout_19.addWidget(self.label_21)
+
+        self.horizontalLayout_24 = QHBoxLayout()
+        self.horizontalLayout_24.setObjectName(u"horizontalLayout_24")
+        self.pushButton_FileKnobFreeze = QPushButton(self.horizontalLayoutWidget_6)
+        self.pushButton_FileKnobFreeze.setObjectName(u"pushButton_FileKnobFreeze")
+        self.pushButton_FileKnobFreeze.setFont(font3)
+
+        self.horizontalLayout_24.addWidget(self.pushButton_FileKnobFreeze)
+
+        self.pushButton_FileKnobUnFreeze = QPushButton(self.horizontalLayoutWidget_6)
+        self.pushButton_FileKnobUnFreeze.setObjectName(u"pushButton_FileKnobUnFreeze")
+        self.pushButton_FileKnobUnFreeze.setFont(font3)
+
+        self.horizontalLayout_24.addWidget(self.pushButton_FileKnobUnFreeze)
+
+
+        self.verticalLayout_19.addLayout(self.horizontalLayout_24)
+
+
+        self.verticalLayout_21.addLayout(self.verticalLayout_19)
+
         self.label_27 = QLabel(self.horizontalLayoutWidget_6)
         self.label_27.setObjectName(u"label_27")
         sizePolicy3.setHeightForWidth(self.label_27.sizePolicy().hasHeightForWidth())
@@ -406,65 +438,15 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_18.addLayout(self.verticalLayout_21)
 
-        self.verticalLayout_19 = QVBoxLayout()
-        self.verticalLayout_19.setObjectName(u"verticalLayout_19")
-        self.label_21 = QLabel(self.horizontalLayoutWidget_6)
-        self.label_21.setObjectName(u"label_21")
-        sizePolicy3.setHeightForWidth(self.label_21.sizePolicy().hasHeightForWidth())
-        self.label_21.setSizePolicy(sizePolicy3)
-        self.label_21.setFont(font2)
-
-        self.verticalLayout_19.addWidget(self.label_21)
-
-        self.horizontalLayout_24 = QHBoxLayout()
-        self.horizontalLayout_24.setObjectName(u"horizontalLayout_24")
-        self.pushButton_FileKnobFreeze = QPushButton(self.horizontalLayoutWidget_6)
-        self.pushButton_FileKnobFreeze.setObjectName(u"pushButton_FileKnobFreeze")
-        self.pushButton_FileKnobFreeze.setFont(font3)
-
-        self.horizontalLayout_24.addWidget(self.pushButton_FileKnobFreeze)
-
-        self.pushButton_FileKnobUnFreeze = QPushButton(self.horizontalLayoutWidget_6)
-        self.pushButton_FileKnobUnFreeze.setObjectName(u"pushButton_FileKnobUnFreeze")
-        self.pushButton_FileKnobUnFreeze.setFont(font3)
-
-        self.horizontalLayout_24.addWidget(self.pushButton_FileKnobUnFreeze)
-
-
-        self.verticalLayout_19.addLayout(self.horizontalLayout_24)
-
-
-        self.verticalLayout_18.addLayout(self.verticalLayout_19)
-
         self.verticalLayout_22 = QVBoxLayout()
         self.verticalLayout_22.setObjectName(u"verticalLayout_22")
-        self.label_28 = QLabel(self.horizontalLayoutWidget_6)
-        self.label_28.setObjectName(u"label_28")
-        sizePolicy3.setHeightForWidth(self.label_28.sizePolicy().hasHeightForWidth())
-        self.label_28.setSizePolicy(sizePolicy3)
-        self.label_28.setFont(font2)
-
-        self.verticalLayout_22.addWidget(self.label_28)
-
         self.horizontalLayout_30 = QHBoxLayout()
         self.horizontalLayout_30.setObjectName(u"horizontalLayout_30")
-        self.pushButton_genWriteCompMasterVerOnly_ = QPushButton(self.horizontalLayoutWidget_6)
-        self.pushButton_genWriteCompMasterVerOnly_.setObjectName(u"pushButton_genWriteCompMasterVerOnly_")
-        self.pushButton_genWriteCompMasterVerOnly_.setFont(font3)
-
-        self.horizontalLayout_30.addWidget(self.pushButton_genWriteCompMasterVerOnly_)
-
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_30)
 
         self.horizontalLayout_31 = QHBoxLayout()
         self.horizontalLayout_31.setObjectName(u"horizontalLayout_31")
-        self.pushButton_genWriteLayerMaskVerOnly = QPushButton(self.horizontalLayoutWidget_6)
-        self.pushButton_genWriteLayerMaskVerOnly.setObjectName(u"pushButton_genWriteLayerMaskVerOnly")
-        self.pushButton_genWriteLayerMaskVerOnly.setFont(font3)
-
-        self.horizontalLayout_31.addWidget(self.pushButton_genWriteLayerMaskVerOnly)
-
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_31)
 
@@ -1295,7 +1277,7 @@ class Ui_MainWindow(object):
         self.pushButton_NukeReadNodeTempTool.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_NukeReadNodeTempTool", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_NukeReadNodeTempTool.setText(QCoreApplication.translate("MainWindow", u"Get Frame Range\n"
-"- Nuke Read Nodes -", None))
+"- Seleted Read Nodes -", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabMaya), QCoreApplication.translate("MainWindow", u"Maya", None))
         self.label_24.setText(QCoreApplication.translate("MainWindow", u"Light Publish", None))
 #if QT_CONFIG(tooltip)
@@ -1317,7 +1299,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.pushButton_genWriteCompMaster.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWriteCompMaster", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_genWriteCompMaster.setText(QCoreApplication.translate("MainWindow", u"CompMaster (only 1)", None))
+        self.pushButton_genWriteCompMaster.setText(QCoreApplication.translate("MainWindow", u"CompMaster", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_genWriteCompMasterV.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWriteCompMasterV", None))
 #endif // QT_CONFIG(tooltip)
@@ -1325,17 +1307,11 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.pushButton_genWriteLayerMask.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWriteLayerMask", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_genWriteLayerMask.setText(QCoreApplication.translate("MainWindow", u"LayerMasks", None))
-        self.label_27.setText(QCoreApplication.translate("MainWindow", u"Default Backdrop", None))
+        self.pushButton_genWriteLayerMask.setText(QCoreApplication.translate("MainWindow", u"LayerMask", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton_genCgRenderBackdrop.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genCgRenderBackdrop", None))
+        self.pushButton_genWriteFreeLayerMask.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWriteLayerMask", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_genCgRenderBackdrop.setText(QCoreApplication.translate("MainWindow", u"Cg Images of\n"
-"Light PreComp", None))
-#if QT_CONFIG(tooltip)
-        self.pushButton_genOtherBackdrop.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genOtherBackdrop", None))
-#endif // QT_CONFIG(tooltip)
-        self.pushButton_genOtherBackdrop.setText(QCoreApplication.translate("MainWindow", u"Others", None))
+        self.pushButton_genWriteFreeLayerMask.setText(QCoreApplication.translate("MainWindow", u"Free LayerMask", None))
         self.label_21.setText(QCoreApplication.translate("MainWindow", u"Freeze Scene Update Node", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_FileKnobFreeze.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_FileKnobFreeze\n"
@@ -1347,15 +1323,16 @@ class Ui_MainWindow(object):
 "by select the < Freeze Backdrop >", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_FileKnobUnFreeze.setText(QCoreApplication.translate("MainWindow", u"UnFreeze", None))
-        self.label_28.setText(QCoreApplication.translate("MainWindow", u"Special (Ver Check Only)", None))
+        self.label_27.setText(QCoreApplication.translate("MainWindow", u"Default Backdrop", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton_genWriteCompMasterVerOnly_.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWriteCompMaster", None))
+        self.pushButton_genCgRenderBackdrop.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genCgRenderBackdrop", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_genWriteCompMasterVerOnly_.setText(QCoreApplication.translate("MainWindow", u"CompMaster", None))
+        self.pushButton_genCgRenderBackdrop.setText(QCoreApplication.translate("MainWindow", u"Cg Images of\n"
+"Light PreComp", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton_genWriteLayerMaskVerOnly.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWriteLayerMask", None))
+        self.pushButton_genOtherBackdrop.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genOtherBackdrop", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_genWriteLayerMaskVerOnly.setText(QCoreApplication.translate("MainWindow", u"LayerMasks", None))
+        self.pushButton_genOtherBackdrop.setText(QCoreApplication.translate("MainWindow", u"Others", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_closeNukeScript.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_closeNukeScript", None))
 #endif // QT_CONFIG(tooltip)
