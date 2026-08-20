@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v152.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v153.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -406,14 +406,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_18.addLayout(self.verticalLayout_21)
 
-        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.verticalLayout_18.addItem(self.horizontalSpacer_6)
-
-        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.verticalLayout_18.addItem(self.horizontalSpacer_7)
-
         self.verticalLayout_19 = QVBoxLayout()
         self.verticalLayout_19.setObjectName(u"verticalLayout_19")
         self.label_21 = QLabel(self.horizontalLayoutWidget_6)
@@ -441,19 +433,54 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_19.addLayout(self.horizontalLayout_24)
 
-        self.verticalSpacer_4 = QSpacerItem(20, 25, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred)
-
-        self.verticalLayout_19.addItem(self.verticalSpacer_4)
-
 
         self.verticalLayout_18.addLayout(self.verticalLayout_19)
+
+        self.verticalLayout_22 = QVBoxLayout()
+        self.verticalLayout_22.setObjectName(u"verticalLayout_22")
+        self.label_28 = QLabel(self.horizontalLayoutWidget_6)
+        self.label_28.setObjectName(u"label_28")
+        sizePolicy3.setHeightForWidth(self.label_28.sizePolicy().hasHeightForWidth())
+        self.label_28.setSizePolicy(sizePolicy3)
+        self.label_28.setFont(font2)
+
+        self.verticalLayout_22.addWidget(self.label_28)
+
+        self.horizontalLayout_30 = QHBoxLayout()
+        self.horizontalLayout_30.setObjectName(u"horizontalLayout_30")
+        self.pushButton_genWriteCompMasterVerOnly_ = QPushButton(self.horizontalLayoutWidget_6)
+        self.pushButton_genWriteCompMasterVerOnly_.setObjectName(u"pushButton_genWriteCompMasterVerOnly_")
+        self.pushButton_genWriteCompMasterVerOnly_.setFont(font3)
+
+        self.horizontalLayout_30.addWidget(self.pushButton_genWriteCompMasterVerOnly_)
+
+
+        self.verticalLayout_22.addLayout(self.horizontalLayout_30)
+
+        self.horizontalLayout_31 = QHBoxLayout()
+        self.horizontalLayout_31.setObjectName(u"horizontalLayout_31")
+        self.pushButton_genWriteLayerMaskVerOnly = QPushButton(self.horizontalLayoutWidget_6)
+        self.pushButton_genWriteLayerMaskVerOnly.setObjectName(u"pushButton_genWriteLayerMaskVerOnly")
+        self.pushButton_genWriteLayerMaskVerOnly.setFont(font3)
+
+        self.horizontalLayout_31.addWidget(self.pushButton_genWriteLayerMaskVerOnly)
+
+
+        self.verticalLayout_22.addLayout(self.horizontalLayout_31)
+
+
+        self.verticalLayout_18.addLayout(self.verticalLayout_22)
 
 
         self.horizontalLayout_19.addLayout(self.verticalLayout_18)
 
         self.pushButton_closeNukeScript = QPushButton(self.tabNuke)
         self.pushButton_closeNukeScript.setObjectName(u"pushButton_closeNukeScript")
-        self.pushButton_closeNukeScript.setGeometry(QRect(10, 250, 91, 23))
+        self.pushButton_closeNukeScript.setGeometry(QRect(0, 220, 171, 23))
+        font4 = QFont()
+        font4.setPointSize(8)
+        font4.setStyleStrategy(QFont.PreferAntialias)
+        self.pushButton_closeNukeScript.setFont(font4)
         self.tabWidget_2.addTab(self.tabNuke, "")
         self.tabHoudini = QWidget()
         self.tabHoudini.setObjectName(u"tabHoudini")
@@ -489,34 +516,34 @@ class Ui_MainWindow(object):
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
         self.groupBox = QGroupBox(self.tabLauncher)
         self.groupBox.setObjectName(u"groupBox")
-        font4 = QFont()
-        font4.setKerning(True)
-        font4.setStyleStrategy(QFont.PreferAntialias)
-        self.groupBox.setFont(font4)
+        font5 = QFont()
+        font5.setKerning(True)
+        font5.setStyleStrategy(QFont.PreferAntialias)
+        self.groupBox.setFont(font5)
         self.pushButton_LaunchNuke13_0_v2 = QPushButton(self.groupBox)
         self.pushButton_LaunchNuke13_0_v2.setObjectName(u"pushButton_LaunchNuke13_0_v2")
         self.pushButton_LaunchNuke13_0_v2.setGeometry(QRect(50, 70, 61, 41))
-        font5 = QFont()
-        font5.setPointSize(8)
-        font5.setKerning(True)
-        font5.setStyleStrategy(QFont.PreferAntialias)
-        self.pushButton_LaunchNuke13_0_v2.setFont(font5)
+        font6 = QFont()
+        font6.setPointSize(8)
+        font6.setKerning(True)
+        font6.setStyleStrategy(QFont.PreferAntialias)
+        self.pushButton_LaunchNuke13_0_v2.setFont(font6)
         self.pushButton_LaunchNukeStudio13_0_v2 = QPushButton(self.groupBox)
         self.pushButton_LaunchNukeStudio13_0_v2.setObjectName(u"pushButton_LaunchNukeStudio13_0_v2")
         self.pushButton_LaunchNukeStudio13_0_v2.setGeometry(QRect(190, 70, 41, 41))
-        self.pushButton_LaunchNukeStudio13_0_v2.setFont(font5)
+        self.pushButton_LaunchNukeStudio13_0_v2.setFont(font6)
         self.pushButton_LaunchNukeX13_0_v2 = QPushButton(self.groupBox)
         self.pushButton_LaunchNukeX13_0_v2.setObjectName(u"pushButton_LaunchNukeX13_0_v2")
         self.pushButton_LaunchNukeX13_0_v2.setGeometry(QRect(110, 70, 41, 41))
-        self.pushButton_LaunchNukeX13_0_v2.setFont(font5)
+        self.pushButton_LaunchNukeX13_0_v2.setFont(font6)
         self.pushButton_LaunchNukeAssist13_0_v2 = QPushButton(self.groupBox)
         self.pushButton_LaunchNukeAssist13_0_v2.setObjectName(u"pushButton_LaunchNukeAssist13_0_v2")
         self.pushButton_LaunchNukeAssist13_0_v2.setGeometry(QRect(150, 70, 41, 41))
-        self.pushButton_LaunchNukeAssist13_0_v2.setFont(font5)
+        self.pushButton_LaunchNukeAssist13_0_v2.setFont(font6)
         self.pushButton_LaunchMaya2022_update0 = QPushButton(self.groupBox)
         self.pushButton_LaunchMaya2022_update0.setObjectName(u"pushButton_LaunchMaya2022_update0")
         self.pushButton_LaunchMaya2022_update0.setGeometry(QRect(50, 30, 141, 41))
-        self.pushButton_LaunchMaya2022_update0.setFont(font5)
+        self.pushButton_LaunchMaya2022_update0.setFont(font6)
         self.pushButton_mayaOther = QPushButton(self.groupBox)
         self.pushButton_mayaOther.setObjectName(u"pushButton_mayaOther")
         self.pushButton_mayaOther.setGeometry(QRect(230, 30, 16, 41))
@@ -532,11 +559,11 @@ class Ui_MainWindow(object):
         self.pushButton_dailyFolder = QPushButton(self.groupBox)
         self.pushButton_dailyFolder.setObjectName(u"pushButton_dailyFolder")
         self.pushButton_dailyFolder.setGeometry(QRect(50, 150, 181, 21))
-        self.pushButton_dailyFolder.setFont(font5)
+        self.pushButton_dailyFolder.setFont(font6)
         self.pushButton_launchHoudini1 = QPushButton(self.groupBox)
         self.pushButton_launchHoudini1.setObjectName(u"pushButton_launchHoudini1")
         self.pushButton_launchHoudini1.setGeometry(QRect(50, 110, 181, 41))
-        self.pushButton_launchHoudini1.setFont(font5)
+        self.pushButton_launchHoudini1.setFont(font6)
         self.pushButton_houdiniOther = QPushButton(self.groupBox)
         self.pushButton_houdiniOther.setObjectName(u"pushButton_houdiniOther")
         self.pushButton_houdiniOther.setGeometry(QRect(230, 110, 16, 31))
@@ -546,26 +573,26 @@ class Ui_MainWindow(object):
         self.pushButton_LaunchHieroPlayer = QPushButton(self.groupBox)
         self.pushButton_LaunchHieroPlayer.setObjectName(u"pushButton_LaunchHieroPlayer")
         self.pushButton_LaunchHieroPlayer.setGeometry(QRect(250, 70, 61, 41))
-        self.pushButton_LaunchHieroPlayer.setFont(font5)
+        self.pushButton_LaunchHieroPlayer.setFont(font6)
         self.pushButton_hieroPlayerOther = QPushButton(self.groupBox)
         self.pushButton_hieroPlayerOther.setObjectName(u"pushButton_hieroPlayerOther")
         self.pushButton_hieroPlayerOther.setGeometry(QRect(310, 70, 16, 41))
         self.pushButton_LaunchCpuCoreController = QPushButton(self.groupBox)
         self.pushButton_LaunchCpuCoreController.setObjectName(u"pushButton_LaunchCpuCoreController")
         self.pushButton_LaunchCpuCoreController.setGeometry(QRect(50, 170, 91, 41))
-        self.pushButton_LaunchCpuCoreController.setFont(font5)
+        self.pushButton_LaunchCpuCoreController.setFont(font6)
         self.pushButton_LaunchGpuCoreController = QPushButton(self.groupBox)
         self.pushButton_LaunchGpuCoreController.setObjectName(u"pushButton_LaunchGpuCoreController")
         self.pushButton_LaunchGpuCoreController.setGeometry(QRect(140, 170, 91, 41))
-        self.pushButton_LaunchGpuCoreController.setFont(font5)
+        self.pushButton_LaunchGpuCoreController.setFont(font6)
         self.pushButton_LaunchMayaLegacySelection = QPushButton(self.groupBox)
         self.pushButton_LaunchMayaLegacySelection.setObjectName(u"pushButton_LaunchMayaLegacySelection")
         self.pushButton_LaunchMayaLegacySelection.setGeometry(QRect(190, 30, 41, 41))
-        font6 = QFont()
-        font6.setPointSize(6)
-        font6.setKerning(True)
-        font6.setStyleStrategy(QFont.PreferAntialias)
-        self.pushButton_LaunchMayaLegacySelection.setFont(font6)
+        font7 = QFont()
+        font7.setPointSize(6)
+        font7.setKerning(True)
+        font7.setStyleStrategy(QFont.PreferAntialias)
+        self.pushButton_LaunchMayaLegacySelection.setFont(font7)
         self.pushButton_LaunchNuke13_0_v2.raise_()
         self.pushButton_LaunchNukeStudio13_0_v2.raise_()
         self.pushButton_LaunchNukeX13_0_v2.raise_()
@@ -1196,10 +1223,10 @@ class Ui_MainWindow(object):
 
         self.horizontalSlider_echoSwitch = QSlider(self.centralwidget)
         self.horizontalSlider_echoSwitch.setObjectName(u"horizontalSlider_echoSwitch")
-        font7 = QFont()
-        font7.setPointSize(9)
-        self.horizontalSlider_echoSwitch.setFont(font7)
-        self.horizontalSlider_echoSwitch.setMaximum(1)
+        font8 = QFont()
+        font8.setPointSize(9)
+        self.horizontalSlider_echoSwitch.setFont(font8)
+        self.horizontalSlider_echoSwitch.setMaximum(2)
         self.horizontalSlider_echoSwitch.setOrientation(Qt.Orientation.Horizontal)
 
         self.verticalLayout.addWidget(self.horizontalSlider_echoSwitch)
@@ -1216,7 +1243,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(5)
+        self.tabWidget_2.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1320,6 +1347,15 @@ class Ui_MainWindow(object):
 "by select the < Freeze Backdrop >", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_FileKnobUnFreeze.setText(QCoreApplication.translate("MainWindow", u"UnFreeze", None))
+        self.label_28.setText(QCoreApplication.translate("MainWindow", u"Special (Ver Check Only)", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_genWriteCompMasterVerOnly_.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWriteCompMaster", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_genWriteCompMasterVerOnly_.setText(QCoreApplication.translate("MainWindow", u"CompMaster", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_genWriteLayerMaskVerOnly.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWriteLayerMask", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_genWriteLayerMaskVerOnly.setText(QCoreApplication.translate("MainWindow", u"LayerMasks", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_closeNukeScript.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_closeNukeScript", None))
 #endif // QT_CONFIG(tooltip)
