@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260820d'
+winTitlePrefix = 'BigKeeper_20260820e'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -155,14 +155,19 @@ sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\externalPyModule')
 externalToolPath = r'N:\bpPipeline\bigKeeperPy\py\externalTool'
 rvPath = r'C:\Program Files\Shotgun\RV-2021.0.0\bin\rv.exe'
 rvTemplate = r'N:\bpPipeline\rv\_bigkeeperPyData\rv.template'
-roboCopyFlags = r'/E /NFL /NDL /NJH /NJS /MT:16 /R:1 /W:1'
+
 # robocopy flags shared by every template-tree create.
 # /E   copy sub-folders including the empty ones, which is all these templates are
 # /NFL /NDL /NJH /NJS   silence the file list, folder list, job header and job summary
 # /MT:16   multi-thread
 # /R:1 /W:1   retry once and wait one second. The default is 1,000,000 retries at 30
 #             seconds each, which would hang a create for days on a single locked folder.
+roboCopyFlags = r'/E /NFL /NDL /NJH /NJS /MT:16 /R:1 /W:1'
+# robocopy flags shared by every template-tree create.
 
+taskTypeNotSelected = '-----'
+# The first row of taskTypeShotPreset.txt / taskTypeAssetPreset.txt.
+# Keeps the comboBox showing nothing chosen, OK rejects it.
 
 in_nuke = None
 in_maya = None
@@ -2733,35 +2738,37 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.newTaskKeywordUi.lineEdit.clear()
 
         if inType == 'typeScene':
-            bigKeeperPyIniTemplatePath = r'N:\bpPipeline\bigKeeperPyIni\templateShot\components'
-            self.newTaskKeywordUi.setWindowTitle('New Shot Task Keyword')
+            taskTypePresetName = 'taskTypeShotPreset.txt'
+            self.newTaskKeywordUi.setWindowTitle('New Shot Task')
         elif inType == 'typeLib':
-            bigKeeperPyIniTemplatePath = r'N:\bpPipeline\bigKeeperPyIni\templateAsset\components'
-            self.newTaskKeywordUi.setWindowTitle('New Asset Task Keyword')
+            taskTypePresetName = 'taskTypeAssetPreset.txt'
+            self.newTaskKeywordUi.setWindowTitle('New Asset Task')
 
-        contents = os.listdir(bigKeeperPyIniTemplatePath)
-        for folder in contents:
-            if os.path.isdir(os.path.join(bigKeeperPyIniTemplatePath, folder)):
-                pass
-            else:
-                contents.remove(folder)
+        # The project that is selected in the comboBox, not bigKInfo.currentProjWorkPath().
+        # currentProjWorkPath follows the scene that is open in the DCC, which is a different
+        # project when the user browses around, and is meaningless in standalone python.
+        taskTypePresetFullName = os.path.join(self.subDict[self.selProjPath], taskTypePresetName)
+        self.printEcho(taskTypePresetFullName)
 
-        self.printEcho('content: ')
-        self.printEcho(contents)
+        if not os.path.isfile(taskTypePresetFullName):
+            QMessageBox.warning(self, 'Ooops!', 'Task Type preset is missing :\n\n{}'.format(taskTypePresetFullName))
+            return
 
-        keywords = [""]
+        with open(taskTypePresetFullName) as file:
+            contents = file.readlines()
 
-        for i in contents:
-            keywords.append(i.replace('\n', ""))
+        keywords = []
+
+        for eachLine in contents:
+            keywords.append(eachLine.replace('\n', ""))
 
         self.printEcho(keywords)
 
-        # for PySide6
-        self.newTaskKeywordsContent = keywords
-
-        self.newTaskKeywordUi.label.setText('Input a sub-name for sub-folderName and sub-framename :')
+        self.newTaskKeywordUi.label.setText('Input task name')
+        self.newTaskKeywordUi.label_2.setText('Task Type :')
         self.newTaskKeywordUi.comboBox.addItems(keywords)
 
+        self.newTaskKeywordUi.lineEdit.setFocus()
         self.newTaskKeywordUi.show()
 
 
@@ -2776,17 +2783,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.newTaskKeywordUi.pushButton_2.clicked.connect(lambda : self.newTaskOKButtonAction(self.newTaskKeywordUi.lineEdit.text()))
         self.newTaskKeywordUi.pushButton_3.clicked.connect(lambda : self.newTaskKeywordUi.close())
-        # for PySide2 as str
-        #self.newTaskKeywordUi.comboBox.activated[str].connect(self.newTaskKeywordAction)
-        # for PySide6 as int
-        self.newTaskKeywordUi.comboBox.activated[int].connect(self.newTaskKeywordAction)
 
 
-    def newTaskKeywordAction(self, item):
+    '''def newTaskKeywordAction(self, item):
         println('\ndef >>>>> newTaskKeywordAction')
         self.printEcho(item)
 
-		# for PySide6
+        # for PySide6
         item = self.newTaskKeywordsContent[item]
 
         self.newTaskKeywordUi.lineEdit.setText(item)
@@ -2795,7 +2798,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.newTaskKeywordUi.lineEdit.setFocus()
         self.newTaskKeywordUi.lineEdit.setCursorPosition(int(keywordLength))
 
-        #self.newTaskKeywordUi.lineEdit.setCursorPosition(100)
+        #self.newTaskKeywordUi.lineEdit.setCursorPosition(100)'''
 
 
     def nameInputCheck(self, inName):
@@ -2883,6 +2886,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho(item)
 
         inType = self.newTaskKeywordInType
+        taskType = self.newTaskKeywordUi.comboBox.currentText()
+
+        if taskType == taskTypeNotSelected:
+            self.printEcho('task type is not selected')
+            QMessageBox.warning(self, 'Ooops!', 'New Task\n\nPlease select a Task Type.')
+            return
 
         if inType == 'typeScene':
             newParentPath = os.path.join(self.selProjScnShotPath, self.selShot, 'components')
@@ -2900,7 +2909,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         toBeCreatePath = os.path.join(newParentPath, item)
         self.printEcho(toBeCreatePath)
 
-        self.newTaskCreateAction(item, toBeCreatePath, inType)
+        self.newTaskCreateAction(item, toBeCreatePath, inType, taskType)
         self.newTaskKeywordUi.close()
 
 
@@ -2960,7 +2969,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         return newItem
 
 
-    def newTaskCreateAction(self, inTask, inPath, inType):
+    def newTaskCreateAction(self, inTask, inPath, inType, inTaskType):
         println('def >>>>> newTaskCreateAction')
 
         if inType == 'typeScene':
@@ -2977,6 +2986,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         if newItem is None:
             self.printEcho('robocopy failed. Nothing was added to the list.')
             return
+
+        # The task type is the pipeline step. Written only after robocopy reported success,
+        # the notes folder comes from the template and does not exist before that.
+        taskTypeFullName = os.path.join(inPath, 'notes', 'taskType.txt')
+        with open(taskTypeFullName, 'w') as file:
+            file.write(inTaskType)
+        self.printEcho(taskTypeFullName)
 
         targetListWidget.setCurrentItem(newItem)
         targetListWidget.scrollToItem(newItem)
