@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260820e'
+winTitlePrefix = 'BigKeeper_20260820f'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -162,8 +162,7 @@ rvTemplate = r'N:\bpPipeline\rv\_bigkeeperPyData\rv.template'
 # /MT:16   multi-thread
 # /R:1 /W:1   retry once and wait one second. The default is 1,000,000 retries at 30
 #             seconds each, which would hang a create for days on a single locked folder.
-roboCopyFlags = r'/E /NFL /NDL /NJH /NJS /MT:16 /R:1 /W:1'
-# robocopy flags shared by every template-tree create.
+roboCopyFlags = r'/E /NFL /NDL /NJH /NJS /MT:16 /R:3 /W:5'
 
 taskTypeNotSelected = '-----'
 # The first row of taskTypeShotPreset.txt / taskTypeAssetPreset.txt.
