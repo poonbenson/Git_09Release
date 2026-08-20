@@ -2820,6 +2820,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         startTime = time.time()
         totalCount = len(inCommandPairs)
         finishedCount = 0
+        failedNames = []
+        newItem = None
 
         progressBox = QMessageBox()
         progressBox.setStandardButtons(QMessageBox.NoButton)
@@ -2842,15 +2844,27 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             finishedCount += 1
 
-            newItem = QListWidgetItem(displayName)
-            inTargetListWidget.addItem(newItem)
-            QApplication.processEvents()
+            # xcopy returns 0 only when it really copied. Without this check the listWidget
+            # shows a row for a folder that was never created.
+            if theProcess.returncode == 0:
+                newItem = QListWidgetItem(displayName)
+                inTargetListWidget.addItem(newItem)
+                QApplication.processEvents()
+            else:
+                self.printEcho('FAILED < {} > : xcopy returncode {}'.format(displayName, theProcess.returncode))
+                failedNames.append(displayName)
 
         progressBox.close()
 
         endTime = time.time()
-        QMessageBox.information(self, 'message', '{}\n\n< {} of {} > created. ({} seconds)'.format(
-            inHeadingText, finishedCount, totalCount, round(endTime - startTime, 2)))
+        createdCount = totalCount - len(failedNames)
+
+        if failedNames == []:
+            QMessageBox.information(self, 'message', '{}\n\n< {} of {} > created. ({} seconds)'.format(
+                inHeadingText, createdCount, totalCount, round(endTime - startTime, 2)))
+        else:
+            QMessageBox.warning(self, 'message', '{}\n\n< {} of {} > created. ({} seconds)\n\nFAILED :\n{}'.format(
+                inHeadingText, createdCount, totalCount, round(endTime - startTime, 2), '\n'.join(failedNames)))
 
         return newItem
 
@@ -2868,6 +2882,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             headingText = 'New Asset Task'
 
         newItem = self.createProgressExecute([(inTask, theCmd)], headingText, targetListWidget)
+
+        if newItem is None:
+            self.printEcho('xcopy failed. Nothing was added to the list.')
+            return
 
         targetListWidget.setCurrentItem(newItem)
         targetListWidget.scrollToItem(newItem)
@@ -2912,10 +2930,27 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         newItem = self.createProgressExecute([(inputCheck, theCmd)], headingText, targetListWidget)
 
+        if newItem is None:
+            self.printEcho('xcopy failed. Nothing was added to the list.')
+            return
+
         targetListWidget.setCurrentItem(newItem)
         targetListWidget.scrollToItem(newItem)
 
         self.listWidget_3_appear(newItem, inType)
+
+
+    def existingNamesCheck(self, inNamesList, inParentPath):
+        println('def >>>>> existingNamesCheck')
+
+        existingNames = []
+        for eachName in inNamesList:
+            if os.path.isdir(os.path.join(inParentPath, eachName)):
+                self.printEcho('already exists : {}'.format(eachName))
+                existingNames.append(eachName)
+
+        return existingNames
+
 
     def newShotCreateBatchAction(self, inType):
         println('def >>>>> newShotCreateBatchAction')
@@ -2956,12 +2991,23 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('No name found in the file. Nothing created.')
             return
 
+        existingNames = self.existingNamesCheck(shotNamesList, newParentPath)
+
+        if existingNames != []:
+            QMessageBox.warning(self, 'Ooops!', '{}\n\nNothing created. These names already exist :\n\n{}\n\nRemove them from the list file, then try again.'.format(
+                headingText, '\n'.join(existingNames)))
+            return
+
         commandPairs = []
         for i in shotNamesList:
             newPath = os.path.join(newParentPath, i)
             commandPairs.append((i, r'xcopy "{}" {} /E /I'.format(templatePath, newPath)))
 
         newItem = self.createProgressExecute(commandPairs, headingText, targetListWidget)
+
+        if newItem is None:
+            self.printEcho('Every xcopy failed. Nothing was added to the list.')
+            return
 
         targetListWidget.setCurrentItem(newItem)
         targetListWidget.scrollToItem(newItem)
