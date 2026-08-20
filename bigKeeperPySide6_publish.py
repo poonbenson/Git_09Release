@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260820i'
+winTitlePrefix = 'BigKeeper_20260820j'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -556,7 +556,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_genWriteCompMaster.clicked.connect(lambda : self.nukeBornWriteNode('CompMaster'))
         self.pushButton_genWriteCompMaster.setText('CompMaster')
         self.pushButton_genWriteCompMasterV.clicked.connect(lambda : self.nukeBornWriteNode('CompMasterToV'))
-        self.pushButton_genWriteCompMasterV.clicked.connect(lambda : self.nukeBornWriteNode('CompMasterToV'))
         self.pushButton_genWriteCompMasterV.setText('CompMaster-V')
         self.pushButton_genWriteFreeLayerMask.clicked.connect(lambda : self.nukeBornWriteNode(freeLayerMaskType))
 
@@ -713,14 +712,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_num7.setText('listMulti')
 
     def printEchoUIFeedback(self):
+        # No sys._getframe() here. This def is called by the valueChanged signal, so its
+        # caller is Qt's C++ dispatch and f_back is None. println already prints the line
+        # number of whichever line inside this def calls it.
         sliderValue = self.horizontalSlider_echoSwitch.value()
 
         if sliderValue == 0:
             println(' Echo Print is OFF')
         elif sliderValue == 1:
-            println(str(sys._getframe().f_back.f_lineno) + ' Developing Tab and Free LayerMask are unlocked. Echo Print is still OFF')
+            println(' Developing Tab and Free LayerMask are unlocked. Echo Print is still OFF')
         else:
-            println(str(sys._getframe().f_back.f_lineno) + ' Echo Print is ON')
+            println(' Echo Print is ON')
 
     def printEcho(self, inText):
         #println('\ndef >>>>> printEcho')
@@ -4051,6 +4053,42 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     checkPath = os.path.normpath(os.path.join(str(bigKInfo.currentTaskPath()), 'output', verFolder, answerName))
                     backdropLabel = answerName + '_' + inType
 
+                elif inType == freeLayerMaskType:
+                    self.printEcho(inType)
+
+                    # Same three answers as LayerMask, but the parent folder is picked by the
+                    # user instead of being <taskPath>\output. Remembered for this session only.
+                    if self.freeLayerMaskLastFolder == '':
+                        self.freeLayerMaskLastFolder = str(bigKInfo.currentTaskPath())
+
+                    parentFolder = self.askExistingFolder('Choose the parent folder of this ' + inType + ' output', self.freeLayerMaskLastFolder)
+                    self.printEcho('parentFolder : {}'.format(parentFolder))
+
+                    if parentFolder == '':
+                        println('Folder dialog cancelled. Nothing is created.')
+                        return
+
+                    self.freeLayerMaskLastFolder = parentFolder
+
+                    answerName, readyToCreate = QInputDialog.getText(self, 'sub-name', 'Input a sub-name for sub-folderName and sub-framename', QLineEdit.Normal)
+                    self.printEcho(answerName)
+
+                    if readyToCreate == False:
+                        println('sub-name dialog cancelled. Nothing is created.')
+                        return
+
+                    answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
+
+                    if readyToCreate == False:
+                        println('Suffix dialog cancelled. Nothing is created.')
+                        return
+
+                    frameName = str(bigKInfo.currentShot()) + '_' + answerName + answerSuffix + '.%04d' + '.exr'
+                    verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4) + '_' + inType
+                    targetFilePath = os.path.normpath(os.path.join(parentFolder, verFolder, answerName, frameName))
+                    checkPath = os.path.normpath(os.path.join(parentFolder, verFolder, answerName))
+                    backdropLabel = answerName + '_' + inType
+
                 elif inType == 'PreRend':
                     # *** unknow bug, this elif section need to keep. If this section deleted, the 'Prerend' section will sytax error. To Be Fix.
                     self.printEcho(inType)
@@ -4100,6 +4138,16 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         newCreatedNode.knob('create_directories').setValue(True)
                         newCreatedNode.knob('metadata').setValue('all metadata')
                         newCreatedNode.knob('noprefix').setValue(True)
+
+                        # Stamp the type on the node itself. The node name only carries answerName,
+                        # which is the sub-name for LayerMask and Prerend, so the name cannot tell
+                        # nukeUpdateWriteNodeVer what kind of Write node this is.
+                        newCreatedNode.addKnob(nuke.Text_Knob(bigKWriteTypeKnobName, 'bigK Write Type', inType))
+
+                        # addKnob creates the "User" tab and Nuke brings it to the front of the
+                        # already open properties panel. Close and reopen so it lands on Write.
+                        newCreatedNode.hideControlPanel()
+                        newCreatedNode.showControlPanel()
                     else:
                         pass
 
@@ -4196,6 +4244,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             baseColor = 2319101951
         elif inTypeForColor == 'LayerMask':
             baseColor = 2068476415
+        elif inTypeForColor == 'FreeLayerMask':
+            baseColor = 3292363519
         elif inTypeForColor == 'PreRend':
             baseColor = 2060476415
         elif inTypeForColor == 'Prerend':
