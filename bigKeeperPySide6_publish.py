@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260820f'
+winTitlePrefix = 'BigKeeper_20260820i'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -168,6 +168,15 @@ taskTypeNotSelected = '-----'
 # The first row of taskTypeShotPreset.txt / taskTypeAssetPreset.txt.
 # Keeps the comboBox showing nothing chosen, OK rejects it.
 
+freeLayerMaskType = 'FreeLayerMask'
+# The inType of the Free LayerMask Write node, and the tail of its version folder name :
+# v0007_FreeLayerMask. nukeBornWriteNode builds the folder, nukeUpdateWriteNodeVer finds
+# the four version digits by looking backwards from this word instead of rebuilding the path.
+
+bigKWriteTypeKnobName = 'bigKWriteType'
+# User knob stamped on every bigK Write node at birth, holding its inType.
+# Nodes made before this knob existed return None, which is exactly "not special".
+
 in_nuke = None
 in_maya = None
 in_houdini = None
@@ -286,10 +295,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.label_houdiniIcon.setPixmap(QPixmap(os.path.join(iconPath, 'houdini.png')))
         self.label_houdiniIcon.setScaledContents(True)
 
-        self.horizontalSlider_echoSwitch.setRange(0,1)
-        self.horizontalSlider_echoSwitch.valueChanged.connect(self.printEcho)
+        self.horizontalSlider_echoSwitch.setRange(0,2)
+        #self.horizontalSlider_echoSwitch.valueChanged.connect(self.printEcho)
         self.horizontalSlider_echoSwitch.valueChanged.connect(self.printEchoUIFeedback)
         self.horizontalSlider_echoSwitch.valueChanged.connect(self.echoSwitchOtherAction)
+
+        # The parent folder last picked for a FreeLayerMask Write node. This session only.
+        self.freeLayerMaskLastFolder = ''
 
         self.comboBoxEntries = self.listBigKeeperProject()
         self.comboBoxEntries.sort()
@@ -544,7 +556,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_genWriteCompMaster.clicked.connect(lambda : self.nukeBornWriteNode('CompMaster'))
         self.pushButton_genWriteCompMaster.setText('CompMaster')
         self.pushButton_genWriteCompMasterV.clicked.connect(lambda : self.nukeBornWriteNode('CompMasterToV'))
+        self.pushButton_genWriteCompMasterV.clicked.connect(lambda : self.nukeBornWriteNode('CompMasterToV'))
         self.pushButton_genWriteCompMasterV.setText('CompMaster-V')
+        self.pushButton_genWriteFreeLayerMask.clicked.connect(lambda : self.nukeBornWriteNode(freeLayerMaskType))
 
         self.pushButton_genLightPublishBackdrop.clicked.connect(self.lightPublishBornBackdrop)
         self.pushButton_lightPublishAction.clicked.connect(self.lightPublishCopyAction)
@@ -587,6 +601,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.tabWidget.setCurrentIndex(0)
         #self.tabWidget.setTabVisible(2, self.horizontalSlider_echoSwitch.value())
         self.tabWidget.setTabVisible(3, self.horizontalSlider_echoSwitch.value())
+        self.pushButton_genWriteFreeLayerMask.setEnabled(self.horizontalSlider_echoSwitch.value() > 0)
+
 
         self.pushButton_shotAction.setText('shotActionMenu')
         self.pushButton_shotAction.setEnabled(False)
@@ -697,23 +713,29 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_num7.setText('listMulti')
 
     def printEchoUIFeedback(self):
-        if self.horizontalSlider_echoSwitch.value() == 0:
+        sliderValue = self.horizontalSlider_echoSwitch.value()
+
+        if sliderValue == 0:
             println(' Echo Print is OFF')
+        elif sliderValue == 1:
+            println(str(sys._getframe().f_back.f_lineno) + ' Developing Tab and Free LayerMask are unlocked. Echo Print is still OFF')
         else:
             println(str(sys._getframe().f_back.f_lineno) + ' Echo Print is ON')
 
     def printEcho(self, inText):
         #println('\ndef >>>>> printEcho')
-        # value = 0, not to printEcho
-        # value = 1, do printEcho
+        # value = 0, echo off. developing tab hidden, Free LayerMask button disabled.
+        # value = 1, developing tab and Free LayerMask button unlocked, echo still off.
+        # value = 2, do printEcho
         #println(self.horizontalSlider_echoSwitch.value())
 
-        if self.horizontalSlider_echoSwitch.value() == 1:
+        if self.horizontalSlider_echoSwitch.value() > 1:
             println(inText)
 
     def echoSwitchOtherAction(self):
         #self.tabWidget.setTabVisible(2, self.horizontalSlider_echoSwitch.value())
         self.tabWidget.setTabVisible(3, self.horizontalSlider_echoSwitch.value())
+        self.pushButton_genWriteFreeLayerMask.setEnabled(self.horizontalSlider_echoSwitch.value() > 0)
 
 
     '''def listWidget_1_receivedList(self, item):
@@ -4639,6 +4661,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         seperatorKeywords = ['output', 'prerend']
 
+        # The version folder of a FreeLayerMask node is v0007_FreeLayerMask, and its parent
+        # folder is whatever the user picked. So the four version digits are found by looking
+        # backwards from this word, never by rebuilding the path.
+        freeLayerMaskFolderTail = '_' + freeLayerMaskType
+        unUpdatedFreeLayerMaskNodes = []
+
         for i in allFilteredNodes:
 
             self.printEcho(f"i.knob('file').value() : {i.knob('file').value()}")
@@ -4648,7 +4676,25 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('originalContent :')
             self.printEcho(originalContent)
 
-            if r'\vDrive' in originalContent:
+            writeTypeKnob = i.knob(bigKWriteTypeKnobName)
+
+            if writeTypeKnob is not None and writeTypeKnob.value() == freeLayerMaskType:
+                self.printEcho(f'{freeLayerMaskType} Node Found. -- {i.name()}')
+
+                # tokenIndex points at the underscore of _FreeLayerMask.
+                # tokenIndex - 5 is the 'v', tokenIndex - 4 to tokenIndex - 1 are the digits.
+                tokenIndex = originalContent.rfind(freeLayerMaskFolderTail)
+                self.printEcho(f'tokenIndex : {tokenIndex}')
+
+                if tokenIndex < 5 or originalContent[tokenIndex - 5] != 'v' or not originalContent[tokenIndex - 4 : tokenIndex].isdigit():
+                    println(f'{i.name()} : version folder pattern v####{freeLayerMaskFolderTail} not found. Left untouched.')
+                    unUpdatedFreeLayerMaskNodes.append(i.name())
+                    continue
+
+                updatedContent = originalContent[0 : tokenIndex - 4] + str(currentVerNumber).zfill(4) + originalContent[tokenIndex : ]
+                updatedContent = updatedContent.replace(os.sep, '/')
+
+            elif r'\vDrive' in originalContent:
                 seperator = r'\vDrive'
                 self.printEcho(f'vDrive Node Found. -- {seperator}')
 
@@ -4711,6 +4757,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 i.knob('file').setValue(updatedContent)
             else:
                 self.printEcho("{}'s <file> knob is locked.".format(i.knob('name').value()))
+
+        if len(unUpdatedFreeLayerMaskNodes) > 0:
+            theMessage = 'WARNING !!!\n\n' + 'These < ' + freeLayerMaskType + ' > Write nodes were NOT version updated :\n\n     ' + '\n     '.join(unUpdatedFreeLayerMaskNodes) + '\n\nTheir file path no longer carries the < v####' + freeLayerMaskFolderTail + ' > folder.\nFix the path by hand, or re-generate the node.'
+            QMessageBox.information(self, 'WARNING !!! ', theMessage)
 
         println('3326')
 
@@ -5416,6 +5466,18 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         libPath = pathlib.Path(inPath)
         os.startfile(libPath.parent)
+
+
+    def askExistingFolder(self, inDialogTitle, inStartFolder):
+        println('\ndef >>>>> askExistingFolder')
+
+        # getExistingDirectory returns a single string and '' on Cancel.
+        # It is NOT the (fileName, selectedFilter) tuple that getOpenFileName returns.
+        folderName = QFileDialog.getExistingDirectory(self, inDialogTitle, inStartFolder)
+
+        self.printEcho('folderName : {}'.format(folderName))
+
+        return folderName
 
     def askOpenFile(self):
         println('\ndef >>>>> askOpenFile')

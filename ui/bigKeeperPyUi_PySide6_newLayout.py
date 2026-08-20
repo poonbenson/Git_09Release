@@ -1277,7 +1277,7 @@ class Ui_MainWindow(object):
         self.pushButton_NukeReadNodeTempTool.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_NukeReadNodeTempTool", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_NukeReadNodeTempTool.setText(QCoreApplication.translate("MainWindow", u"Get Frame Range\n"
-"- Seleted Read Nodes -", None))
+"- Selected Read Nodes -", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabMaya), QCoreApplication.translate("MainWindow", u"Maya", None))
         self.label_24.setText(QCoreApplication.translate("MainWindow", u"Light Publish", None))
 #if QT_CONFIG(tooltip)
@@ -1309,7 +1309,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.pushButton_genWriteLayerMask.setText(QCoreApplication.translate("MainWindow", u"LayerMask", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton_genWriteFreeLayerMask.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWriteLayerMask", None))
+        self.pushButton_genWriteFreeLayerMask.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWriteFreeLayerMask", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_genWriteFreeLayerMask.setText(QCoreApplication.translate("MainWindow", u"Free LayerMask", None))
         self.label_21.setText(QCoreApplication.translate("MainWindow", u"Freeze Scene Update Node", None))
