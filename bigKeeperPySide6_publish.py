@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260819q - WIP'
+winTitlePrefix = 'BigKeeper_20260820a - WIP'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -2814,25 +2814,61 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.newTaskKeywordUi.lineEdit.setFocus()
 
 
+    def createProgressExecute(self, inCommandPairs, inHeadingText, inTargetListWidget):
+        println('def >>>>> createProgressExecute')
+
+        startTime = time.time()
+        totalCount = len(inCommandPairs)
+        finishedCount = 0
+
+        progressBox = QMessageBox()
+        progressBox.setStandardButtons(QMessageBox.NoButton)
+        progressBox.setWindowTitle(inHeadingText)
+        progressBox.show()
+        QApplication.processEvents()
+
+        for displayName, theCmd in inCommandPairs:
+            self.printEcho(theCmd)
+
+            # Popen instead of os.system, so the event loop keeps running while xcopy works
+            # and the progress window does not go "not responding".
+            theProcess = subprocess.Popen(theCmd, shell = True)
+            while theProcess.poll() is None:
+                progressBox.setText('Creating < {} of {} > :  {}\n\nremaining : {}\n\nelapsed : {} seconds'.format(
+                    finishedCount + 1, totalCount, displayName,
+                    totalCount - finishedCount, round(time.time() - startTime, 1)))
+                QApplication.processEvents()
+                time.sleep(0.1)
+
+            finishedCount += 1
+
+            newItem = QListWidgetItem(displayName)
+            inTargetListWidget.addItem(newItem)
+            QApplication.processEvents()
+
+        progressBox.close()
+
+        endTime = time.time()
+        QMessageBox.information(self, 'message', '{}\n\n< {} of {} > created. ({} seconds)'.format(
+            inHeadingText, finishedCount, totalCount, round(endTime - startTime, 2)))
+
+        return newItem
+
+
     def newTaskCreateAction(self, inTask, inPath, inType):
         println('def >>>>> newTaskCreateAction')
 
         if inType == 'typeScene':
             theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShotTask" {} /E /I'.format(inPath)
+            targetListWidget = self.listWidget_3
+            headingText = 'New Shot Task'
         elif inType == 'typeLib':
             theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateAssetTask" {} /E /I'.format(inPath)
-
-        self.printEcho(theCmd)
-        os.system(theCmd)
-        self.printEcho('copy done.')
-
-        if inType == 'typeScene':
-            targetListWidget = self.listWidget_3
-        elif inType == 'typeLib':
             targetListWidget = self.listWidget_AssetTask
+            headingText = 'New Asset Task'
 
-        newItem = QListWidgetItem(inTask)
-        targetListWidget.addItem(newItem)
+        newItem = self.createProgressExecute([(inTask, theCmd)], headingText, targetListWidget)
+
         targetListWidget.setCurrentItem(newItem)
         targetListWidget.scrollToItem(newItem)
 
@@ -2867,19 +2903,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         if inType == 'typeScene':
             theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
+            targetListWidget = self.listWidget_2
+            headingText = 'New Shot'
         elif inType == 'typeLib':
             theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateAsset" {} /E /I'.format(newPath)
-
-        self.printEcho(theCmd)
-        os.system(theCmd)
-
-        if inType == 'typeScene':
-            targetListWidget = self.listWidget_2
-        elif inType == 'typeLib':
             targetListWidget = self.listWidget_Asset
+            headingText = 'New Asset'
 
-        newItem = QListWidgetItem(inputCheck)
-        targetListWidget.addItem(newItem)
+        newItem = self.createProgressExecute([(inputCheck, theCmd)], headingText, targetListWidget)
+
         targetListWidget.setCurrentItem(newItem)
         targetListWidget.scrollToItem(newItem)
 
@@ -2893,11 +2925,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             newParentPath = self.selProjScnShotPath
             templatePath = r'N:\bpPipeline\bigKeeperPyIni\templateShot'
             dialogTitle = 'Open Shot Name List file'
+            headingText = 'New Shot Batch'
         elif inType == 'typeLib':
             targetListWidget = self.listWidget_Asset
             newParentPath = self.selProjAssetTypeAssetPath
             templatePath = r'N:\bpPipeline\bigKeeperPyIni\templateAsset'
             dialogTitle = 'Open Asset Name List file'
+            headingText = 'New Asset Batch'
 
         # ref: https://www.tutorialspoint.com/pyqt/pyqt_qfiledialog_widget.htm
         inputFile, selectedFilter = QFileDialog.getOpenFileName(self, dialogTitle, 'c:\\', 'Text file (*.txt)')
@@ -2922,14 +2956,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('No name found in the file. Nothing created.')
             return
 
+        commandPairs = []
         for i in shotNamesList:
             newPath = os.path.join(newParentPath, i)
-            theCmd = r'xcopy "{}" {} /E /I'.format(templatePath, newPath)
-            self.printEcho(theCmd)
-            os.system(theCmd)
+            commandPairs.append((i, r'xcopy "{}" {} /E /I'.format(templatePath, newPath)))
 
-            newItem = QListWidgetItem(i)
-            targetListWidget.addItem(newItem)
+        newItem = self.createProgressExecute(commandPairs, headingText, targetListWidget)
 
         targetListWidget.setCurrentItem(newItem)
         targetListWidget.scrollToItem(newItem)
