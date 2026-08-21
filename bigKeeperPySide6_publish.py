@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260820l'
+winTitlePrefix = 'BigKeeper_20260820m'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -2447,6 +2447,34 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         return listFile
 
 
+    def listWidget_A_action(self, item):
+
+        println('listWidget_A_action listWidget_A_action listWidget_A_action')
+        self.printEcho(item.text())
+        self.printEcho(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
+        self.wrongFormatUi.close()
+        if in_nuke:
+            if nuke.Root().modified() == True:
+                self.printEcho('current changes have not yet been saved!')
+                nuke.scriptClose() ### pop a dialog instead of close.
+                if nuke.Root().modified() == False:
+                    self.printEcho(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
+                    nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
+                    nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
+                    self.activateCurrentTab()
+
+
+            else:
+                nuke.scriptClose()
+                self.printEcho((os.path.join(self.selProjScnShotTaskWIPPath, item.text())))
+                nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
+                nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
+                self.activateCurrentTab()
+
+        elif in_houdini:
+            hou.hipFile.load(os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
+
+
     def listWidget_shotTask_action(self, item, inType):
         println('\ndef >>>>> listWidget_shotTask_action')
 
@@ -2468,7 +2496,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.sceneLocationPath = os.path.join(self.selProjScnShotTaskPath, item.text())
             self.printEcho(self.sceneLocationPath)
             self.lineEdit_sceneLocation.setText(self.sceneLocationPath)
-            self.printEcho(os.listdir(os.path.join(self.sceneLocationPath, self.subDict[self.selProjWipCode])))
             self.selTask = item.text()
             self.pushButton_CompLatestRv.setEnabled(True)
             self.pushButton_shotAction.setEnabled(True)
@@ -2490,7 +2517,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.assetLocationPath = os.path.join(self.selProjAssetTypeAssetTaskPath, item.text())
             self.printEcho(self.assetLocationPath)
             self.lineEdit_assetLocation.setText(self.assetLocationPath)
-            self.printEcho(os.listdir(os.path.join(self.assetLocationPath, self.subDict[self.selProjWipCode])))
             self.selTask = item.text()
             #self.pushButton_CompLatestRv.setEnabled(True)
             self.pushButton_assetAction.setEnabled(True)
