@@ -282,7 +282,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.setWindowTitle(r'BigKeeper Py - alpha version - Developer Mode')
         WindowTitleName = winTitlePrefix + ' BigKeeperPy-alpha ' + os.path.basename(thisPath)
         self.setWindowTitle(WindowTitleName)
-        self.setWindowIcon(QIcon(os.path.join(iconPath, 'standalone.png')))
+        self.setWindowIcon(QIcon(os.path.join(iconPath, 'standalone6.png')))
         self.prerendKeyword = ""
 
         #self.label_9.setPixmap(QPixmap(r"N:/bpPipeline/bigKeeperPy/bigKeeperPyIcon_developer.jpg"))
@@ -2420,6 +2420,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def listOutFilesInFolder(self, v0000Del = False):
         print ('\ndef >>>>> listOutFilesInFolder')
+
+        # A task folder made by hand has no wip folder. Report it as no wip files instead of
+        # raising, so the caller carries on and the New WIP dialog can offer to start one.
+        if not os.path.isdir(self.selProjScnShotTaskWIPPath):
+            self.printEcho('No wip folder : {}'.format(self.selProjScnShotTaskWIPPath))
+            return []
+
         fileList = os.listdir(self.selProjScnShotTaskWIPPath)
         listFile = []
         for i in fileList:
@@ -2438,34 +2445,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 listFile.remove(listFile[-1])
 
         return listFile
-
-
-    def listWidget_A_action(self, item):
-
-        println('listWidget_A_action listWidget_A_action listWidget_A_action')
-        self.printEcho(item.text())
-        self.printEcho(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
-        self.wrongFormatUi.close()
-        if in_nuke:
-            if nuke.Root().modified() == True:
-                self.printEcho('current changes have not yet been saved!')
-                nuke.scriptClose() ### pop a dialog instead of close.
-                if nuke.Root().modified() == False:
-                    self.printEcho(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
-                    nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
-                    nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
-                    self.activateCurrentTab()
-
-
-            else:
-                nuke.scriptClose()
-                self.printEcho((os.path.join(self.selProjScnShotTaskWIPPath, item.text())))
-                nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
-                nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
-                self.activateCurrentTab()
-
-        elif in_houdini:
-            hou.hipFile.load(os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
 
 
     def listWidget_shotTask_action(self, item, inType):
@@ -2904,6 +2883,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         taskTypeFullName = os.path.join(taskLocationPath, 'notes', 'taskType.txt')
 
+        # A task folder made by hand has no notes folder. Where the file lives is an internal
+        # detail, so build the folder without saying anything.
+        os.makedirs(os.path.dirname(taskTypeFullName), exist_ok = True)
+
         with open(taskTypeFullName, 'w') as file:
             file.write(taskType)
 
@@ -3329,6 +3312,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.selProjScnShotTaskWIPPath = os.path.join(self.selProjScnShotTaskPath, self.selTask, self.subDict[self.selProjWipCode])
         self.printEcho(self.selProjScnShotTaskWIPPath)
 
+        # A task folder made by hand has no wip folder. The user has just answered New WIP,
+        # so build it here instead of letting open() fail. Covers both open() calls below.
+        os.makedirs(self.selProjScnShotTaskWIPPath, exist_ok = True)
 
         newWipName = (self.selShot + "_" + self.selTask + "_" + self.subDict[self.selProjWipCode] + "_v0000" + wipExtension)
         self.printEcho(newWipName)
