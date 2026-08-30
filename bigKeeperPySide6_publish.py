@@ -1,4 +1,4 @@
-winTitlePrefix = '20260830b'
+winTitlePrefix = '20260830c'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -4441,6 +4441,19 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             else:
                 bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
 
+                # The output format is asked before the retry loop, so it is asked once no matter
+                # how many times a clashed path sends the loop round again. Asking here also means
+                # a Cancel leaves no half built node behind, same as the suffix dialogs below.
+                # An empty label is Cancel, an unreadable .txt, or a .txt that is not there at all,
+                # all of which already showed their own message.
+                # The node is created with the .exr frame name the branches below build, then
+                # compWriteNodePresetApply rewrites the tail of that path once the node exists.
+                presetDisplayLabel, presetKnobValuePairs = self.compWriteNodePresetAsk()
+
+                if presetDisplayLabel == '':
+                    println('WriteNode Preset dialog cancelled. Nothing is created.')
+                    return
+
                 # The target folder does not exist on disk yet, a Write node only makes it at
                 # render time. So the other Write nodes in this script are the only place a
                 # duplicated target can be found.
@@ -4629,6 +4642,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 newCreatedNode.knob('create_directories').setValue(True)
                 newCreatedNode.knob('metadata').setValue('all metadata')
                 newCreatedNode.knob('noprefix').setValue(True)
+
+                # The format knobs, and the tail of the path the <file> knob was just given.
+                # Its own warnings name the node and the knob, and a node it refuses to touch is
+                # left as the .exr sequence the branches above built, so nothing is checked here.
+                self.compWriteNodePresetApply(newCreatedNode, presetKnobValuePairs)
 
                 # Stamp the type on the node itself. The node name only carries answerName,
                 # which is the sub-name for LayerMask and Prerend, so the name cannot tell
