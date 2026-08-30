@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260820m'
+winTitlePrefix = '20260830a'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -302,6 +302,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         # The parent folder last picked for a FreeLayerMask Write node. This session only.
         self.freeLayerMaskLastFolder = ''
+
+        # The preset line last picked for a Write node. This session only.
+        self.compWriteNodePresetLastChoice = ''
 
         self.comboBoxEntries = self.listBigKeeperProject()
         self.comboBoxEntries.sort()
@@ -713,8 +716,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_num6.setText('UpReadVer')
 
         '''
-        self.pushButton_num9.clicked.connect(lambda: self.openSceneUpdate())
-        self.pushButton_num9.setText('open ScnUpdate')
+        self.pushButton_num9.clicked.connect(lambda: self.compWriteNodePresetApplyToSelected())
+        self.pushButton_num9.setText('WriteNode Preset')
 
         self.pushButton_num8.clicked.connect(lambda: self.cleanUpDelAction('moveAction'))
         self.pushButton_num8.setText('moveAction')
@@ -4167,6 +4170,211 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def nukeAskSuffix(self):
         bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
         self.printEcho(bigKInfo.currentCompIniSuffix())
+
+    def compWriteNodePresetRead(self):
+        println('\ndef >>>>> compWriteNodePresetRead')
+
+        # The per project Write node preset. Read from currentProjWorkPath(), the project of the
+        # script open in Nuke, the same source prerendKeywordShow uses for compPrerendPreset.txt.
+        # Deliberately NOT subDict[selProjPath] : that is whichever project the browser comboBox
+        # is showing, which is a different project as soon as the user browses elsewhere.
+        bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
+
+        presetFullName = os.path.join(bigKInfo.currentProjWorkPath(), compWriteNodePresetFileName)
+        self.printEcho(presetFullName)
+
+        if not os.path.isfile(presetFullName):
+            QMessageBox.warning(self, 'Ooops!', 'Write Node preset is missing :\n\n{}'.format(presetFullName))
+            return []
+
+        with open(presetFullName) as file:
+            contents = file.readlines()
+
+        presetLines = []
+
+        for eachLine in contents:
+            eachPreset = eachLine.replace('\n', "").strip()
+            if eachPreset != '' and not eachPreset.startswith('#'):
+                presetLines.append(eachPreset)
+
+        self.printEcho(presetLines)
+
+        return presetLines
+
+
+    def compWriteNodePresetAsk(self):
+        println('\ndef >>>>> compWriteNodePresetAsk')
+
+        # Asks once and returns the three fields of the chosen line, unpacked at the call site.
+        # Returns three empty strings when there is nothing to choose, when the line is malformed
+        # or when the user cancels, so the caller tests fileType and leaves the nodes alone.
+        # The line is shown exactly as it sits in the .txt, pipes and all : what the project
+        # leader wrote is what the artist reads, in the file's own order.
+        presetLines = self.compWriteNodePresetRead()
+
+        if presetLines == []:
+            println('No Write Node preset to choose from.')
+            return '', '', ''
+
+        # Pre-select the line picked last time. This session only, same idea as
+        # freeLayerMaskLastFolder, so a second node usually needs one click.
+        if self.compWriteNodePresetLastChoice in presetLines:
+            currentRow = presetLines.index(self.compWriteNodePresetLastChoice)
+        else:
+            currentRow = 0
+
+        chosenLine, ok = QInputDialog.getItem(self, 'WriteNode Preset', 'Preset :', presetLines, currentRow, False)
+
+        if not ok:
+            self.printEcho('Cancelled. No preset is applied.')
+            return '', '', ''
+
+        self.compWriteNodePresetLastChoice = chosenLine
+
+        splitFields = chosenLine.split('|')
+
+        # The .txt is hand edited by the project leader, so a line with the wrong number of
+        # fields is a failure that really happens. Say which line, and change nothing.
+        if len(splitFields) != 3:
+            QMessageBox.warning(self, 'Ooops!', 'This preset line does not carry 3 fields :\n\n{}'.format(chosenLine))
+            return '', '', ''
+
+        # Named after the exr and dpx knobs. On a mov the same two fields carry the codec and
+        # the codec profile instead.
+        fileType    = splitFields[0].strip()
+        dataType    = splitFields[1].strip()
+        compression = splitFields[2].strip()
+
+        return fileType, dataType, compression
+
+
+    def compWriteNodePresetApply(self, inNode, inFileType, inDataType, inCompression):
+        println('\ndef >>>>> compWriteNodePresetApply')
+
+        # Sets the format knobs of one Write node, then rewrites the tail of its file path.
+        # Returns True when the node was changed, so the caller can list what it did.
+        # inDataType and inCompression are named after the exr and dpx knobs. On a mov they
+        # carry the codec and the codec profile instead.
+
+        presetRow = None
+
+        for eachRow in compWriteNodePresetKnobs:
+            if eachRow[0] == inFileType:
+                presetRow = eachRow
+
+        if presetRow is None:
+            QMessageBox.warning(self, 'Ooops!', '< {} > is not in compWriteNodePresetKnobs yet.\n\n{} is left unchanged.'.format(inFileType, inNode.name()))
+            return False
+
+        fileType, isSequence, dataTypeKnobName, compressionKnobName = presetRow
+
+        fileTypeKnob = inNode.knob('file_type')
+
+        # Some Nuke enumeration entries carry a tab and a tooltip behind the value, so compare
+        # against the part in front of the tab.
+        fileTypeValues = [eachEntry.split('\t')[0] for eachEntry in fileTypeKnob.values()]
+
+        if inFileType not in fileTypeValues:
+            QMessageBox.warning(self, 'Ooops!', 'This Nuke does not write < {} >.\n\n{} is left unchanged.'.format(inFileType, inNode.name()))
+            return False
+
+        # file_type first, always. Nuke only creates datatype / compression / mov64_codec after
+        # the file type is set, so nothing else can be reached before this line.
+        fileTypeKnob.setValue(inFileType)
+
+        # A mov keeps its field 3 knob out of the table above : which knob holds the profile
+        # depends on the codec that field 2 is about to set.
+        if inFileType == 'mov':
+            for eachCodec, eachProfileKnobName in compWriteNodeMovProfileKnobs:
+                if eachCodec == inDataType:
+                    compressionKnobName = eachProfileKnobName
+
+        for eachKnobName, eachValue in [(dataTypeKnobName, inDataType), (compressionKnobName, inCompression)]:
+
+            # An empty field is a preset that does not set that knob at all, such as the empty
+            # third field of a dpx. Nothing to do, and nothing wrong.
+            if eachValue == '':
+                continue
+
+            if eachKnobName == '':
+                QMessageBox.warning(self, 'Ooops!', '{} :\n\nNo knob is mapped for < {} > on a {}.\n\nThe rest of the preset is not applied.'.format(inNode.name(), eachValue, inFileType))
+                return False
+
+            eachKnob = inNode.knob(eachKnobName)
+
+            if eachKnob is None:
+                QMessageBox.warning(self, 'Ooops!', '{} :\n\nThis Nuke has no knob named < {} >.\n\nThe rest of the preset is not applied.'.format(inNode.name(), eachKnobName))
+                return False
+
+            knobValues = [eachEntry.split('\t')[0] for eachEntry in eachKnob.values()]
+
+            if eachValue not in knobValues:
+                QMessageBox.warning(self, 'Ooops!', '{} :\n\nKnob < {} > does not accept < {} >.\n\nIt accepts :\n\n     {}'.format(inNode.name(), eachKnobName, eachValue, '\n     '.join(knobValues)))
+                return False
+
+            eachKnob.setValue(eachValue)
+
+        fileKnob = inNode.knob('file')
+
+        if not fileKnob.enabled():
+            println('{} : <file> knob is locked. The format knobs are set, the path is not rewritten.'.format(inNode.name()))
+            return True
+
+        # Rewrite only the tail. The folder, the shot name, the sub-name and the suffix all stay
+        # exactly as they are, which is what lets this def run on an existing node as well as on
+        # a node that was just born. A sequence keeps its .%04d, a movie is a single file and
+        # loses it. The sub-name passed nameInputCheck, whose whitelist is A-Z a-z 0-9 _ , so the
+        # only dots in the basename are the padding and the extension.
+        originalPath = fileKnob.value()
+        self.printEcho('originalPath : {}'.format(originalPath))
+
+        headPath, baseName = os.path.split(originalPath)
+        stemName = baseName.rsplit('.', 1)[0]
+
+        if stemName.endswith('.%04d'):
+            stemName = stemName[0 : -len('.%04d')]
+
+        if isSequence:
+            baseName = stemName + '.%04d.' + inFileType
+        else:
+            baseName = stemName + '.' + inFileType
+
+        updatedPath = os.path.join(headPath, baseName).replace(os.sep, '/')
+        self.printEcho('updatedPath  : {}'.format(updatedPath))
+
+        fileKnob.setValue(updatedPath)
+
+        return True
+
+
+    def compWriteNodePresetApplyToSelected(self):
+        println('\ndef >>>>> compWriteNodePresetApplyToSelected')
+
+        # The preset is asked once, then applied to every selected Write node. Ask and Apply are
+        # two defs on purpose : this button needs one dialog for many nodes, and later
+        # nukeBornWriteNode will need the same pair for one node it has just created.
+        selectedWriteNodes = nuke.selectedNodes('Write')
+
+        if len(selectedWriteNodes) == 0:
+            QMessageBox.information(self, 'message', 'No Write node is selected.')
+            return
+
+        fileType, dataType, compression = self.compWriteNodePresetAsk()
+
+        if fileType == '':
+            return
+
+        appliedNodeNames = []
+
+        for eachNode in selectedWriteNodes:
+            if self.compWriteNodePresetApply(eachNode, fileType, dataType, compression):
+                appliedNodeNames.append(eachNode.name())
+
+        # Every node that failed already raised its own warning naming itself, so only report
+        # the ones that went through.
+        if len(appliedNodeNames) > 0:
+            doneMessage = self.compWriteNodePresetLastChoice + '\n\nis applied to :\n\n     ' + '\n     '.join(appliedNodeNames)
+            QMessageBox.information(self, 'message', doneMessage)
 
 
     def nukeBornWriteNode(self, inType, *args):
