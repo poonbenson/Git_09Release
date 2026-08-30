@@ -1,4 +1,4 @@
-winTitlePrefix = '20260830c'
+winTitlePrefix = '20260830d'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -168,6 +168,9 @@ taskTypeNotSelected = '-----'
 # The first row of taskTypeShotPreset.txt / taskTypeAssetPreset.txt.
 # Keeps the comboBox showing nothing chosen, OK rejects it.
 
+pinnedProjectNames = ('BigAssetCollections',)
+# The projects that always sit at the top of the Project Name comboBox
+
 freeLayerMaskType = 'FreeLayerMask'
 # The inType of the Free LayerMask Write node, and the tail of its version folder name :
 # v0007_FreeLayerMask. nukeBornWriteNode builds the folder, nukeUpdateWriteNodeVer finds
@@ -315,6 +318,21 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.comboBoxEntries = self.listBigKeeperProject()
         self.comboBoxEntries.sort()
+
+        # The pinned projects sit at the top of the comboBox, in the order written in
+        # pinnedProjectNames. It is comboBoxEntries that is reordered, never the widget :
+        # the comboBox fires activated[int] and comboBoxAction2 turns that index back into
+        # a project name through this very list, so the two must stay in the same order.
+        # A name that is not in the list is skipped, an xml entry can be renamed, and
+        # listBigKeeperProject drops any project whose path is off the N drive.
+        pinnedEntries = []
+        for eachPinnedName in pinnedProjectNames:
+            if eachPinnedName in self.comboBoxEntries:
+                pinnedEntries.append(eachPinnedName)
+                self.comboBoxEntries.remove(eachPinnedName)
+
+        self.comboBoxEntries = pinnedEntries + self.comboBoxEntries
+
         self.comboBoxProjects.addItems(self.comboBoxEntries)
         self.pushButton_2.clicked.connect(self.launchProjExplorer)
 
@@ -1108,7 +1126,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def comboBoxAction2(self, item):
         if item != " ":
-			# to fix : PySide2 as String, PySide6 as Int
+            # to fix : PySide2 as String, PySide6 as Int
             # if item is from QCombox will be (int), if item from previous proj cache will be (str).
             if type(item) == int:
                 # convert item (int) to item (str)
@@ -2749,7 +2767,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> prerendKeywordAction')
         self.printEcho(item)
 
-		# PySide6
+        # PySide6
         item = self.prerendKeywordsContent[item]
 
         self.prerendKeywordUi.lineEdit.setText(item)
