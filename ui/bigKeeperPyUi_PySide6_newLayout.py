@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v156.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v157.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -642,10 +642,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_34.addWidget(self.label_16)
 
-        self.pushButton_4 = QPushButton(self.tab_assetBrowser)
-        self.pushButton_4.setObjectName(u"pushButton_4")
+        self.pushButton_vBoardAssetTab = QPushButton(self.tab_assetBrowser)
+        self.pushButton_vBoardAssetTab.setObjectName(u"pushButton_vBoardAssetTab")
 
-        self.horizontalLayout_34.addWidget(self.pushButton_4)
+        self.horizontalLayout_34.addWidget(self.pushButton_vBoardAssetTab)
 
 
         self.verticalLayout_6.addLayout(self.horizontalLayout_34)
@@ -690,10 +690,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_7.addWidget(self.pushButton_newType)
 
-        self.pushButton = QPushButton(self.tab_assetBrowser)
-        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton_vBoardType = QPushButton(self.tab_assetBrowser)
+        self.pushButton_vBoardType.setObjectName(u"pushButton_vBoardType")
 
-        self.verticalLayout_7.addWidget(self.pushButton)
+        self.verticalLayout_7.addWidget(self.pushButton_vBoardType)
 
 
         self.horizontalLayout_6.addLayout(self.verticalLayout_7)
@@ -746,10 +746,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_8.addLayout(self.horizontalLayout_28)
 
-        self.pushButton_3 = QPushButton(self.tab_assetBrowser)
-        self.pushButton_3.setObjectName(u"pushButton_3")
+        self.pushButton_vBoardAsset = QPushButton(self.tab_assetBrowser)
+        self.pushButton_vBoardAsset.setObjectName(u"pushButton_vBoardAsset")
 
-        self.verticalLayout_8.addWidget(self.pushButton_3)
+        self.verticalLayout_8.addWidget(self.pushButton_vBoardAsset)
 
 
         self.horizontalLayout_6.addLayout(self.verticalLayout_8)
@@ -786,7 +786,7 @@ class Ui_MainWindow(object):
         sizePolicy5.setVerticalStretch(0)
         sizePolicy5.setHeightForWidth(self.listWidget_AssetTask.sizePolicy().hasHeightForWidth())
         self.listWidget_AssetTask.setSizePolicy(sizePolicy5)
-        self.listWidget_AssetTask.setMinimumSize(QSize(0, 150))
+        self.listWidget_AssetTask.setMinimumSize(QSize(0, 120))
         self.listWidget_AssetTask.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
 
         self.verticalLayout_9.addWidget(self.listWidget_AssetTask)
@@ -809,10 +809,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_9.addLayout(self.verticalLayout_24)
 
-        self.pushButton_6 = QPushButton(self.tab_assetBrowser)
-        self.pushButton_6.setObjectName(u"pushButton_6")
+        self.pushButton_vBoardAssetTask = QPushButton(self.tab_assetBrowser)
+        self.pushButton_vBoardAssetTask.setObjectName(u"pushButton_vBoardAssetTask")
 
-        self.verticalLayout_9.addWidget(self.pushButton_6)
+        self.verticalLayout_9.addWidget(self.pushButton_vBoardAssetTask)
 
 
         self.horizontalLayout_6.addLayout(self.verticalLayout_9)
@@ -831,7 +831,7 @@ class Ui_MainWindow(object):
         sizePolicy6.setVerticalStretch(0)
         sizePolicy6.setHeightForWidth(self.label_thumbType.sizePolicy().hasHeightForWidth())
         self.label_thumbType.setSizePolicy(sizePolicy6)
-        self.label_thumbType.setMinimumSize(QSize(123, 50))
+        self.label_thumbType.setMinimumSize(QSize(123, 60))
 
         self.horizontalLayout_29.addWidget(self.label_thumbType)
 
@@ -839,7 +839,7 @@ class Ui_MainWindow(object):
         self.label_thumbAsset.setObjectName(u"label_thumbAsset")
         sizePolicy6.setHeightForWidth(self.label_thumbAsset.sizePolicy().hasHeightForWidth())
         self.label_thumbAsset.setSizePolicy(sizePolicy6)
-        self.label_thumbAsset.setMinimumSize(QSize(123, 50))
+        self.label_thumbAsset.setMinimumSize(QSize(123, 60))
 
         self.horizontalLayout_29.addWidget(self.label_thumbAsset)
 
@@ -847,7 +847,7 @@ class Ui_MainWindow(object):
         self.label_thumbAssetTask.setObjectName(u"label_thumbAssetTask")
         sizePolicy6.setHeightForWidth(self.label_thumbAssetTask.sizePolicy().hasHeightForWidth())
         self.label_thumbAssetTask.setSizePolicy(sizePolicy6)
-        self.label_thumbAssetTask.setMinimumSize(QSize(123, 50))
+        self.label_thumbAssetTask.setMinimumSize(QSize(123, 60))
 
         self.horizontalLayout_29.addWidget(self.label_thumbAssetTask)
 
@@ -883,10 +883,20 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.verticalLayout_5 = QVBoxLayout()
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.label_11 = QLabel(self.tab_shotBrowser)
-        self.label_11.setObjectName(u"label_11")
+        self.horizontalLayout_32 = QHBoxLayout()
+        self.horizontalLayout_32.setObjectName(u"horizontalLayout_32")
+        self.label_12 = QLabel(self.tab_shotBrowser)
+        self.label_12.setObjectName(u"label_12")
 
-        self.verticalLayout_5.addWidget(self.label_11)
+        self.horizontalLayout_32.addWidget(self.label_12)
+
+        self.pushButton_vBoardShotTab = QPushButton(self.tab_shotBrowser)
+        self.pushButton_vBoardShotTab.setObjectName(u"pushButton_vBoardShotTab")
+
+        self.horizontalLayout_32.addWidget(self.pushButton_vBoardShotTab)
+
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_32)
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
@@ -923,6 +933,11 @@ class Ui_MainWindow(object):
         self.pushButton_newSeq.setSizePolicy(sizePolicy4)
 
         self.verticalLayout_2.addWidget(self.pushButton_newSeq)
+
+        self.pushButton_vBoardSeq = QPushButton(self.tab_shotBrowser)
+        self.pushButton_vBoardSeq.setObjectName(u"pushButton_vBoardSeq")
+
+        self.verticalLayout_2.addWidget(self.pushButton_vBoardSeq)
 
 
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
@@ -975,6 +990,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_16)
 
+        self.pushButton_vBoardShot = QPushButton(self.tab_shotBrowser)
+        self.pushButton_vBoardShot.setObjectName(u"pushButton_vBoardShot")
+
+        self.verticalLayout_3.addWidget(self.pushButton_vBoardShot)
+
 
         self.horizontalLayout_3.addLayout(self.verticalLayout_3)
 
@@ -987,34 +1007,51 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.label_6)
 
+        self.verticalLayout_25 = QVBoxLayout()
+        self.verticalLayout_25.setSpacing(0)
+        self.verticalLayout_25.setObjectName(u"verticalLayout_25")
         self.pushButton_shotAction = QPushButton(self.tab_shotBrowser)
         self.pushButton_shotAction.setObjectName(u"pushButton_shotAction")
 
-        self.verticalLayout_4.addWidget(self.pushButton_shotAction)
+        self.verticalLayout_25.addWidget(self.pushButton_shotAction)
 
         self.pushButton_shotAction2 = QPushButton(self.tab_shotBrowser)
         self.pushButton_shotAction2.setObjectName(u"pushButton_shotAction2")
 
-        self.verticalLayout_4.addWidget(self.pushButton_shotAction2)
+        self.verticalLayout_25.addWidget(self.pushButton_shotAction2)
+
+
+        self.verticalLayout_4.addLayout(self.verticalLayout_25)
 
         self.listWidget_3 = QListWidget(self.tab_shotBrowser)
         self.listWidget_3.setObjectName(u"listWidget_3")
-        self.listWidget_3.setMinimumSize(QSize(0, 100))
+        self.listWidget_3.setMinimumSize(QSize(0, 120))
         self.listWidget_3.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
 
         self.verticalLayout_4.addWidget(self.listWidget_3)
 
+        self.verticalLayout_26 = QVBoxLayout()
+        self.verticalLayout_26.setSpacing(0)
+        self.verticalLayout_26.setObjectName(u"verticalLayout_26")
         self.pushButton_shotAction3 = QPushButton(self.tab_shotBrowser)
         self.pushButton_shotAction3.setObjectName(u"pushButton_shotAction3")
 
-        self.verticalLayout_4.addWidget(self.pushButton_shotAction3)
+        self.verticalLayout_26.addWidget(self.pushButton_shotAction3)
 
         self.pushButton_newScnTask = QPushButton(self.tab_shotBrowser)
         self.pushButton_newScnTask.setObjectName(u"pushButton_newScnTask")
         sizePolicy4.setHeightForWidth(self.pushButton_newScnTask.sizePolicy().hasHeightForWidth())
         self.pushButton_newScnTask.setSizePolicy(sizePolicy4)
 
-        self.verticalLayout_4.addWidget(self.pushButton_newScnTask)
+        self.verticalLayout_26.addWidget(self.pushButton_newScnTask)
+
+
+        self.verticalLayout_4.addLayout(self.verticalLayout_26)
+
+        self.pushButton_vBoardScnTask = QPushButton(self.tab_shotBrowser)
+        self.pushButton_vBoardScnTask.setObjectName(u"pushButton_vBoardScnTask")
+
+        self.verticalLayout_4.addWidget(self.pushButton_vBoardScnTask)
 
 
         self.horizontalLayout_3.addLayout(self.verticalLayout_4)
@@ -1023,12 +1060,13 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addLayout(self.horizontalLayout_3)
 
         self.horizontalLayout_11 = QHBoxLayout()
+        self.horizontalLayout_11.setSpacing(6)
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
         self.label_thumbSeq = QLabel(self.tab_shotBrowser)
         self.label_thumbSeq.setObjectName(u"label_thumbSeq")
         sizePolicy6.setHeightForWidth(self.label_thumbSeq.sizePolicy().hasHeightForWidth())
         self.label_thumbSeq.setSizePolicy(sizePolicy6)
-        self.label_thumbSeq.setMinimumSize(QSize(123, 98))
+        self.label_thumbSeq.setMinimumSize(QSize(123, 60))
 
         self.horizontalLayout_11.addWidget(self.label_thumbSeq)
 
@@ -1036,7 +1074,7 @@ class Ui_MainWindow(object):
         self.label_thumbShot.setObjectName(u"label_thumbShot")
         sizePolicy6.setHeightForWidth(self.label_thumbShot.sizePolicy().hasHeightForWidth())
         self.label_thumbShot.setSizePolicy(sizePolicy6)
-        self.label_thumbShot.setMinimumSize(QSize(123, 98))
+        self.label_thumbShot.setMinimumSize(QSize(123, 60))
 
         self.horizontalLayout_11.addWidget(self.label_thumbShot)
 
@@ -1044,7 +1082,7 @@ class Ui_MainWindow(object):
         self.label_thumbTask.setObjectName(u"label_thumbTask")
         sizePolicy6.setHeightForWidth(self.label_thumbTask.sizePolicy().hasHeightForWidth())
         self.label_thumbTask.setSizePolicy(sizePolicy6)
-        self.label_thumbTask.setMinimumSize(QSize(123, 98))
+        self.label_thumbTask.setMinimumSize(QSize(123, 60))
 
         self.horizontalLayout_11.addWidget(self.label_thumbTask)
 
@@ -1288,8 +1326,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
-        self.tabWidget_2.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget_2.setCurrentIndex(6)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1514,7 +1552,10 @@ class Ui_MainWindow(object):
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabMisc), QCoreApplication.translate("MainWindow", u"Misc.", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_currentOpen), QCoreApplication.translate("MainWindow", u"Currently Open", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"ASSET BROWSER", None))
-        self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"Visual Board", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_vBoardAssetTab.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_vBoardAssetTab", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_vBoardAssetTab.setText(QCoreApplication.translate("MainWindow", u"Visual Board", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Type", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_listWidgetAssetRefresh.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_listWidgetAssetRefresh", None))
@@ -1527,7 +1568,10 @@ class Ui_MainWindow(object):
         self.pushButton_newType.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newType", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_newType.setText(QCoreApplication.translate("MainWindow", u"New Asset Type", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Visual Board", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_vBoardType.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_vBoardType", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_vBoardType.setText(QCoreApplication.translate("MainWindow", u"Visual Board", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Asset", None))
 #if QT_CONFIG(tooltip)
         self.label_23.setToolTip(QCoreApplication.translate("MainWindow", u"label_20", None))
@@ -1544,7 +1588,10 @@ class Ui_MainWindow(object):
         self.pushButton_newAssetBatch.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newAssetBatch", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_newAssetBatch.setText(QCoreApplication.translate("MainWindow", u"Batch", None))
-        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"Visual Board", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_vBoardAsset.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_vBoardAsset", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_vBoardAsset.setText(QCoreApplication.translate("MainWindow", u"Visual Board", None))
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Task Asset", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_assetAction.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_assetAction", None))
@@ -1565,7 +1612,10 @@ class Ui_MainWindow(object):
         self.pushButton_newAssetTask.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newAssetTask", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_newAssetTask.setText(QCoreApplication.translate("MainWindow", u"New Task", None))
-        self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"Visual Board", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_vBoardAssetTask.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_vBoardAssetTask", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_vBoardAssetTask.setText(QCoreApplication.translate("MainWindow", u"Visual Board", None))
 #if QT_CONFIG(tooltip)
         self.label_thumbType.setToolTip(QCoreApplication.translate("MainWindow", u"label_thumbType", None))
 #endif // QT_CONFIG(tooltip)
@@ -1586,7 +1636,11 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.pushButton_20.setText(QCoreApplication.translate("MainWindow", u"explore...", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_assetBrowser), QCoreApplication.translate("MainWindow", u"Asset Browser", None))
-        self.label_11.setText(QCoreApplication.translate("MainWindow", u"SHOT BROWSER", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u"SHOT BROWSER", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_vBoardShotTab.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_vBoardShotTab", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_vBoardShotTab.setText(QCoreApplication.translate("MainWindow", u"Visual Board", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Sequence", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_listWidget1Refresh.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_listWidget1Refresh", None))
@@ -1599,6 +1653,10 @@ class Ui_MainWindow(object):
         self.pushButton_newSeq.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newSeq", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_newSeq.setText(QCoreApplication.translate("MainWindow", u"New Sequence", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_vBoardSeq.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_vBoardSeq", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_vBoardSeq.setText(QCoreApplication.translate("MainWindow", u"Visual Board", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Shot", None))
 #if QT_CONFIG(tooltip)
         self.label_20.setToolTip(QCoreApplication.translate("MainWindow", u"label_20", None))
@@ -1615,6 +1673,10 @@ class Ui_MainWindow(object):
         self.pushButton_newShotBatch.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newShotBatch", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_newShotBatch.setText(QCoreApplication.translate("MainWindow", u"Batch", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_vBoardShot.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_vBoardShot", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_vBoardShot.setText(QCoreApplication.translate("MainWindow", u"Visual Board", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Task Shot", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_shotAction.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_shotAction", None))
@@ -1635,6 +1697,10 @@ class Ui_MainWindow(object):
         self.pushButton_newScnTask.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newScnTask", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_newScnTask.setText(QCoreApplication.translate("MainWindow", u"New Task", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_vBoardScnTask.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_vBoardScnTask", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_vBoardScnTask.setText(QCoreApplication.translate("MainWindow", u"Visual Board", None))
 #if QT_CONFIG(tooltip)
         self.label_thumbSeq.setToolTip(QCoreApplication.translate("MainWindow", u"label_thumbSeq", None))
 #endif // QT_CONFIG(tooltip)
