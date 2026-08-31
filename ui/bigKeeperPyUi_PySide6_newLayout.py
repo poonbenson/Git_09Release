@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v158.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v159.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -15,12 +15,12 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QComboBox, QGridLayout,
-    QGroupBox, QHBoxLayout, QLabel, QLayout,
-    QLineEdit, QListWidget, QListWidgetItem, QMainWindow,
-    QMenuBar, QPushButton, QSizePolicy, QSlider,
-    QSpacerItem, QSplitter, QStatusBar, QTabWidget,
-    QToolButton, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QCheckBox, QComboBox,
+    QGridLayout, QGroupBox, QHBoxLayout, QLabel,
+    QLayout, QLineEdit, QListWidget, QListWidgetItem,
+    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
+    QSlider, QSpacerItem, QSplitter, QStatusBar,
+    QTabWidget, QToolButton, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -82,28 +82,47 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_8)
 
-        self.horizontalLayout_10 = QHBoxLayout()
-        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.gridLayout_4 = QGridLayout()
+        self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.pushButton_shotlist = QPushButton(self.centralwidget)
         self.pushButton_shotlist.setObjectName(u"pushButton_shotlist")
 
-        self.horizontalLayout_10.addWidget(self.pushButton_shotlist)
+        self.gridLayout_4.addWidget(self.pushButton_shotlist, 0, 0, 1, 1)
 
-        self.pushButton_roughcut = QPushButton(self.centralwidget)
-        self.pushButton_roughcut.setObjectName(u"pushButton_roughcut")
+        self.checkBox = QCheckBox(self.centralwidget)
+        self.checkBox.setObjectName(u"checkBox")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.checkBox.sizePolicy().hasHeightForWidth())
+        self.checkBox.setSizePolicy(sizePolicy2)
+        font = QFont()
+        font.setPointSize(8)
+        self.checkBox.setFont(font)
+        self.checkBox.setIconSize(QSize(10, 10))
 
-        self.horizontalLayout_10.addWidget(self.pushButton_roughcut)
+        self.gridLayout_4.addWidget(self.checkBox, 1, 0, 1, 1)
 
         self.pushButton_dailyFolder2 = QPushButton(self.centralwidget)
         self.pushButton_dailyFolder2.setObjectName(u"pushButton_dailyFolder2")
 
-        self.horizontalLayout_10.addWidget(self.pushButton_dailyFolder2)
+        self.gridLayout_4.addWidget(self.pushButton_dailyFolder2, 0, 2, 1, 1)
+
+        self.pushButton_roughcut = QPushButton(self.centralwidget)
+        self.pushButton_roughcut.setObjectName(u"pushButton_roughcut")
+
+        self.gridLayout_4.addWidget(self.pushButton_roughcut, 0, 1, 1, 1)
 
         self.pushButton_commentClient = QPushButton(self.centralwidget)
         self.pushButton_commentClient.setObjectName(u"pushButton_commentClient")
 
-        self.horizontalLayout_10.addWidget(self.pushButton_commentClient)
+        self.gridLayout_4.addWidget(self.pushButton_commentClient, 0, 3, 1, 1)
 
+
+        self.verticalLayout.addLayout(self.gridLayout_4)
+
+        self.horizontalLayout_10 = QHBoxLayout()
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
 
         self.verticalLayout.addLayout(self.horizontalLayout_10)
 
@@ -142,9 +161,9 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.pushButton_versionUp.sizePolicy().hasHeightForWidth())
         self.pushButton_versionUp.setSizePolicy(sizePolicy)
         self.pushButton_versionUp.setMinimumSize(QSize(170, 23))
-        font = QFont()
-        font.setFamilies([u"MS Shell Dlg 2"])
-        self.pushButton_versionUp.setFont(font)
+        font1 = QFont()
+        font1.setFamilies([u"MS Shell Dlg 2"])
+        self.pushButton_versionUp.setFont(font1)
 
         self.verticalLayout_14.addWidget(self.pushButton_versionUp)
 
@@ -194,18 +213,18 @@ class Ui_MainWindow(object):
 
         self.pushButton_getFrameRange = QPushButton(self.verticalGroupBox_2)
         self.pushButton_getFrameRange.setObjectName(u"pushButton_getFrameRange")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.pushButton_getFrameRange.sizePolicy().hasHeightForWidth())
-        self.pushButton_getFrameRange.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.pushButton_getFrameRange.sizePolicy().hasHeightForWidth())
+        self.pushButton_getFrameRange.setSizePolicy(sizePolicy3)
 
         self.verticalLayout_14.addWidget(self.pushButton_getFrameRange)
 
         self.pushButton_NukeReadNodeTempTool = QPushButton(self.verticalGroupBox_2)
         self.pushButton_NukeReadNodeTempTool.setObjectName(u"pushButton_NukeReadNodeTempTool")
-        sizePolicy2.setHeightForWidth(self.pushButton_NukeReadNodeTempTool.sizePolicy().hasHeightForWidth())
-        self.pushButton_NukeReadNodeTempTool.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.pushButton_NukeReadNodeTempTool.sizePolicy().hasHeightForWidth())
+        self.pushButton_NukeReadNodeTempTool.setSizePolicy(sizePolicy3)
 
         self.verticalLayout_14.addWidget(self.pushButton_NukeReadNodeTempTool)
 
@@ -226,9 +245,9 @@ class Ui_MainWindow(object):
 
         self.tabWidget_2 = QTabWidget(self.tab_currentOpen)
         self.tabWidget_2.setObjectName(u"tabWidget_2")
-        font1 = QFont()
-        font1.setStyleStrategy(QFont.PreferAntialias)
-        self.tabWidget_2.setFont(font1)
+        font2 = QFont()
+        font2.setStyleStrategy(QFont.PreferAntialias)
+        self.tabWidget_2.setFont(font2)
         self.tabMaya = QWidget()
         self.tabMaya.setObjectName(u"tabMaya")
         self.tabWidget_2.addTab(self.tabMaya, "")
@@ -246,16 +265,16 @@ class Ui_MainWindow(object):
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
         self.label_24 = QLabel(self.horizontalLayoutWidget_6)
         self.label_24.setObjectName(u"label_24")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.label_24.sizePolicy().hasHeightForWidth())
-        self.label_24.setSizePolicy(sizePolicy3)
-        font2 = QFont()
-        font2.setBold(True)
-        font2.setUnderline(False)
-        font2.setStyleStrategy(QFont.PreferAntialias)
-        self.label_24.setFont(font2)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.label_24.sizePolicy().hasHeightForWidth())
+        self.label_24.setSizePolicy(sizePolicy4)
+        font3 = QFont()
+        font3.setBold(True)
+        font3.setUnderline(False)
+        font3.setStyleStrategy(QFont.PreferAntialias)
+        self.label_24.setFont(font3)
 
         self.verticalLayout_16.addWidget(self.label_24)
 
@@ -263,21 +282,21 @@ class Ui_MainWindow(object):
         self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
         self.pushButton_genLightPublishBackdrop = QPushButton(self.horizontalLayoutWidget_6)
         self.pushButton_genLightPublishBackdrop.setObjectName(u"pushButton_genLightPublishBackdrop")
-        sizePolicy3.setHeightForWidth(self.pushButton_genLightPublishBackdrop.sizePolicy().hasHeightForWidth())
-        self.pushButton_genLightPublishBackdrop.setSizePolicy(sizePolicy3)
-        font3 = QFont()
-        font3.setPointSize(7)
-        font3.setStyleStrategy(QFont.PreferAntialias)
-        self.pushButton_genLightPublishBackdrop.setFont(font3)
+        sizePolicy4.setHeightForWidth(self.pushButton_genLightPublishBackdrop.sizePolicy().hasHeightForWidth())
+        self.pushButton_genLightPublishBackdrop.setSizePolicy(sizePolicy4)
+        font4 = QFont()
+        font4.setPointSize(7)
+        font4.setStyleStrategy(QFont.PreferAntialias)
+        self.pushButton_genLightPublishBackdrop.setFont(font4)
 
         self.horizontalLayout_20.addWidget(self.pushButton_genLightPublishBackdrop)
 
         self.pushButton_lightPublishAction = QPushButton(self.horizontalLayoutWidget_6)
         self.pushButton_lightPublishAction.setObjectName(u"pushButton_lightPublishAction")
-        sizePolicy3.setHeightForWidth(self.pushButton_lightPublishAction.sizePolicy().hasHeightForWidth())
-        self.pushButton_lightPublishAction.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.pushButton_lightPublishAction.sizePolicy().hasHeightForWidth())
+        self.pushButton_lightPublishAction.setSizePolicy(sizePolicy4)
         self.pushButton_lightPublishAction.setMaximumSize(QSize(85, 16777215))
-        self.pushButton_lightPublishAction.setFont(font3)
+        self.pushButton_lightPublishAction.setFont(font4)
 
         self.horizontalLayout_20.addWidget(self.pushButton_lightPublishAction)
 
@@ -293,9 +312,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
         self.label_25 = QLabel(self.horizontalLayoutWidget_6)
         self.label_25.setObjectName(u"label_25")
-        sizePolicy3.setHeightForWidth(self.label_25.sizePolicy().hasHeightForWidth())
-        self.label_25.setSizePolicy(sizePolicy3)
-        self.label_25.setFont(font2)
+        sizePolicy4.setHeightForWidth(self.label_25.sizePolicy().hasHeightForWidth())
+        self.label_25.setSizePolicy(sizePolicy4)
+        self.label_25.setFont(font3)
 
         self.horizontalLayout_21.addWidget(self.label_25)
 
@@ -306,7 +325,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_25.setObjectName(u"horizontalLayout_25")
         self.pushButton_genWritePrerend = QPushButton(self.horizontalLayoutWidget_6)
         self.pushButton_genWritePrerend.setObjectName(u"pushButton_genWritePrerend")
-        self.pushButton_genWritePrerend.setFont(font3)
+        self.pushButton_genWritePrerend.setFont(font4)
 
         self.horizontalLayout_25.addWidget(self.pushButton_genWritePrerend)
 
@@ -324,9 +343,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_17.setObjectName(u"verticalLayout_17")
         self.label_26 = QLabel(self.horizontalLayoutWidget_6)
         self.label_26.setObjectName(u"label_26")
-        sizePolicy3.setHeightForWidth(self.label_26.sizePolicy().hasHeightForWidth())
-        self.label_26.setSizePolicy(sizePolicy3)
-        self.label_26.setFont(font2)
+        sizePolicy4.setHeightForWidth(self.label_26.sizePolicy().hasHeightForWidth())
+        self.label_26.setSizePolicy(sizePolicy4)
+        self.label_26.setFont(font3)
 
         self.verticalLayout_17.addWidget(self.label_26)
 
@@ -334,13 +353,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
         self.pushButton_genWriteCompMaster = QPushButton(self.horizontalLayoutWidget_6)
         self.pushButton_genWriteCompMaster.setObjectName(u"pushButton_genWriteCompMaster")
-        self.pushButton_genWriteCompMaster.setFont(font3)
+        self.pushButton_genWriteCompMaster.setFont(font4)
 
         self.horizontalLayout_22.addWidget(self.pushButton_genWriteCompMaster)
 
         self.pushButton_genWriteCompMasterV = QPushButton(self.horizontalLayoutWidget_6)
         self.pushButton_genWriteCompMasterV.setObjectName(u"pushButton_genWriteCompMasterV")
-        self.pushButton_genWriteCompMasterV.setFont(font3)
+        self.pushButton_genWriteCompMasterV.setFont(font4)
 
         self.horizontalLayout_22.addWidget(self.pushButton_genWriteCompMasterV)
 
@@ -351,13 +370,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
         self.pushButton_genWriteLayerMask = QPushButton(self.horizontalLayoutWidget_6)
         self.pushButton_genWriteLayerMask.setObjectName(u"pushButton_genWriteLayerMask")
-        self.pushButton_genWriteLayerMask.setFont(font3)
+        self.pushButton_genWriteLayerMask.setFont(font4)
 
         self.horizontalLayout_23.addWidget(self.pushButton_genWriteLayerMask)
 
         self.pushButton_genWriteFreeLayerMask = QPushButton(self.horizontalLayoutWidget_6)
         self.pushButton_genWriteFreeLayerMask.setObjectName(u"pushButton_genWriteFreeLayerMask")
-        self.pushButton_genWriteFreeLayerMask.setFont(font3)
+        self.pushButton_genWriteFreeLayerMask.setFont(font4)
 
         self.horizontalLayout_23.addWidget(self.pushButton_genWriteFreeLayerMask)
 
@@ -382,9 +401,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_19.setObjectName(u"verticalLayout_19")
         self.label_21 = QLabel(self.horizontalLayoutWidget_6)
         self.label_21.setObjectName(u"label_21")
-        sizePolicy3.setHeightForWidth(self.label_21.sizePolicy().hasHeightForWidth())
-        self.label_21.setSizePolicy(sizePolicy3)
-        self.label_21.setFont(font2)
+        sizePolicy4.setHeightForWidth(self.label_21.sizePolicy().hasHeightForWidth())
+        self.label_21.setSizePolicy(sizePolicy4)
+        self.label_21.setFont(font3)
 
         self.verticalLayout_19.addWidget(self.label_21)
 
@@ -392,13 +411,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_24.setObjectName(u"horizontalLayout_24")
         self.pushButton_FileKnobFreeze = QPushButton(self.horizontalLayoutWidget_6)
         self.pushButton_FileKnobFreeze.setObjectName(u"pushButton_FileKnobFreeze")
-        self.pushButton_FileKnobFreeze.setFont(font3)
+        self.pushButton_FileKnobFreeze.setFont(font4)
 
         self.horizontalLayout_24.addWidget(self.pushButton_FileKnobFreeze)
 
         self.pushButton_FileKnobUnFreeze = QPushButton(self.horizontalLayoutWidget_6)
         self.pushButton_FileKnobUnFreeze.setObjectName(u"pushButton_FileKnobUnFreeze")
-        self.pushButton_FileKnobUnFreeze.setFont(font3)
+        self.pushButton_FileKnobUnFreeze.setFont(font4)
 
         self.horizontalLayout_24.addWidget(self.pushButton_FileKnobUnFreeze)
 
@@ -410,9 +429,9 @@ class Ui_MainWindow(object):
 
         self.label_27 = QLabel(self.horizontalLayoutWidget_6)
         self.label_27.setObjectName(u"label_27")
-        sizePolicy3.setHeightForWidth(self.label_27.sizePolicy().hasHeightForWidth())
-        self.label_27.setSizePolicy(sizePolicy3)
-        self.label_27.setFont(font2)
+        sizePolicy4.setHeightForWidth(self.label_27.sizePolicy().hasHeightForWidth())
+        self.label_27.setSizePolicy(sizePolicy4)
+        self.label_27.setFont(font3)
 
         self.verticalLayout_21.addWidget(self.label_27)
 
@@ -420,18 +439,18 @@ class Ui_MainWindow(object):
         self.horizontalLayout_26.setObjectName(u"horizontalLayout_26")
         self.pushButton_genCgRenderBackdrop = QPushButton(self.horizontalLayoutWidget_6)
         self.pushButton_genCgRenderBackdrop.setObjectName(u"pushButton_genCgRenderBackdrop")
-        sizePolicy3.setHeightForWidth(self.pushButton_genCgRenderBackdrop.sizePolicy().hasHeightForWidth())
-        self.pushButton_genCgRenderBackdrop.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.pushButton_genCgRenderBackdrop.sizePolicy().hasHeightForWidth())
+        self.pushButton_genCgRenderBackdrop.setSizePolicy(sizePolicy4)
         self.pushButton_genCgRenderBackdrop.setMinimumSize(QSize(100, 0))
-        self.pushButton_genCgRenderBackdrop.setFont(font3)
+        self.pushButton_genCgRenderBackdrop.setFont(font4)
 
         self.horizontalLayout_26.addWidget(self.pushButton_genCgRenderBackdrop)
 
         self.pushButton_genOtherBackdrop = QPushButton(self.horizontalLayoutWidget_6)
         self.pushButton_genOtherBackdrop.setObjectName(u"pushButton_genOtherBackdrop")
-        sizePolicy3.setHeightForWidth(self.pushButton_genOtherBackdrop.sizePolicy().hasHeightForWidth())
-        self.pushButton_genOtherBackdrop.setSizePolicy(sizePolicy3)
-        self.pushButton_genOtherBackdrop.setFont(font3)
+        sizePolicy4.setHeightForWidth(self.pushButton_genOtherBackdrop.sizePolicy().hasHeightForWidth())
+        self.pushButton_genOtherBackdrop.setSizePolicy(sizePolicy4)
+        self.pushButton_genOtherBackdrop.setFont(font4)
 
         self.horizontalLayout_26.addWidget(self.pushButton_genOtherBackdrop)
 
@@ -470,10 +489,10 @@ class Ui_MainWindow(object):
         self.pushButton_closeNukeScript = QPushButton(self.tabNuke)
         self.pushButton_closeNukeScript.setObjectName(u"pushButton_closeNukeScript")
         self.pushButton_closeNukeScript.setGeometry(QRect(0, 220, 171, 23))
-        font4 = QFont()
-        font4.setPointSize(8)
-        font4.setStyleStrategy(QFont.PreferAntialias)
-        self.pushButton_closeNukeScript.setFont(font4)
+        font5 = QFont()
+        font5.setPointSize(8)
+        font5.setStyleStrategy(QFont.PreferAntialias)
+        self.pushButton_closeNukeScript.setFont(font5)
         self.tabWidget_2.addTab(self.tabNuke, "")
         self.tabHoudini = QWidget()
         self.tabHoudini.setObjectName(u"tabHoudini")
@@ -509,34 +528,34 @@ class Ui_MainWindow(object):
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
         self.groupBox = QGroupBox(self.tabLauncher)
         self.groupBox.setObjectName(u"groupBox")
-        font5 = QFont()
-        font5.setKerning(True)
-        font5.setStyleStrategy(QFont.PreferAntialias)
-        self.groupBox.setFont(font5)
+        font6 = QFont()
+        font6.setKerning(True)
+        font6.setStyleStrategy(QFont.PreferAntialias)
+        self.groupBox.setFont(font6)
         self.pushButton_LaunchNuke13_0_v2 = QPushButton(self.groupBox)
         self.pushButton_LaunchNuke13_0_v2.setObjectName(u"pushButton_LaunchNuke13_0_v2")
         self.pushButton_LaunchNuke13_0_v2.setGeometry(QRect(50, 70, 61, 41))
-        font6 = QFont()
-        font6.setPointSize(8)
-        font6.setKerning(True)
-        font6.setStyleStrategy(QFont.PreferAntialias)
-        self.pushButton_LaunchNuke13_0_v2.setFont(font6)
+        font7 = QFont()
+        font7.setPointSize(8)
+        font7.setKerning(True)
+        font7.setStyleStrategy(QFont.PreferAntialias)
+        self.pushButton_LaunchNuke13_0_v2.setFont(font7)
         self.pushButton_LaunchNukeStudio13_0_v2 = QPushButton(self.groupBox)
         self.pushButton_LaunchNukeStudio13_0_v2.setObjectName(u"pushButton_LaunchNukeStudio13_0_v2")
         self.pushButton_LaunchNukeStudio13_0_v2.setGeometry(QRect(190, 70, 41, 41))
-        self.pushButton_LaunchNukeStudio13_0_v2.setFont(font6)
+        self.pushButton_LaunchNukeStudio13_0_v2.setFont(font7)
         self.pushButton_LaunchNukeX13_0_v2 = QPushButton(self.groupBox)
         self.pushButton_LaunchNukeX13_0_v2.setObjectName(u"pushButton_LaunchNukeX13_0_v2")
         self.pushButton_LaunchNukeX13_0_v2.setGeometry(QRect(110, 70, 41, 41))
-        self.pushButton_LaunchNukeX13_0_v2.setFont(font6)
+        self.pushButton_LaunchNukeX13_0_v2.setFont(font7)
         self.pushButton_LaunchNukeAssist13_0_v2 = QPushButton(self.groupBox)
         self.pushButton_LaunchNukeAssist13_0_v2.setObjectName(u"pushButton_LaunchNukeAssist13_0_v2")
         self.pushButton_LaunchNukeAssist13_0_v2.setGeometry(QRect(150, 70, 41, 41))
-        self.pushButton_LaunchNukeAssist13_0_v2.setFont(font6)
+        self.pushButton_LaunchNukeAssist13_0_v2.setFont(font7)
         self.pushButton_LaunchMaya2022_update0 = QPushButton(self.groupBox)
         self.pushButton_LaunchMaya2022_update0.setObjectName(u"pushButton_LaunchMaya2022_update0")
         self.pushButton_LaunchMaya2022_update0.setGeometry(QRect(50, 30, 141, 41))
-        self.pushButton_LaunchMaya2022_update0.setFont(font6)
+        self.pushButton_LaunchMaya2022_update0.setFont(font7)
         self.pushButton_mayaOther = QPushButton(self.groupBox)
         self.pushButton_mayaOther.setObjectName(u"pushButton_mayaOther")
         self.pushButton_mayaOther.setGeometry(QRect(230, 30, 16, 41))
@@ -552,11 +571,11 @@ class Ui_MainWindow(object):
         self.pushButton_dailyFolder = QPushButton(self.groupBox)
         self.pushButton_dailyFolder.setObjectName(u"pushButton_dailyFolder")
         self.pushButton_dailyFolder.setGeometry(QRect(50, 150, 181, 21))
-        self.pushButton_dailyFolder.setFont(font6)
+        self.pushButton_dailyFolder.setFont(font7)
         self.pushButton_launchHoudini1 = QPushButton(self.groupBox)
         self.pushButton_launchHoudini1.setObjectName(u"pushButton_launchHoudini1")
         self.pushButton_launchHoudini1.setGeometry(QRect(50, 110, 181, 41))
-        self.pushButton_launchHoudini1.setFont(font6)
+        self.pushButton_launchHoudini1.setFont(font7)
         self.pushButton_houdiniOther = QPushButton(self.groupBox)
         self.pushButton_houdiniOther.setObjectName(u"pushButton_houdiniOther")
         self.pushButton_houdiniOther.setGeometry(QRect(230, 110, 16, 31))
@@ -566,26 +585,26 @@ class Ui_MainWindow(object):
         self.pushButton_LaunchHieroPlayer = QPushButton(self.groupBox)
         self.pushButton_LaunchHieroPlayer.setObjectName(u"pushButton_LaunchHieroPlayer")
         self.pushButton_LaunchHieroPlayer.setGeometry(QRect(250, 70, 61, 41))
-        self.pushButton_LaunchHieroPlayer.setFont(font6)
+        self.pushButton_LaunchHieroPlayer.setFont(font7)
         self.pushButton_hieroPlayerOther = QPushButton(self.groupBox)
         self.pushButton_hieroPlayerOther.setObjectName(u"pushButton_hieroPlayerOther")
         self.pushButton_hieroPlayerOther.setGeometry(QRect(310, 70, 16, 41))
         self.pushButton_LaunchCpuCoreController = QPushButton(self.groupBox)
         self.pushButton_LaunchCpuCoreController.setObjectName(u"pushButton_LaunchCpuCoreController")
         self.pushButton_LaunchCpuCoreController.setGeometry(QRect(50, 170, 91, 41))
-        self.pushButton_LaunchCpuCoreController.setFont(font6)
+        self.pushButton_LaunchCpuCoreController.setFont(font7)
         self.pushButton_LaunchGpuCoreController = QPushButton(self.groupBox)
         self.pushButton_LaunchGpuCoreController.setObjectName(u"pushButton_LaunchGpuCoreController")
         self.pushButton_LaunchGpuCoreController.setGeometry(QRect(140, 170, 91, 41))
-        self.pushButton_LaunchGpuCoreController.setFont(font6)
+        self.pushButton_LaunchGpuCoreController.setFont(font7)
         self.pushButton_LaunchMayaLegacySelection = QPushButton(self.groupBox)
         self.pushButton_LaunchMayaLegacySelection.setObjectName(u"pushButton_LaunchMayaLegacySelection")
         self.pushButton_LaunchMayaLegacySelection.setGeometry(QRect(190, 30, 41, 41))
-        font7 = QFont()
-        font7.setPointSize(6)
-        font7.setKerning(True)
-        font7.setStyleStrategy(QFont.PreferAntialias)
-        self.pushButton_LaunchMayaLegacySelection.setFont(font7)
+        font8 = QFont()
+        font8.setPointSize(6)
+        font8.setKerning(True)
+        font8.setStyleStrategy(QFont.PreferAntialias)
+        self.pushButton_LaunchMayaLegacySelection.setFont(font8)
         self.pushButton_LaunchNuke13_0_v2.raise_()
         self.pushButton_LaunchNukeStudio13_0_v2.raise_()
         self.pushButton_LaunchNukeX13_0_v2.raise_()
@@ -680,11 +699,11 @@ class Ui_MainWindow(object):
 
         self.pushButton_newType = QPushButton(self.tab_assetBrowser)
         self.pushButton_newType.setObjectName(u"pushButton_newType")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.pushButton_newType.sizePolicy().hasHeightForWidth())
-        self.pushButton_newType.setSizePolicy(sizePolicy4)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.pushButton_newType.sizePolicy().hasHeightForWidth())
+        self.pushButton_newType.setSizePolicy(sizePolicy5)
 
         self.verticalLayout_7.addWidget(self.pushButton_newType)
 
@@ -726,16 +745,16 @@ class Ui_MainWindow(object):
         self.horizontalLayout_28.setObjectName(u"horizontalLayout_28")
         self.pushButton_newAsset = QPushButton(self.tab_assetBrowser)
         self.pushButton_newAsset.setObjectName(u"pushButton_newAsset")
-        sizePolicy4.setHeightForWidth(self.pushButton_newAsset.sizePolicy().hasHeightForWidth())
-        self.pushButton_newAsset.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.pushButton_newAsset.sizePolicy().hasHeightForWidth())
+        self.pushButton_newAsset.setSizePolicy(sizePolicy5)
         self.pushButton_newAsset.setMaximumSize(QSize(16777215, 16777215))
 
         self.horizontalLayout_28.addWidget(self.pushButton_newAsset)
 
         self.pushButton_newAssetBatch = QPushButton(self.tab_assetBrowser)
         self.pushButton_newAssetBatch.setObjectName(u"pushButton_newAssetBatch")
-        sizePolicy4.setHeightForWidth(self.pushButton_newAssetBatch.sizePolicy().hasHeightForWidth())
-        self.pushButton_newAssetBatch.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.pushButton_newAssetBatch.sizePolicy().hasHeightForWidth())
+        self.pushButton_newAssetBatch.setSizePolicy(sizePolicy5)
         self.pushButton_newAssetBatch.setMaximumSize(QSize(40, 16777215))
         self.pushButton_newAssetBatch.setIconSize(QSize(16, 16))
 
@@ -779,11 +798,11 @@ class Ui_MainWindow(object):
 
         self.listWidget_AssetTask = QListWidget(self.tab_assetBrowser)
         self.listWidget_AssetTask.setObjectName(u"listWidget_AssetTask")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.listWidget_AssetTask.sizePolicy().hasHeightForWidth())
-        self.listWidget_AssetTask.setSizePolicy(sizePolicy5)
+        sizePolicy6 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.listWidget_AssetTask.sizePolicy().hasHeightForWidth())
+        self.listWidget_AssetTask.setSizePolicy(sizePolicy6)
         self.listWidget_AssetTask.setMinimumSize(QSize(0, 120))
         self.listWidget_AssetTask.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
 
@@ -799,8 +818,8 @@ class Ui_MainWindow(object):
 
         self.pushButton_newAssetTask = QPushButton(self.tab_assetBrowser)
         self.pushButton_newAssetTask.setObjectName(u"pushButton_newAssetTask")
-        sizePolicy4.setHeightForWidth(self.pushButton_newAssetTask.sizePolicy().hasHeightForWidth())
-        self.pushButton_newAssetTask.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.pushButton_newAssetTask.sizePolicy().hasHeightForWidth())
+        self.pushButton_newAssetTask.setSizePolicy(sizePolicy5)
 
         self.verticalLayout_24.addWidget(self.pushButton_newAssetTask)
 
@@ -824,27 +843,24 @@ class Ui_MainWindow(object):
         self.horizontalLayout_29.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
         self.label_thumbType = QLabel(self.tab_assetBrowser)
         self.label_thumbType.setObjectName(u"label_thumbType")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.label_thumbType.sizePolicy().hasHeightForWidth())
-        self.label_thumbType.setSizePolicy(sizePolicy6)
+        sizePolicy2.setHeightForWidth(self.label_thumbType.sizePolicy().hasHeightForWidth())
+        self.label_thumbType.setSizePolicy(sizePolicy2)
         self.label_thumbType.setMinimumSize(QSize(123, 60))
 
         self.horizontalLayout_29.addWidget(self.label_thumbType)
 
         self.label_thumbAsset = QLabel(self.tab_assetBrowser)
         self.label_thumbAsset.setObjectName(u"label_thumbAsset")
-        sizePolicy6.setHeightForWidth(self.label_thumbAsset.sizePolicy().hasHeightForWidth())
-        self.label_thumbAsset.setSizePolicy(sizePolicy6)
+        sizePolicy2.setHeightForWidth(self.label_thumbAsset.sizePolicy().hasHeightForWidth())
+        self.label_thumbAsset.setSizePolicy(sizePolicy2)
         self.label_thumbAsset.setMinimumSize(QSize(123, 60))
 
         self.horizontalLayout_29.addWidget(self.label_thumbAsset)
 
         self.label_thumbAssetTask = QLabel(self.tab_assetBrowser)
         self.label_thumbAssetTask.setObjectName(u"label_thumbAssetTask")
-        sizePolicy6.setHeightForWidth(self.label_thumbAssetTask.sizePolicy().hasHeightForWidth())
-        self.label_thumbAssetTask.setSizePolicy(sizePolicy6)
+        sizePolicy2.setHeightForWidth(self.label_thumbAssetTask.sizePolicy().hasHeightForWidth())
+        self.label_thumbAssetTask.setSizePolicy(sizePolicy2)
         self.label_thumbAssetTask.setMinimumSize(QSize(123, 60))
 
         self.horizontalLayout_29.addWidget(self.label_thumbAssetTask)
@@ -927,8 +943,8 @@ class Ui_MainWindow(object):
 
         self.pushButton_newSeq = QPushButton(self.tab_shotBrowser)
         self.pushButton_newSeq.setObjectName(u"pushButton_newSeq")
-        sizePolicy4.setHeightForWidth(self.pushButton_newSeq.sizePolicy().hasHeightForWidth())
-        self.pushButton_newSeq.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.pushButton_newSeq.sizePolicy().hasHeightForWidth())
+        self.pushButton_newSeq.setSizePolicy(sizePolicy5)
 
         self.verticalLayout_2.addWidget(self.pushButton_newSeq)
 
@@ -970,16 +986,16 @@ class Ui_MainWindow(object):
         self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
         self.pushButton_newShot = QPushButton(self.tab_shotBrowser)
         self.pushButton_newShot.setObjectName(u"pushButton_newShot")
-        sizePolicy4.setHeightForWidth(self.pushButton_newShot.sizePolicy().hasHeightForWidth())
-        self.pushButton_newShot.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.pushButton_newShot.sizePolicy().hasHeightForWidth())
+        self.pushButton_newShot.setSizePolicy(sizePolicy5)
         self.pushButton_newShot.setMaximumSize(QSize(16777215, 16777215))
 
         self.horizontalLayout_16.addWidget(self.pushButton_newShot)
 
         self.pushButton_newShotBatch = QPushButton(self.tab_shotBrowser)
         self.pushButton_newShotBatch.setObjectName(u"pushButton_newShotBatch")
-        sizePolicy4.setHeightForWidth(self.pushButton_newShotBatch.sizePolicy().hasHeightForWidth())
-        self.pushButton_newShotBatch.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.pushButton_newShotBatch.sizePolicy().hasHeightForWidth())
+        self.pushButton_newShotBatch.setSizePolicy(sizePolicy5)
         self.pushButton_newShotBatch.setMaximumSize(QSize(40, 16777215))
         self.pushButton_newShotBatch.setIconSize(QSize(16, 16))
 
@@ -1038,8 +1054,8 @@ class Ui_MainWindow(object):
 
         self.pushButton_newScnTask = QPushButton(self.tab_shotBrowser)
         self.pushButton_newScnTask.setObjectName(u"pushButton_newScnTask")
-        sizePolicy4.setHeightForWidth(self.pushButton_newScnTask.sizePolicy().hasHeightForWidth())
-        self.pushButton_newScnTask.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.pushButton_newScnTask.sizePolicy().hasHeightForWidth())
+        self.pushButton_newScnTask.setSizePolicy(sizePolicy5)
 
         self.verticalLayout_26.addWidget(self.pushButton_newScnTask)
 
@@ -1062,24 +1078,24 @@ class Ui_MainWindow(object):
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
         self.label_thumbSeq = QLabel(self.tab_shotBrowser)
         self.label_thumbSeq.setObjectName(u"label_thumbSeq")
-        sizePolicy6.setHeightForWidth(self.label_thumbSeq.sizePolicy().hasHeightForWidth())
-        self.label_thumbSeq.setSizePolicy(sizePolicy6)
+        sizePolicy2.setHeightForWidth(self.label_thumbSeq.sizePolicy().hasHeightForWidth())
+        self.label_thumbSeq.setSizePolicy(sizePolicy2)
         self.label_thumbSeq.setMinimumSize(QSize(123, 60))
 
         self.horizontalLayout_11.addWidget(self.label_thumbSeq)
 
         self.label_thumbShot = QLabel(self.tab_shotBrowser)
         self.label_thumbShot.setObjectName(u"label_thumbShot")
-        sizePolicy6.setHeightForWidth(self.label_thumbShot.sizePolicy().hasHeightForWidth())
-        self.label_thumbShot.setSizePolicy(sizePolicy6)
+        sizePolicy2.setHeightForWidth(self.label_thumbShot.sizePolicy().hasHeightForWidth())
+        self.label_thumbShot.setSizePolicy(sizePolicy2)
         self.label_thumbShot.setMinimumSize(QSize(123, 60))
 
         self.horizontalLayout_11.addWidget(self.label_thumbShot)
 
         self.label_thumbTask = QLabel(self.tab_shotBrowser)
         self.label_thumbTask.setObjectName(u"label_thumbTask")
-        sizePolicy6.setHeightForWidth(self.label_thumbTask.sizePolicy().hasHeightForWidth())
-        self.label_thumbTask.setSizePolicy(sizePolicy6)
+        sizePolicy2.setHeightForWidth(self.label_thumbTask.sizePolicy().hasHeightForWidth())
+        self.label_thumbTask.setSizePolicy(sizePolicy2)
         self.label_thumbTask.setMinimumSize(QSize(123, 60))
 
         self.horizontalLayout_11.addWidget(self.label_thumbTask)
@@ -1294,8 +1310,8 @@ class Ui_MainWindow(object):
         self.toolButton_shotAction = QToolButton(self.tab_developing)
         self.toolButton_shotAction.setObjectName(u"toolButton_shotAction")
         self.toolButton_shotAction.setGeometry(QRect(190, 360, 123, 19))
-        sizePolicy4.setHeightForWidth(self.toolButton_shotAction.sizePolicy().hasHeightForWidth())
-        self.toolButton_shotAction.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.toolButton_shotAction.sizePolicy().hasHeightForWidth())
+        self.toolButton_shotAction.setSizePolicy(sizePolicy5)
         self.pushButton_CompLatestRv = QPushButton(self.tab_developing)
         self.pushButton_CompLatestRv.setObjectName(u"pushButton_CompLatestRv")
         self.pushButton_CompLatestRv.setGeometry(QRect(190, 410, 151, 21))
@@ -1305,9 +1321,9 @@ class Ui_MainWindow(object):
 
         self.horizontalSlider_echoSwitch = QSlider(self.centralwidget)
         self.horizontalSlider_echoSwitch.setObjectName(u"horizontalSlider_echoSwitch")
-        font8 = QFont()
-        font8.setPointSize(9)
-        self.horizontalSlider_echoSwitch.setFont(font8)
+        font9 = QFont()
+        font9.setPointSize(9)
+        self.horizontalSlider_echoSwitch.setFont(font9)
         self.horizontalSlider_echoSwitch.setMaximum(2)
         self.horizontalSlider_echoSwitch.setOrientation(Qt.Orientation.Horizontal)
 
@@ -1348,8 +1364,9 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"explore...", None))
         self.pushButton_shotlist.setText(QCoreApplication.translate("MainWindow", u"_Shotlist", None))
-        self.pushButton_roughcut.setText(QCoreApplication.translate("MainWindow", u"_Roughcut", None))
+        self.checkBox.setText(QCoreApplication.translate("MainWindow", u"bpuserpublic@gmail", None))
         self.pushButton_dailyFolder2.setText(QCoreApplication.translate("MainWindow", u"Daily Folder", None))
+        self.pushButton_roughcut.setText(QCoreApplication.translate("MainWindow", u"_Roughcut", None))
         self.pushButton_commentClient.setText(QCoreApplication.translate("MainWindow", u"_Comment (of Client)", None))
         self.label_9.setText("")
 #if QT_CONFIG(tooltip)
