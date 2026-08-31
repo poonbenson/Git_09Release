@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v157.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v158.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -54,16 +54,22 @@ class Ui_MainWindow(object):
         self.splitter.setOrientation(Qt.Orientation.Horizontal)
         self.label_8 = QLabel(self.splitter)
         self.label_8.setObjectName(u"label_8")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred)
+        self.label_8.setEnabled(True)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
         self.label_8.setSizePolicy(sizePolicy)
-        self.label_8.setMinimumSize(QSize(100, 0))
+        self.label_8.setMinimumSize(QSize(30, 0))
         self.label_8.setMaximumSize(QSize(100, 16777215))
         self.splitter.addWidget(self.label_8)
         self.comboBoxProjects = QComboBox(self.splitter)
         self.comboBoxProjects.setObjectName(u"comboBoxProjects")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.comboBoxProjects.sizePolicy().hasHeightForWidth())
+        self.comboBoxProjects.setSizePolicy(sizePolicy1)
         self.splitter.addWidget(self.comboBoxProjects)
 
         self.horizontalLayout_8.addWidget(self.splitter)
@@ -72,11 +78,6 @@ class Ui_MainWindow(object):
         self.pushButton_2.setObjectName(u"pushButton_2")
 
         self.horizontalLayout_8.addWidget(self.pushButton_2)
-
-        self.pushButton_7 = QPushButton(self.centralwidget)
-        self.pushButton_7.setObjectName(u"pushButton_7")
-
-        self.horizontalLayout_8.addWidget(self.pushButton_7)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_8)
@@ -126,11 +127,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
         self.verticalGroupBox_2 = QGroupBox(self.tab_currentOpen)
         self.verticalGroupBox_2.setObjectName(u"verticalGroupBox_2")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.verticalGroupBox_2.sizePolicy().hasHeightForWidth())
-        self.verticalGroupBox_2.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.verticalGroupBox_2.sizePolicy().hasHeightForWidth())
+        self.verticalGroupBox_2.setSizePolicy(sizePolicy)
         self.verticalGroupBox_2.setMinimumSize(QSize(0, 270))
         self.verticalLayout_14 = QVBoxLayout(self.verticalGroupBox_2)
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
@@ -141,8 +139,8 @@ class Ui_MainWindow(object):
 
         self.pushButton_versionUp = QPushButton(self.verticalGroupBox_2)
         self.pushButton_versionUp.setObjectName(u"pushButton_versionUp")
-        sizePolicy1.setHeightForWidth(self.pushButton_versionUp.sizePolicy().hasHeightForWidth())
-        self.pushButton_versionUp.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.pushButton_versionUp.sizePolicy().hasHeightForWidth())
+        self.pushButton_versionUp.setSizePolicy(sizePolicy)
         self.pushButton_versionUp.setMinimumSize(QSize(170, 23))
         font = QFont()
         font.setFamilies([u"MS Shell Dlg 2"])
@@ -159,16 +157,16 @@ class Ui_MainWindow(object):
         self.horizontalLayout_15.setSizeConstraint(QLayout.SizeConstraint.SetMinAndMaxSize)
         self.pushButton_revive = QPushButton(self.verticalGroupBox_2)
         self.pushButton_revive.setObjectName(u"pushButton_revive")
-        sizePolicy1.setHeightForWidth(self.pushButton_revive.sizePolicy().hasHeightForWidth())
-        self.pushButton_revive.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.pushButton_revive.sizePolicy().hasHeightForWidth())
+        self.pushButton_revive.setSizePolicy(sizePolicy)
         self.pushButton_revive.setMinimumSize(QSize(71, 0))
 
         self.horizontalLayout_15.addWidget(self.pushButton_revive)
 
         self.pushButton_scnUpdate = QPushButton(self.verticalGroupBox_2)
         self.pushButton_scnUpdate.setObjectName(u"pushButton_scnUpdate")
-        sizePolicy1.setHeightForWidth(self.pushButton_scnUpdate.sizePolicy().hasHeightForWidth())
-        self.pushButton_scnUpdate.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.pushButton_scnUpdate.sizePolicy().hasHeightForWidth())
+        self.pushButton_scnUpdate.setSizePolicy(sizePolicy)
         self.pushButton_scnUpdate.setMinimumSize(QSize(91, 0))
 
         self.horizontalLayout_15.addWidget(self.pushButton_scnUpdate)
@@ -185,8 +183,8 @@ class Ui_MainWindow(object):
 
         self.pushButton_scnUpdate_2 = QPushButton(self.verticalGroupBox_2)
         self.pushButton_scnUpdate_2.setObjectName(u"pushButton_scnUpdate_2")
-        sizePolicy1.setHeightForWidth(self.pushButton_scnUpdate_2.sizePolicy().hasHeightForWidth())
-        self.pushButton_scnUpdate_2.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.pushButton_scnUpdate_2.sizePolicy().hasHeightForWidth())
+        self.pushButton_scnUpdate_2.setSizePolicy(sizePolicy)
         self.pushButton_scnUpdate_2.setMinimumSize(QSize(91, 0))
 
         self.horizontalLayout_17.addWidget(self.pushButton_scnUpdate_2)
@@ -1327,7 +1325,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(6)
+        self.tabWidget_2.setCurrentIndex(5)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1340,7 +1338,7 @@ class Ui_MainWindow(object):
         self.pushButton_openCal2.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_openCal2", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_openCal2.setText(QCoreApplication.translate("MainWindow", u"Open bpvfx Calendar", None))
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Project Name :", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Project :", None))
 #if QT_CONFIG(tooltip)
         self.comboBoxProjects.setToolTip(QCoreApplication.translate("MainWindow", u"comboBoxProjects", None))
 #endif // QT_CONFIG(tooltip)
@@ -1349,7 +1347,6 @@ class Ui_MainWindow(object):
 "(pushButton_2)", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"explore...", None))
-        self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.pushButton_shotlist.setText(QCoreApplication.translate("MainWindow", u"_Shotlist", None))
         self.pushButton_roughcut.setText(QCoreApplication.translate("MainWindow", u"_Roughcut", None))
         self.pushButton_dailyFolder2.setText(QCoreApplication.translate("MainWindow", u"Daily Folder", None))

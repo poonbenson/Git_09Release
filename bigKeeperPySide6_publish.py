@@ -1,4 +1,4 @@
-winTitlePrefix = '20260831a'
+winTitlePrefix = '20260831c'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -170,6 +170,10 @@ taskTypeNotSelected = '-----'
 
 pinnedProjectNames = ('BigAssetCollections',)
 # The projects that always sit at the top of the Project Name comboBox
+
+visualBoardExtension = '.pur'
+# The PureRef file the Visual Board buttons open. The board is named after the folder it sits
+# in, and it is opened through its Windows file association.
 
 freeLayerMaskType = 'FreeLayerMask'
 # The inType of the Free LayerMask Write node, and the tail of its version folder name :
@@ -466,6 +470,16 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.pushButton_19.clicked.connect(lambda : self.assetShotExploreAction('typeScene'))
         self.pushButton_20.clicked.connect(lambda : self.assetShotExploreAction('typeLib'))
+
+        self.pushButton_vBoardShotTab.clicked.connect(lambda : self.visualBoardAction('typeScene', 'levelRoot'))
+        self.pushButton_vBoardSeq.clicked.connect(lambda : self.visualBoardAction('typeScene', 'levelSequence'))
+        self.pushButton_vBoardShot.clicked.connect(lambda : self.visualBoardAction('typeScene', 'levelShot'))
+        self.pushButton_vBoardScnTask.clicked.connect(lambda : self.visualBoardAction('typeScene', 'levelTask'))
+        self.pushButton_vBoardAssetTab.clicked.connect(lambda : self.visualBoardAction('typeLib', 'levelRoot'))
+        self.pushButton_vBoardType.clicked.connect(lambda : self.visualBoardAction('typeLib', 'levelSequence'))
+        self.pushButton_vBoardAsset.clicked.connect(lambda : self.visualBoardAction('typeLib', 'levelShot'))
+        self.pushButton_vBoardAssetTask.clicked.connect(lambda : self.visualBoardAction('typeLib', 'levelTask'))
+
         self.pushButton_Location_2.clicked.connect(self.openCurrentOpeningLocationPath)
         self.pushButton_versionUp.clicked.connect(lambda : self.versionUpSaveWIP(True))
         self.pushButton_versionUp.setStyleSheet("background-color:rgb(204,153,128); color:rgb(136, 77, 85)")
@@ -2592,10 +2606,84 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         elif  inType == 'typeLib':
             os.startfile(self.assetLocationPath)
 
+    def visualBoardAction(self, inType, inLevel):
+        println('\ndef >>>>> visualBoardAction')
+        self.printEcho(inType)
+        self.printEcho(inLevel)
+
+        # Each button owns one level and stays there, so the Seq row still opens the seq board
+        # after the user has clicked all the way down to a task. The path is rebuilt from this
+        # tab's own listWidgets : selProjScnShotTaskPath, selShot and selTask are shared by both
+        # tabs, so reading them here would open the other tab's folder.
+        if inType == 'typeScene':
+            visualBoardRootPath = self.selProjScnPath
+            listWidgetSequence = self.listWidget_1
+            listWidgetShot = self.listWidget_2
+            listWidgetTask = self.listWidget_3
+        elif inType == 'typeLib':
+            visualBoardRootPath = self.selProjLibPath
+            listWidgetSequence = self.listWidget_AssetType
+            listWidgetShot = self.listWidget_Asset
+            listWidgetTask = self.listWidget_AssetTask
+
+        # The rows above the wanted level are always picked already : a shot list only holds rows
+        # after a seq was clicked, and a task list only after a shot was. So the last one is the
+        # only one that can be empty.
+        if inLevel == 'levelRoot':
+            selectedItems = []
+        elif inLevel == 'levelSequence':
+            selectedItems = [listWidgetSequence.currentItem()]
+        elif inLevel == 'levelShot':
+            selectedItems = [listWidgetSequence.currentItem(), listWidgetShot.currentItem()]
+        elif inLevel == 'levelTask':
+            selectedItems = [listWidgetSequence.currentItem(), listWidgetShot.currentItem(), listWidgetTask.currentItem()]
+
+        if selectedItems != [] and selectedItems[-1] == None:
+            QMessageBox.warning(self, 'Ooops!', 'Visual Board\n\nNothing is selected on this row yet.')
+            return
+
+        folderNames = [eachItem.text() for eachItem in selectedItems]
+
+        # Every task folder sits under the shot's components folder.
+        if inLevel == 'levelTask':
+            folderNames.insert(2, 'components')
+
+        visualBoardFolderPath = os.path.join(visualBoardRootPath, *folderNames)
+
+        # The board is named after the folder it sits in : tvcSeq\tvcSeq.pur, sc010\sc010.pur,
+        # comp\comp.pur, and at the top level scenes\scenes.pur or lib\lib.pur.
+        visualBoardName = os.path.basename(visualBoardFolderPath) + visualBoardExtension
+        visualBoardFullPath = os.path.join(visualBoardFolderPath, visualBoardName)
+        self.printEcho(visualBoardFullPath)
+
+        if not os.path.isfile(visualBoardFullPath):
+            answer = QMessageBox.question(self, 'Visual Board',
+                                          'There is no Visual Board here yet :\n\n{}\n\nCreate < {} > ?'.format(
+                                              visualBoardFolderPath, visualBoardName),
+                                          QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+            if answer == QMessageBox.No:
+                println('Visual Board is not created. Nothing is opened.')
+                return
+
+            open(visualBoardFullPath, 'w').close()
+            println('Visual Board created : {}'.format(visualBoardFullPath))
+
+        # .pur opens through its Windows file association.
+        os.startfile(visualBoardFullPath)
+
     def openCurrentOpeningLocationPath(self):
         println('\ndef >>>>> openCurrentOpeningLocationPath')
-        #os.startfile(self.currentOpeningLocationPath)
-        os.startfile(self.lineEdit_Location_2.text())
+
+        # Read the variable, not the lineEdit. The lineEdit is a display that
+        # updateCurrentOpeningLocationPath writes into, and it is not read-only, so anything
+        # typed into it used to be handed straight to os.startfile. The two Asset / Shot tab
+        # < explore > buttons already read their variable this way.
+        if self.currentOpeningLocationPath == '-NONE-':
+            QMessageBox.warning(self, 'Ooops!', 'Nothing is open, so there is no location to explore.')
+            return
+
+        os.startfile(self.currentOpeningLocationPath)
 
     def listBigKeeperProject(self):
         println('\ndef >>>>> listBigKeeperProject')
