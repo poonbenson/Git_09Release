@@ -1,4 +1,4 @@
-winTitlePrefix = '20260831e'
+winTitlePrefix = '20260831f'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -67,6 +67,8 @@ pathOfIconPathsStudio = r'N:\bpPipeline\bigKeeperPyIni\bigPathsStudio.ini'
 
 edgePath = r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
 edgeShotlistProfilePath = r'C:\localScript\edgeShotlistProfile'
+publicGmailLoginPath = r'N:\bpPipeline\bigKeeperPyIni\bpuserpublicGmail\login.txt'
+publicGmailPasswordPath = r'N:\bpPipeline\bigKeeperPyIni\bpuserpublicGmail\password.txt'
 
 # To determine current version mode (developer, tester or release)
 pathOfDeveloper = r'N:\bpPipeline\bigKeeperPy\repo_01Developer'
@@ -438,6 +440,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_LaunchCpuCoreController.setText('Deadline CPU\nController')
         self.pushButton_LaunchGpuCoreController.clicked.connect(lambda: self.deadlineCoreOverrideGPU())
         self.pushButton_LaunchGpuCoreController.setText('Deadline GPU\nController')
+
+
+        self.checkBox.toggled.connect(self.publicGmailCheckBoxAction)
+        self.checkBox.setChecked(True)
+        self.publicGmailCheckBoxAction()
+
+        self.pushButton.clicked.connect(self.copyPublicGmailLogin)
+        self.pushButton_3.clicked.connect(self.copyPublicGmailPassword)
 
 
 
@@ -874,6 +884,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'))
 
         shotlistUrl = self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'), 'SHOTLIST', 'Path')
+
+        self.openUrlInEdge(shotlistUrl)
+
+
+    def launchShotlist(self):
+        println('\ndef >>>>> launchShotlist')
+
+        getBigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
+        println(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'))
+
+        shotlistUrl = self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'), 'SHOTLIST', 'Path')
         println('shotlist url ' + shotlistUrl)
         println('shotlist edge profile ' + edgeShotlistProfilePath)
 
@@ -882,6 +903,57 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                           '--no-first-run',
                           '--no-default-browser-check',
                           shotlistUrl])
+
+
+    def openUrlInEdge(self, inUrl):
+        println('\ndef >>>>> openUrlInEdge')
+        println('url ' + inUrl)
+
+        if self.checkBox.isChecked():
+            println('edge profile ' + edgeShotlistProfilePath)
+
+            subprocess.Popen([edgePath,
+                              '--user-data-dir=' + edgeShotlistProfilePath,
+                              '--no-first-run',
+                              '--no-default-browser-check',
+                              inUrl])
+        else:
+            println('edge default profile')
+
+            subprocess.Popen([edgePath, inUrl])
+
+
+    def publicGmailCheckBoxAction(self):
+        println('\ndef >>>>> publicGmailCheckBoxAction')
+
+        isUsingPublicGmail = self.checkBox.isChecked()
+        println('using bpuserpublic gmail : ' + str(isUsingPublicGmail))
+
+        self.pushButton.setEnabled(isUsingPublicGmail)
+        self.pushButton_3.setEnabled(isUsingPublicGmail)
+
+
+    def copyPublicGmailLogin(self):
+        println('\ndef >>>>> copyPublicGmailLogin')
+        println(publicGmailLoginPath)
+
+        with open(publicGmailLoginPath, 'r') as theFile:
+            theText = theFile.read().strip()
+
+        QApplication.clipboard().setText(theText)
+        println('login copied to clipboard')
+
+
+    def copyPublicGmailPassword(self):
+        println('\ndef >>>>> copyPublicGmailPassword')
+        println(publicGmailPasswordPath)
+
+        with open(publicGmailPasswordPath, 'r') as theFile:
+            theText = theFile.read().strip()
+
+        QApplication.clipboard().setText(theText)
+        println('password copied to clipboard')
+
 
     def launchCommentClient(self):
         println('\ndef >>>>> launchCommentClient')
