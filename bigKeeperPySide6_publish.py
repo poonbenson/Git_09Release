@@ -1,4 +1,4 @@
-winTitlePrefix = '20260830d'
+winTitlePrefix = '20260831a'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -1106,6 +1106,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.pushButton_shotAction3.setEnabled(False)
             self.pushButton_newScnTask.setDisabled(True)
 
+            # cnvtSelProjScnPath is selProjScnPath here. The three lists were just cleared, so the
+            # location line and the < explore > button go back to the scenes root along with them,
+            # on the first load and on every Refresh.
+            self.sceneLocationPath = cnvtSelProjScnPath
+            self.lineEdit_sceneLocation.setText(self.sceneLocationPath)
+
         elif inType == 'typeLib':
             self.list1Entries = []
             self.list1Entries = listSeq
@@ -1121,6 +1127,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.pushButton_assetAction2.setEnabled(False)
             self.pushButton_assetAction3.setEnabled(False)
             self.pushButton_newAssetTask.setDisabled(True)
+
+            # cnvtSelProjScnPath is selProjLibPath here.
+            self.assetLocationPath = cnvtSelProjScnPath
+            self.lineEdit_assetLocation.setText(self.assetLocationPath)
 
 
 
@@ -1169,9 +1179,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('self.subDict[self.selProjWipCode]:' + self.subDict[self.selProjWipCode]) # eg. wip
             self.printEcho('self.subDict[self.selProjPublishCode]:' + self.subDict[self.selProjPublishCode]) # eg. published
 
+            # The location line and the < explore > button are set inside listWidget_1_appear,
+            # so the Refresh buttons land on the same path this first load does.
             self.listWidget_1_appear('typeScene')
-            self.sceneLocationPath = self.subDict[self.selProjPath]
-            self.lineEdit_sceneLocation.setText(self.sceneLocationPath)
             #===== end of typeScene Section =====
 
             # Decided to code seperately, Asset Tab and Shot Tab do not have to be the same layout
@@ -1191,8 +1201,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('self.subDict[self.selProjPublishCode]:' + self.subDict[self.selProjPublishCode]) # eg. published
 
             self.listWidget_1_appear('typeLib')
-            self.assetLocationPath = self.subDict[self.selProjPath]
-            self.lineEdit_assetLocation.setText(self.assetLocationPath)
             #===== end of typeLib Section =====
 
             self.writeProjCache(self.selProj)
