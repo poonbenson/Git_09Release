@@ -84,6 +84,7 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4 = QGridLayout()
         self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.gridLayout_4.setVerticalSpacing(0)
         self.pushButton_shotlist = QPushButton(self.centralwidget)
         self.pushButton_shotlist.setObjectName(u"pushButton_shotlist")
 
@@ -117,6 +118,16 @@ class Ui_MainWindow(object):
         self.pushButton_commentClient.setObjectName(u"pushButton_commentClient")
 
         self.gridLayout_4.addWidget(self.pushButton_commentClient, 0, 3, 1, 1)
+
+        self.pushButton = QPushButton(self.centralwidget)
+        self.pushButton.setObjectName(u"pushButton")
+
+        self.gridLayout_4.addWidget(self.pushButton, 1, 1, 1, 1)
+
+        self.pushButton_3 = QPushButton(self.centralwidget)
+        self.pushButton_3.setObjectName(u"pushButton_3")
+
+        self.gridLayout_4.addWidget(self.pushButton_3, 1, 2, 1, 1)
 
 
         self.verticalLayout.addLayout(self.gridLayout_4)
@@ -1368,6 +1379,8 @@ class Ui_MainWindow(object):
         self.pushButton_dailyFolder2.setText(QCoreApplication.translate("MainWindow", u"Daily Folder", None))
         self.pushButton_roughcut.setText(QCoreApplication.translate("MainWindow", u"_Roughcut", None))
         self.pushButton_commentClient.setText(QCoreApplication.translate("MainWindow", u"_Comment (of Client)", None))
+        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"login", None))
+        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"password", None))
         self.label_9.setText("")
 #if QT_CONFIG(tooltip)
         self.pushButton_versionUp.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_versionUp", None))

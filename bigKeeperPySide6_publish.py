@@ -1,4 +1,4 @@
-winTitlePrefix = '20260831c'
+winTitlePrefix = '20260831e'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 
 # To print-message by with line number
@@ -6,7 +6,7 @@ from inspect import currentframe
 def println(inContent = '-'):
     print('{} : {}'.format(currentframe().f_back.f_lineno, inContent))
 
-import subprocess, os, sys, time, webbrowser, pathlib, shutil
+import subprocess, os, sys, time, pathlib, shutil
 println('PYTHON version : {}'.format(sys.version))
 
 # path of bigKeeperTest_publish : N:\BigKeeper
@@ -65,8 +65,8 @@ except:
 # Pre-Define Global Variables
 pathOfIconPathsStudio = r'N:\bpPipeline\bigKeeperPyIni\bigPathsStudio.ini'
 
-edge_path=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
-webbrowser.register('edge', None, webbrowser.BackgroundBrowser(edge_path))
+edgePath = r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+edgeShotlistProfilePath = r'C:\localScript\edgeShotlistProfile'
 
 # To determine current version mode (developer, tester or release)
 pathOfDeveloper = r'N:\bpPipeline\bigKeeperPy\repo_01Developer'
@@ -872,11 +872,16 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         getBigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
         println(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'))
-        #println(os.path.join(self.selProjRootPath, 'bigPathsProject.ini'))
 
-        #webbrowser.open(self.iconPathRead('SHOTLIST', 'Path'), new = 2)
-        #webbrowser.open(self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'), 'SHOTLIST', 'Path'), new = 2)
-        webbrowser.get('edge').open(self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'), 'SHOTLIST', 'Path'))
+        shotlistUrl = self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'), 'SHOTLIST', 'Path')
+        println('shotlist url ' + shotlistUrl)
+        println('shotlist edge profile ' + edgeShotlistProfilePath)
+
+        subprocess.Popen([edgePath,
+                          '--user-data-dir=' + edgeShotlistProfilePath,
+                          '--no-first-run',
+                          '--no-default-browser-check',
+                          shotlistUrl])
 
     def launchCommentClient(self):
         println('\ndef >>>>> launchCommentClient')
@@ -1041,7 +1046,16 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def openScheduleLink(self):
         println('\ndef >>>>> openScheduleLink')
-        webbrowser.open('https://calendar.google.com/calendar/r', new = 2)
+
+        scheduleUrl = 'https://calendar.google.com/calendar/r'
+        println('schedule url ' + scheduleUrl)
+        println('schedule edge profile ' + edgeShotlistProfilePath)
+
+        subprocess.Popen([edgePath,
+                          '--user-data-dir=' + edgeShotlistProfilePath,
+                          '--no-first-run',
+                          '--no-default-browser-check',
+                          scheduleUrl])
 
     def openScheduleFolder(self):
         println('\ndef >>>>> openScheduleFolder')
