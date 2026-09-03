@@ -1,5 +1,8 @@
-winTitlePrefix = '20260831f'
+winTitlePrefix = 'BigKeeper_20260903a'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
+#This have to match the line in the launcher.bat lines, to keep launcher singleton:
+#taskkill /FI "WINDOWTITLE eq BigKeeper_*" /F
+#start /min cmd /c python N:\bpPipeline\bigKeeperPy\bigKeeperPySide6_standalone.py
 
 # To print-message by with line number
 from inspect import currentframe
@@ -296,7 +299,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         super(BigMainWindow, self).__init__(parent = self.SoftwareMainWindow())
         self.setupUi(self)
         #self.setWindowTitle(r'BigKeeper Py - alpha version - Developer Mode')
-        WindowTitleName = winTitlePrefix + ' BigKeeperPy-alpha ' + os.path.basename(thisPath)
+        #WindowTitleName = winTitlePrefix + ' BigKeeperPy-alpha ' + os.path.basename(thisPath)
+        WindowTitleName = winTitlePrefix + ' PySide6 - ' + os.path.basename(thisPath)
         self.setWindowTitle(WindowTitleName)
         self.setWindowIcon(QIcon(os.path.join(iconPath, 'standalone6.png')))
         self.prerendKeyword = ""
