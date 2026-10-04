@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v161.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_PySide6_newLayout_v162.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(450, 850)
+        MainWindow.resize(456, 880)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -271,7 +271,7 @@ class Ui_MainWindow(object):
         self.tabNuke.setObjectName(u"tabNuke")
         self.horizontalLayoutWidget_6 = QWidget(self.tabNuke)
         self.horizontalLayoutWidget_6.setObjectName(u"horizontalLayoutWidget_6")
-        self.horizontalLayoutWidget_6.setGeometry(QRect(2, 8, 399, 181))
+        self.horizontalLayoutWidget_6.setGeometry(QRect(2, 8, 399, 205))
         self.horizontalLayout_19 = QHBoxLayout(self.horizontalLayoutWidget_6)
         self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
         self.horizontalLayout_19.setContentsMargins(0, 0, 0, 0)
@@ -658,6 +658,27 @@ class Ui_MainWindow(object):
         self.pushButton_miscStaffContact = QPushButton(self.tabMisc)
         self.pushButton_miscStaffContact.setObjectName(u"pushButton_miscStaffContact")
         self.pushButton_miscStaffContact.setGeometry(QRect(10, 90, 121, 23))
+        self.groupBox_bigSync = QGroupBox(self.tabMisc)
+        self.groupBox_bigSync.setObjectName(u"groupBox_bigSync")
+        self.groupBox_bigSync.setGeometry(QRect(10, 120, 178, 51))
+        self.horizontalLayout_21 = QHBoxLayout(self.groupBox_bigSync)
+        self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
+        self.horizontalLayout_21.setContentsMargins(2, 2, 2, 2)
+        self.horizontalLayout_30 = QHBoxLayout()
+        self.horizontalLayout_30.setObjectName(u"horizontalLayout_30")
+        self.pushButton_sender = QPushButton(self.groupBox_bigSync)
+        self.pushButton_sender.setObjectName(u"pushButton_sender")
+
+        self.horizontalLayout_30.addWidget(self.pushButton_sender)
+
+        self.pushButton_Watcher = QPushButton(self.groupBox_bigSync)
+        self.pushButton_Watcher.setObjectName(u"pushButton_Watcher")
+
+        self.horizontalLayout_30.addWidget(self.pushButton_Watcher)
+
+
+        self.horizontalLayout_21.addLayout(self.horizontalLayout_30)
+
         self.tabWidget_2.addTab(self.tabMisc, "")
 
         self.verticalLayout_12.addWidget(self.tabWidget_2)
@@ -1349,7 +1370,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 450, 33))
+        self.menubar.setGeometry(QRect(0, 0, 456, 33))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -1358,7 +1379,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(5)
+        self.tabWidget_2.setCurrentIndex(6)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1366,6 +1387,9 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+#if QT_CONFIG(tooltip)
+        MainWindow.setToolTip(QCoreApplication.translate("MainWindow", u"groupBox_bigSync", None))
+#endif // QT_CONFIG(tooltip)
         self.pushButton_openCal.setText(QCoreApplication.translate("MainWindow", u"Open bpvfx Calendar", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_openCal2.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_openCal2", None))
@@ -1584,6 +1608,18 @@ class Ui_MainWindow(object):
         self.pushButton_miscStaffContact.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWritePrerend", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_miscStaffContact.setText(QCoreApplication.translate("MainWindow", u"_Staff Contact", None))
+#if QT_CONFIG(tooltip)
+        self.groupBox_bigSync.setToolTip(QCoreApplication.translate("MainWindow", u"groupBox_bigSync", None))
+#endif // QT_CONFIG(tooltip)
+        self.groupBox_bigSync.setTitle(QCoreApplication.translate("MainWindow", u"bigSync", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_sender.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_sender", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_sender.setText(QCoreApplication.translate("MainWindow", u"Sender", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_Watcher.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_Watcher", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_Watcher.setText(QCoreApplication.translate("MainWindow", u"Watcher", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabMisc), QCoreApplication.translate("MainWindow", u"Misc.", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_currentOpen), QCoreApplication.translate("MainWindow", u"Currently Open", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"ASSET BROWSER", None))

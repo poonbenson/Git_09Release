@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20260906i'
+winTitlePrefix = 'BigKeeper_20261004a'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 #This have to match the line in the launcher.bat lines, to keep launcher singleton:
 #taskkill /FI "WINDOWTITLE eq BigKeeper_*" /F
@@ -501,6 +501,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_miscStaffContact.clicked.connect(self.launchStaffContact)
         self.pushButton_miscStaffContact.setText(self.iconPathRead(pathOfIconPathsStudio, 'STAFFCONTACT', 'label'))
 
+
+        self.pushButton_sender.clicked.connect(self.launchbigSyncSender)
+        self.pushButton_Watcher.clicked.connect(self.launchbigSyncWatcher)
 
 
 
@@ -1027,7 +1030,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         os.startfile(self.iconPathRead(pathOfIconPathsStudio, 'STAFFCONTACT', 'Path'))
 
 
+    def launchbigSyncSender(self):
+        println('\ndef launchbigSyncSender')
 
+        subprocess.call(r"N:\bpPipeline\bigSync\scripts\_senderUI.bat", shell=True)
+
+    def launchbigSyncWatcher(self):
+        println('\ndef launchbigSyncWatcher')
+
+        subprocess.call(r"N:\bpPipeline\bigSync\scripts\_watcherUI.bat", shell=True)
 
     def launchStudioEnvMaya(self):
         #theCmd = 'start {}'.format(studioEnvMaya)
