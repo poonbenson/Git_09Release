@@ -1082,6 +1082,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println(theCmd)
         os.system(theCmd)
 
+    def launchStudioEnvRv(self, inFilePath):
+        println('\ndef >>>>> launchStudioEnvRv')
+
+        # Same studioEnv.bat layout as Maya and Nuke, so a special environment can be set in the
+        # bat. The bat hands inFilePath, an .rv or a folder, on to rv.exe through %*.
+        theBat = os.path.join(self.envRead('RV', 'batPath'), 'studioEnv.bat')
+        println(theBat)
+        subprocess.Popen([theBat, inFilePath])
+
     def launchMayaLegacySelection(self):
         theCmd = 'start {}'.format(os.path.join(self.envRead('MAYA', 'batPath'), 'studioEnv_LegacySelDisplay.bat'))
         println(theCmd)
@@ -3269,6 +3278,30 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         return taskLocationPath
 
 
+    def rvReviewFolderRead(self, inTaskType):
+        println('\ndef >>>>> rvReviewFolderRead')
+
+        # rvReviewFolderPreset.txt in the project work folder pairs a Task Type with the folder
+        # under the task that RV reviews, one <taskType>|<folder> per line, e.g. comp|output.
+        # An empty string means this Task Type has no RV review, and an older project without
+        # the file reads the same way. Both leave the RV rows disabled.
+        rvReviewFolderPresetFullName = os.path.join(self.subDict[self.selProjPath], 'rvReviewFolderPreset.txt')
+        self.printEcho(rvReviewFolderPresetFullName)
+
+        if not os.path.isfile(rvReviewFolderPresetFullName):
+            return ''
+
+        with open(rvReviewFolderPresetFullName) as file:
+            contents = file.readlines()
+
+        for eachLine in contents:
+            eachPair = eachLine.replace('\n', "").split('|')
+            if eachPair[0] == inTaskType:
+                return eachPair[1]
+
+        return ''
+
+
     def taskTypeMenuRefresh(self, inType):
         println('\ndef >>>>> taskTypeMenuRefresh')
 
@@ -3279,15 +3312,27 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         if taskType == '':
             rowText = '== Create taskType=='
+            rvReviewFolder = ''
         else:
             rowText = 'Task Type :  ' + taskType
+            rvReviewFolder = self.rvReviewFolderRead(taskType)
 
         self.printEcho(rowText)
 
+        # The two RV rows open only in standalone python, and only for a Task Type that
+        # rvReviewFolderPreset.txt pairs with a folder. Decided here and nowhere else : this runs
+        # before every showing, so a setting made once in __init__ would be overridden.
+        # in_python is None outside standalone, hence == True rather than the bare name.
+        rvEnabled = in_python == True and rvReviewFolder != ''
+
         if inType == 'typeScene':
             self.shotTaskTypeAction.setText(rowText)
+            self.shotAction3.setEnabled(rvEnabled)
+            self.shotAction4.setEnabled(rvEnabled)
         elif inType == 'typeLib':
             self.assetTaskTypeAction.setText(rowText)
+            self.assetAction3.setEnabled(rvEnabled)
+            self.assetAction4.setEnabled(rvEnabled)
 
 
     def taskTypeChangeAction(self, inType):
@@ -4121,7 +4166,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho(listSeq)
             if len(listSeq) > 0:
                 self.printEcho(listSeq[-1])
-                subprocess.Popen([rvPath, listSeq[-1]])
+                self.launchStudioEnvRv(listSeq[-1])
             else:
                 QMessageBox.information(self, 'message', r'No folder in ...\comp\output')
         else:
@@ -4149,151 +4194,113 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> shotAction2Action')
         self.compLatestRvAction()
 
-    def shotAction4Action(self):
+    def shotAction4Action(self, inType):
         println('\ndef >>>>> shotAction4Action')
+
+        # compPreviousVerUi is a single dialog shared by both tabs. Its exec button and double
+        # click are connected once in __init__, so the tab is stashed here for them to read.
+        self.rvPreviousVersionInType = inType
+
+        taskLocationPath = self.taskLocationPathRead(inType)
+        rvReviewPath = os.path.join(taskLocationPath, self.rvReviewFolderRead(self.taskTypeRead(taskLocationPath)))
+        self.printEcho(rvReviewPath)
+
+        if not os.path.isdir(rvReviewPath):
+            QMessageBox.information(self, 'message', 'Review folder not found :\n\n{}'.format(rvReviewPath))
+            return
+
+        folderOnlyList = []
+        for i in os.listdir(rvReviewPath):
+            if os.path.isdir(os.path.join(rvReviewPath, i)):
+                folderOnlyList.append(i)
+        folderOnlyList.sort(reverse=True)
+        self.printEcho(folderOnlyList)
+
         self.compPreviousVerUi.listWidget.clear()
-
-        if self.listWidget_2.currentRow() > -1:
-
-            #listDir = ['v00010', 'v00020']
-
-            # Asked Lik decided only 'comp' task use this general RV preview. Therefore hardcode 'comp' & ' output' for now.
-            self.printEcho(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output'))
-            thePath = os.path.join(self.selProjScnShotTaskPath, 'comp', 'output')
-            listDir = os.listdir(thePath)
-            folderOnlyList = []
-            for i in listDir:
-                self.printEcho(i)
-                self.printEcho(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i))
-                if os.path.isdir(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i)):
-                    folderOnlyList.append(i)
-            folderOnlyList.sort(reverse=True)
+        self.compPreviousVerUi.listWidget.addItems(folderOnlyList)
+        # Row 0 picked, so the exec button never runs on no row.
+        self.compPreviousVerUi.listWidget.setCurrentRow(0)
+        self.compPreviousVerUi.show()
 
 
-
-            #self.childUi.show()
-            self.compPreviousVerUi.listWidget.addItems(folderOnlyList)
-            #self.wrongFormatUi.listWidget.itemDoubleClicked.connect(self.listWidget_A_action)
-            #self.compPreviousVerUi.listWidget.itemDoubleClicked.connect(self.speak)
-
-            #self.compPreviousVerUi.listWidget.itemDoubleClicked.connect(self.shotAction3Action)
-
-            self.compPreviousVerUi.show()
-        else:
-            QMessageBox.information(self, 'message', "no shot is selected.")
-
-        return folderOnlyList[2]
-
-
-    def shotAction3Action(self, *inItem):
+    def shotAction3Action(self, inType, inChosenVersion):
         println('\ndef >>>>> shotAction3Action')
 
-        if len(inItem) == 0:
-            chosenVer = None
+        # inChosenVersion is None from the menu row, which reviews the latest v#### folder, or the
+        # folder name picked in compPreviousVerUi.
+        self.printEcho('inChosenVersion : {}'.format(inChosenVersion))
+
+        # The folder RV reviews is no longer hardcoded comp\output : it is the folder that
+        # rvReviewFolderPreset.txt pairs with this task's Task Type. taskTypeMenuRefresh only
+        # enables the RV rows when that pair exists.
+        taskLocationPath = self.taskLocationPathRead(inType)
+        rvReviewPath = os.path.join(taskLocationPath, self.rvReviewFolderRead(self.taskTypeRead(taskLocationPath)))
+        self.printEcho(rvReviewPath)
+
+        if not os.path.isdir(rvReviewPath):
+            QMessageBox.information(self, 'message', 'Review folder not found :\n\n{}'.format(rvReviewPath))
+            return
+
+        if inChosenVersion == None:
+            listSeq = []
+            for i in os.listdir(rvReviewPath):
+                if (len(i) <= 5) and (i[0] == 'v') and i[1::].isnumeric() and os.path.isdir(os.path.join(rvReviewPath, i)):
+                    listSeq.append(i)
+            listSeq.sort()
+            self.printEcho(listSeq)
+
+            if len(listSeq) == 0:
+                QMessageBox.information(self, 'message', 'No v#### folder in :\n\n{}'.format(rvReviewPath))
+                return
+
+            chosenVersion = listSeq[-1]
         else:
-            chosenVer = inItem[0].text()
+            chosenVersion = inChosenVersion
 
-        self.printEcho('chosenVer: ')
-        self.printEcho(chosenVer)
+        chosenVersionPath = os.path.join(rvReviewPath, chosenVersion)
+        rvFilePath = os.path.join(rvReviewPath, chosenVersion + '.rv')
+        self.printEcho(chosenVersionPath)
 
+        # An .rv that already exists is opened as it is, never rebuilt.
+        if os.path.isfile(rvFilePath):
+            self.launchStudioEnvRv(rvFilePath)
+            return
 
-        def isExrFormat(inPath):
-            # This function is to limit only activate for EXR format. Due to current ability that other format seems have color issue when create RV session by text pad hacking. Should tackle later.
-            println('\n   def >>>>> checkExrOnly')
-            allFiles = os.listdir(inPath)
+        # Only a v#### folder is built into an .rv session. Anything else, a LayerMask or a
+        # FreeLayerMask folder, is opened in Explorer.
+        if not ((len(chosenVersion) <= 5) and (chosenVersion[0] == 'v') and chosenVersion[1::].isnumeric()):
+            os.startfile(chosenVersionPath)
+            return
 
-            for i in allFiles:
-                if i.split('.')[-1] == 'exr' or i.split('.')[-1] == 'EXR':
-                    self.printEcho(i)
-                    exrFormat = True
-                    self.printEcho(exrFormat)
-                elif i.split('.')[-1] == 'png' or i.split('.')[-1] == 'PNG':
-                    self.printEcho(i)
-                    exrFormat = True
-                    self.printEcho(exrFormat)
+        # fps is the third line of the shot's frameRange.txt, the file bigKInfo.currentShotFrameFps
+        # reads. It is read here from the shot picked in the browser, because bigKInfo follows the
+        # script open in the DCC, and os.getcwd() in standalone python. No file, ask the user.
+        componentsPath, shotName, taskName = self.taskLevelConvert(inType)
+        frameRangeFullName = os.path.join(componentsPath, 'frameRange.txt')
+        self.printEcho(frameRangeFullName)
 
-                elif i.split('.')[-1] == 'tmp' or i.split('.')[-1] == 'TMP':
-                    self.printEcho(i)
-                    self.printEcho('pass')
-                    pass
-                else:
-                    self.printEcho(i)
-                    exrFormat = False
-                    self.printEcho(exrFormat)
-                    break
-
-            return exrFormat
-
-        self.printEcho(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output'))
-        thePath = os.path.join(self.selProjScnShotTaskPath, 'comp', 'output')
-        if self.listWidget_2.currentRow() > -1:
-            try:
-                folderList = os.listdir(thePath)
-            except:
-                QMessageBox.information(self, 'message', 'Standard "Comp" & "Output" folder not found.')
-
-            self.printEcho(folderList)
-
-            if chosenVer == None:
-                listSeq = []
-                for i in folderList:
-                    self.printEcho('i : ')
-                    self.printEcho(i)
-                    if (len(i) <= 5) and (i[0] == 'v') and i[1::].isnumeric():
-                        self.printEcho(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i))
-                        if os.path.isdir(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i)):
-                            listSeq.append(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i))
-                            latestVersion = i
-                listSeq.sort()
-                self.printEcho(listSeq)
-                self.printEcho(latestVersion)
-                LatestVerPath = listSeq[-1]
-                verType = 'CompMaster'
-            else:
-                latestVersion = chosenVer
-                LatestVerPath = os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', latestVersion)
-                self.printEcho('chosenVer !=, println(LatestVerPath) :')
-                self.printEcho(LatestVerPath)
-                listSeq = [LatestVerPath]
-
-                if (len(latestVersion) <= 5) and (latestVersion[0] == 'v') and latestVersion[1::].isnumeric():
-                    verType = 'CompMaster'
-                else:
-                    verType = 'LayerMask'
-
-                self.printEcho(verType)
-
-            if len(listSeq) > 0:
-
-
-                SameRvVersionPath = (os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', latestVersion + '.rv'))
-                haveSameRvVersion = os.path.isfile(SameRvVersionPath)
-
-                if haveSameRvVersion:
-                    subprocess.Popen([rvPath, SameRvVersionPath])
-
-                else:
-                    if verType == 'CompMaster':
-                        if isExrFormat(LatestVerPath):
-                            self.createRvFile(LatestVerPath, latestVersion)
-                            subprocess.Popen([rvPath, SameRvVersionPath])
-
-                        else:
-                            QMessageBox.information(self, 'message', r'Make Sure all frame are .exr format.')
-                    elif verType == 'LayerMask':
-                        os.startfile(LatestVerPath)
-
-
-            else:
-                QMessageBox.information(self, 'message', r'No folder in ...\comp\output')
+        if os.path.isfile(frameRangeFullName):
+            with open(frameRangeFullName) as file:
+                fps = float(file.readlines()[2])
         else:
-            QMessageBox.information(self, 'message', "no shot is selected.")
+            fps, ok = QInputDialog.getDouble(self, 'Input fps', 'frameRange.txt not found :\n{}\n\nfps of this review :'.format(frameRangeFullName), 24, 1, 240, 3)
+            if not ok:
+                return
 
-    def createRvFile(self, inLatestVerPath, inLatestVer):
+        self.printEcho('fps : {}'.format(fps))
+
+        if self.createRvFile(chosenVersionPath, chosenVersion, shotName, fps):
+            self.launchStudioEnvRv(rvFilePath)
+
+    def createRvFile(self, inLatestVerPath, inLatestVer, inShotName, inFps):
 
         println('\ndef >>>>> createRvFile')
         self.printEcho(inLatestVerPath)
         self.printEcho(inLatestVer)
+
+        # Returns True once the .rv is written, False when the folder holds no image sequence.
+        # inFps comes from the caller, read from frameRange.txt or asked from the user. The fps
+        # used to come from the bigkframepersecond EXR metadata, which no other format can carry.
 
         def getMetaData():
             self.printEcho('\n   def >>>>> getMetaData')
@@ -4302,12 +4309,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             def getFrames(inPath):
                 self.printEcho('\n       def >>>>> getFrames')
+                # A frame is <name>.<number>.<extension>, whatever the image format. That rule alone
+                # drops Thumbs.db, a .mov, and the .tmp files a render in progress leaves behind.
                 allFiles = os.listdir(inPath)
                 self.printEcho(inPath)
                 onlyFiles = []
                 self.printEcho(allFiles)
                 for i in allFiles:
-                    if os.path.isfile(os.path.join(inPath, i)):
+                    splitName = i.split('.')
+                    if len(splitName) == 3 and splitName[1].isnumeric() and splitName[2].lower() != 'tmp' and os.path.isfile(os.path.join(inPath, i)):
                         onlyFiles.append(i)
                 onlyFiles.sort()
 
@@ -4316,12 +4326,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             theFrameList = getFrames(inLatestVerPath)
             self.printEcho('theFrameList : {}'.format(theFrameList))
 
-            # to avoid first frame is .tmp which will fail to read meta data
-            for frame in theFrameList:
-                if frame.split('.')[-1] == 'tmp' or frame.split('.')[-1] == 'TMP':
-                    theFrameList.remove(frame)
-
-            self.printEcho('theFrameList after del tmp check: {}'.format(theFrameList))
+            if len(theFrameList) == 0:
+                return None
 
             FrameStartFullName = theFrameList[0].split('.')
             FrameEndFullName = theFrameList[-1].split('.')
@@ -4355,7 +4361,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
             #externalToolPath = r'N:\BigKeeper\py\externalTool'
-            input_file = os.path.normpath((os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', inLatestVer, theFrameList[0])))
+            input_file = os.path.normpath(os.path.join(inLatestVerPath, theFrameList[0]))
             self.printEcho(input_file)
 
 
@@ -4367,7 +4373,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             arg1 = r'-all'
             arg2 = r'-ImageWidth'
             arg3 = r'-ImageHeight'
-            arg4 = r'-Bigkframepersecond'
             arg0 = r'-s2' # s1--tag names instead of descriptions   s2--no extra spaces    s3--values only
 
             self.printEcho('before run')
@@ -4395,11 +4400,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 metaData.append(int(infoDict['ImageHeight']))
             except:
                 metaData.append(240) #make a dramatic wrong, user will be alerted. Will develop to pop up dialog for user input.
-
-            try:
-                metaData.append(round(float(infoDict['Bigkframepersecond']), 3))
-            except:
-                metaData.append(3.000) # make a dramatic wrong, user will be alerted. Will develop to pop up dialog for user input.
 
             metaData.append(rvStringName)
             metaData.append(FrameFirstFrameNo)
@@ -4445,7 +4445,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
         # rvTemplate = r'N:\mnt\job\19901BigPicture_TestProj\_bigkeeperPyData\rv.template'
-        theFile = os.path.join(self.selProjScnShotTaskPath, 'comp', 'output')
 
         with open(rvTemplate) as f:
             data = f.readlines()
@@ -4453,13 +4452,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho('***************************************')
 
         MetaData = getMetaData()
-        inWidth = MetaData[0]
-        inHeight = MetaData[1]
-        inFps = MetaData[2]
-        inRvStringName = MetaData[3]
+
+        if MetaData == None:
+            QMessageBox.information(self, 'message', 'No image sequence in :\n\n{}'.format(inLatestVerPath))
+            return False
+
+        inWidth, inHeight, inRvStringName, inFrameFirstFrameNo, inFrameEndFrameNo = MetaData
         RvStringMovie = (str(inLatestVerPath + '/' + inRvStringName).replace("\\", "/"))
-        inFrameFirstFrameNo = MetaData[4]
-        inFrameEndFrameNo = MetaData[5]
         rvTimeLineStart = 1
         rvTimeLineEnd = int(inFrameEndFrameNo) - int(inFrameFirstFrameNo) + 1 + rvTimeLineStart
 
@@ -4502,7 +4501,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             data[line-1] = data[line-1].replace('__<rvTimelineStart>__', str(rvTimeLineStart))
             data[line-1] = data[line-1].replace('__<rvTimelineEnd>__', str(rvTimeLineEnd))
 
-        writePath = str(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', inLatestVer + '.rv')).replace("\\", "/")
+        # The .rv sits beside its version folder, in the folder RV reviews.
+        writePath = str(os.path.join(os.path.dirname(inLatestVerPath), inLatestVer + '.rv')).replace("\\", "/")
         #writePath = writePath.replace("\\", "/")
         self.printEcho('writePath is :' + writePath)
         with open(writePath, 'w') as f:
@@ -4511,7 +4511,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         receivedAnswerFolder = askFolderName()
         if receivedAnswerFolder[1]:
             self.storedAnsweredFolder = receivedAnswerFolder[0]
-            createShortCut(self.storedAnsweredFolder, self.selShot, inLatestVer, writePath)
+            createShortCut(self.storedAnsweredFolder, inShotName, inLatestVer, writePath)
+
+        return True
 
     def findNodeLargestNumber(self, InPrefix, InNodeClassName):
         println('\ndef >>>>> findNodeLargestNumber')
