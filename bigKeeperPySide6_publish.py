@@ -158,7 +158,7 @@ sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\externalPyModule')
 
 # To initiate current software environment variables
 externalToolPath = r'N:\bpPipeline\bigKeeperPy\py\externalTool'
-rvPath = r'C:\Program Files\Shotgun\RV-2021.0.0\bin\rv.exe'
+#rvPath = r'C:\Program Files\Shotgun\RV-2021.0.0\bin\rv.exe'
 rvTemplate = r'N:\bpPipeline\rv\_bigkeeperPyData\rv.template'
 
 # robocopy flags shared by every template-tree create.
@@ -539,9 +539,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.wrongFormatUi.setWindowTitle('Edit task in Wrong-Format-Projects')
 
         self.compPreviousVerUi = subListView(parent = self)
-        self.compPreviousVerUi.listWidget.itemDoubleClicked.connect(self.shotAction3Action)
-        self.compPreviousVerUi.pushButton_exec.clicked.connect(lambda : self.shotAction3Action(self.compPreviousVerUi.listWidget.currentItem()))
-        self.compPreviousVerUi.setWindowTitle('RV Review Comp Previous ver')
+        self.compPreviousVerUi.listWidget.itemDoubleClicked.connect(lambda item : self.shotAction3Action(self.rvPreviousVersionInType, item.text()))
+        self.compPreviousVerUi.pushButton_exec.clicked.connect(lambda : self.shotAction3Action(self.rvPreviousVersionInType, self.compPreviousVerUi.listWidget.currentItem().text()))
+        self.compPreviousVerUi.setWindowTitle('RV Review Previous ver')
 
         #self.prerendKeywordListUi  = prerendKeywordListView(parent = self)
 
@@ -697,8 +697,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.shotTaskTypeAction = QAction('Task Type', self)
         self.shotAction1 = QAction('Edit Shot Task', self)
         #self.shotAction2 = QAction('RV latest Comp Output', self)
-        self.shotAction3 = QAction('RV Build & Review Comp Latest ver', self)
-        self.shotAction4 = QAction('RV Review Comp Previous ver', self)
+        self.shotAction3 = QAction('RV Build & Review Latest ver', self)
+        self.shotAction4 = QAction('RV Review Previous ver', self)
         self.shotActionMenu.addAction(self.shotTaskTypeAction)
         self.shotActionMenu.addSeparator()
         self.shotActionMenu.addAction(self.shotAction1)
@@ -711,21 +711,27 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.shotTaskTypeAction.triggered.connect(lambda : self.taskTypeChangeAction('typeScene'))
         self.shotAction1.triggered.connect(lambda : self.shotAction1Action('typeScene'))
         #self.shotAction2.triggered.connect(self.shotAction2Action)
-        self.shotAction3.triggered.connect(self.shotAction3Action)
-        self.shotAction4.triggered.connect(self.shotAction4Action)
+        self.shotAction3.triggered.connect(lambda : self.shotAction3Action('typeScene', None))
+        self.shotAction4.triggered.connect(lambda : self.shotAction4Action('typeScene'))
 
         self.pushButton_assetAction.setText('assetActionMenu')
         self.pushButton_assetAction.setEnabled(False)
         self.assetActionMenu = QMenu(self.pushButton_assetAction)
         self.assetTaskTypeAction = QAction('Task Type', self)
         self.assetAction1 = QAction('Edit Asset Task', self)
+        self.assetAction3 = QAction('RV Build & Review Latest ver', self)
+        self.assetAction4 = QAction('RV Review Previous ver', self)
         self.assetActionMenu.addAction(self.assetTaskTypeAction)
         self.assetActionMenu.addSeparator()
         self.assetActionMenu.addAction(self.assetAction1)
+        self.assetActionMenu.addAction(self.assetAction3)
+        self.assetActionMenu.addAction(self.assetAction4)
         self.pushButton_assetAction.setMenu(self.assetActionMenu)
         self.assetActionMenu.aboutToShow.connect(lambda : self.taskTypeMenuRefresh('typeLib'))
         self.assetTaskTypeAction.triggered.connect(lambda : self.taskTypeChangeAction('typeLib'))
         self.assetAction1.triggered.connect(lambda : self.shotAction1Action('typeLib'))
+        self.assetAction3.triggered.connect(lambda : self.shotAction3Action('typeLib', None))
+        self.assetAction4.triggered.connect(lambda : self.shotAction4Action('typeLib'))
 
         # set the only active tab in related software.
         tabCount = self.tabWidget_2.count()
@@ -767,11 +773,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         if in_blender:
             self.setWindowFlags(Qt.WindowStaysOnTopHint)
 
-        #if not in_python and not in_nuke and not in_houdini and not is_iDriveDeveloper:
-        if not in_python:
-            #self.pushButton_shotAction.setEnabled(False)
-            self.shotAction3.setDisabled(True)
-            self.shotAction4.setDisabled(True)
 
 
         if in_houdini:
