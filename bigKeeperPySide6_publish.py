@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20261016a'
+winTitlePrefix = 'BigKeeper_20261016E'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 #This have to match the line in the launcher.bat lines, to keep launcher singleton:
 #taskkill /FI "WINDOWTITLE eq BigKeeper_*" /F
@@ -1309,6 +1309,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.assetLocationPath = cnvtSelProjScnPath
             self.lineEdit_assetLocation.setText(self.assetLocationPath)
 
+        # A board or a session made at another office arrives through K:'s sync, but its
+        # shortcut on this office's job drive does not. Every click puts back what is missing.
+        self.storageShortcutRefresh(inType)
+
 
 
     def comboBoxAction2(self, item):
@@ -1466,6 +1470,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.pushButton_assetAction2.setEnabled(False)
             self.pushButton_assetAction3.setEnabled(False)
 
+        # A board or a session made at another office arrives through K:'s sync, but its
+        # shortcut on this office's job drive does not. Every click puts back what is missing.
+        self.storageShortcutRefresh(inType)
+
 
 
 
@@ -1518,6 +1526,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.pushButton_assetAction.setEnabled(False)
             self.pushButton_assetAction2.setEnabled(False)
             self.pushButton_assetAction3.setEnabled(False)
+
+        # A board or a session made at another office arrives through K:'s sync, but its
+        # shortcut on this office's job drive does not. Every click puts back what is missing.
+        self.storageShortcutRefresh(inType)
 
 
     def listWidget_3C_action(self, item, inType):
@@ -2857,6 +2869,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.listFile = self.listOutFilesInFolder(True)
             self.listFile.sort()
 
+        # A board or a session made at another office arrives through K:'s sync, but its
+        # shortcut on this office's job drive does not. Every click puts back what is missing.
+        self.storageShortcutRefresh(inType)
+
         #return item
 
     def myAction1(self):
@@ -3000,14 +3016,57 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def shortcutCreate(self, inShortcutFullPath, inTargetFullPath):
         println('\ndef >>>>> shortcutCreate')
 
-        # The one place a Windows shortcut is made : the Visual Board, the RV session and the RV
-        # comment folder all come here. Both paths are normalised, as the comment folder always
-        # did, because the RV paths arrive with forward slashes.
+        # The one place a Windows shortcut is made : the Visual Board, the RV session, the RV
+        # comment folder and storageShortcutFolderRefresh all come here. Both paths are
+        # normalised, as the comment folder always did, because the RV paths arrive with forward
+        # slashes. Shortcut.exe is a console program : CREATE_NO_WINDOW keeps its black window
+        # from flashing, which matters now that a list click can make several shortcuts at once.
         # Shortcut.exe /f:"<the .lnk>" /a:c /t:"<what it points at>"
         shortcutExecutablePath = os.path.normpath(os.path.join(externalToolPath, 'shortCut', 'Shortcut.exe'))
         shortcutCommand = shortcutExecutablePath + ' /f:"' + os.path.normpath(inShortcutFullPath) + '" /a:c /t:"' + os.path.normpath(inTargetFullPath) + '"'
         self.printEcho('shortcutCommand :' + shortcutCommand)
-        os.system(shortcutCommand)
+        subprocess.run(shortcutCommand, creationflags = subprocess.CREATE_NO_WINDOW)
+
+    def storageShortcutRefresh(self, inType):
+        println('\ndef >>>>> storageShortcutRefresh')
+
+        # Called at the end of every list click, on both tabs. taskLocationPathRead is the folder
+        # just clicked : the scenes or lib root, a sequence, a shot, or a task. Its Visual Board
+        # is checked at every level. At a task level whose Task Type rvReviewFolderPreset.txt
+        # pairs with a folder, that review folder's RV sessions are checked too. A folder above
+        # the task level has no taskType.txt, so taskTypeRead gives '' and the RV half is skipped.
+        jobFolderPath = self.taskLocationPathRead(inType)
+        self.storageShortcutFolderRefresh(jobFolderPath, visualBoardStorageRootPath, visualBoardExtension)
+
+        taskType = self.taskTypeRead(jobFolderPath)
+
+        if taskType != '':
+            rvReviewFolder = self.rvReviewFolderRead(taskType)
+            if rvReviewFolder != '':
+                self.storageShortcutFolderRefresh(os.path.join(jobFolderPath, rvReviewFolder), rvSessionStorageRootPath, '.rv')
+
+    def storageShortcutFolderRefresh(self, inJobFolderPath, inStorageRootPath, inExtension):
+        println('\ndef >>>>> storageShortcutFolderRefresh')
+
+        # The storage folder mirrors inJobFolderPath under its own project folder, the same rule
+        # visualBoardAction and rvReviewAction use. Every inExtension file in it gets a
+        # <name>.lnk in inJobFolderPath when that shortcut is missing, whatever the job folder
+        # holds : a missing version folder is for the user to notice, not for this to judge.
+        # Only a job folder that is not there at all is skipped, so no click ever creates a
+        # folder on the job drive. An unmapped K: reads as no storage folder, nothing happens.
+        storageFolderPath = os.path.join(inStorageRootPath, self.selProj, os.path.relpath(inJobFolderPath, self.subDict[self.selProjPath]))
+        self.printEcho(storageFolderPath)
+
+        if not os.path.isdir(storageFolderPath) or not os.path.isdir(inJobFolderPath):
+            return
+
+        for eachName in os.listdir(storageFolderPath):
+            storageFullPath = os.path.join(storageFolderPath, eachName)
+            shortcutFullPath = os.path.join(inJobFolderPath, eachName + '.lnk')
+
+            if eachName.lower().endswith(inExtension) and os.path.isfile(storageFullPath) and not os.path.isfile(shortcutFullPath):
+                self.shortcutCreate(shortcutFullPath, storageFullPath)
+                println('Shortcut made : {}    >>>    {}'.format(shortcutFullPath, storageFullPath))
 
     def openCurrentOpeningLocationPath(self):
         println('\ndef >>>>> openCurrentOpeningLocationPath')
@@ -4473,7 +4532,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             println('\n   def >>>>> createShortCut')
             self.printEcho(self.subDict[self.selProjPath])
 
-            targetShortCutPath = os.path.normpath(os.path.join(self.subDict[self.selProjPath], 'comment', folderName))
+            # The comment folder sits in the RV storage tree on K:, so every office gets it through
+            # K:'s sync. The shortcuts in it point at K: too, the same drive letter at every office.
+            targetShortCutPath = os.path.normpath(os.path.join(rvSessionStorageRootPath, self.selProj, 'comment', folderName))
             self.printEcho(targetShortCutPath)
             if not os.path.isdir(targetShortCutPath):
                 os.makedirs(targetShortCutPath)
