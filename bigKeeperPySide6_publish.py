@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20261015c'
+winTitlePrefix = 'BigKeeper_20261016a'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 #This have to match the line in the launcher.bat lines, to keep launcher singleton:
 #taskkill /FI "WINDOWTITLE eq BigKeeper_*" /F
@@ -179,6 +179,12 @@ pinnedProjectNames = ('BigAssetCollections',)
 visualBoardExtension = '.pur'
 # The PureRef file the Visual Board buttons open. The board is named after the folder it sits
 # in, and it is opened through its Windows file association.
+
+rvSessionStorageRootPath = r'K:\z_RvSession'
+# Every RV session (.rv) lives here, mirroring the project tree under its own project folder :
+# K:\z_RvSession\ChanFilm\scenes\Sc01TramSeq\CG0010\components\comp\output\v0005.rv. The folder
+# RV reviews on the job drive keeps a Windows shortcut, v0005.rv.lnk, pointing back here. Same as
+# the Visual Board, nothing checks that K: is mapped.
 
 visualBoardStorageRootPath = r'K:\z_VisualBoard'
 # Every Visual Board lives here, mirroring the project tree under its own project folder :
@@ -2983,6 +2989,116 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                                     'The old Visual Board could not be deleted :\n\n{}\n\n{}\n\nThe board opens from its new home anyway, and BigKeeper tries this again the next time you open it.'.format(
                                         originalFullPath, deleteProblem))
 
+        # Rebuilt whenever it is missing, so a board moved by hand still gets one back.
+        if not os.path.isfile(shortcutFullPath):
+            self.shortcutCreate(shortcutFullPath, storageFullPath)
+
+        # .pur opens through its Windows file association.
+        os.startfile(storageFullPath)
+
+
+    def visualBoardAction(self, inType, inLevel):
+        println('\ndef >>>>> visualBoardAction')
+        self.printEcho(inType)
+        self.printEcho(inLevel)
+
+        # Each button owns one level and stays there, so the Seq row still opens the seq board
+        # after the user has clicked all the way down to a task. The path is rebuilt from this
+        # tab's own listWidgets because the state variables only carry the level last clicked,
+        # and taskLevelConvert only reaches the task level.
+        if inType == 'typeScene':
+            visualBoardRootPath = self.selProjScnPath
+            visualBoardRootName = self.subDict[self.selProjScnCode]
+            listWidgetSequence = self.listWidget_1
+            listWidgetShot = self.listWidget_2
+            listWidgetTask = self.listWidget_3
+        elif inType == 'typeLib':
+            visualBoardRootPath = self.selProjLibPath
+            visualBoardRootName = self.subDict[self.selProjLibCode]
+            listWidgetSequence = self.listWidget_AssetType
+            listWidgetShot = self.listWidget_Asset
+            listWidgetTask = self.listWidget_AssetTask
+
+        # The rows above the wanted level are always picked already : a shot list only holds rows
+        # after a seq was clicked, and a task list only after a shot was. So the last one is the
+        # only one that can be empty.
+        if inLevel == 'levelRoot':
+            selectedItems = []
+        elif inLevel == 'levelSequence':
+            selectedItems = [listWidgetSequence.currentItem()]
+        elif inLevel == 'levelShot':
+            selectedItems = [listWidgetSequence.currentItem(), listWidgetShot.currentItem()]
+        elif inLevel == 'levelTask':
+            selectedItems = [listWidgetSequence.currentItem(), listWidgetShot.currentItem(), listWidgetTask.currentItem()]
+
+        if selectedItems != [] and selectedItems[-1] == None:
+            QMessageBox.warning(self, 'Ooops!', 'Visual Board\n\nNothing is selected on this row yet.')
+            return
+
+        folderNames = [eachItem.text() for eachItem in selectedItems]
+
+        # Every task folder sits under the shot's components folder.
+        if inLevel == 'levelTask':
+            folderNames.insert(2, 'components')
+
+        # The board itself lives in the storage tree, which mirrors the project tree level for
+        # level under its own project folder. The folder on the job drive only keeps a shortcut,
+        # so one board is never open from two places at once.
+        originalFolderPath = os.path.join(visualBoardRootPath, *folderNames)
+        storageFolderPath = os.path.join(visualBoardStorageRootPath, self.selProj, visualBoardRootName, *folderNames)
+
+        # The board is named after the folder it sits in : tvcSeq\tvcSeq.pur, sc010\sc010.pur,
+        # comp\comp.pur, and at the top level scenes\scenes.pur or lib\lib.pur. Both trees end on
+        # the same folder, so the name is the same on both sides.
+        visualBoardName = os.path.basename(storageFolderPath) + visualBoardExtension
+        storageFullPath = os.path.join(storageFolderPath, visualBoardName)
+        originalFullPath = os.path.join(originalFolderPath, visualBoardName)
+
+        # <name>.pur.lnk, so Explorer shows it as <name>.pur with file extensions hidden.
+        shortcutFullPath = os.path.join(originalFolderPath, visualBoardName + '.lnk')
+        self.printEcho(storageFullPath)
+
+        if not os.path.isfile(storageFullPath):
+
+            # A board made before the storage tree existed is copied there on the first press,
+            # with no question asked : it is the same board, only somewhere else.
+            boardToCopyPath = ''
+
+            if os.path.isfile(originalFullPath):
+                boardToCopyPath = originalFullPath
+            else:
+                answer = QMessageBox.question(self, 'Visual Board',
+                                              'There is no Visual Board here yet :\n\n{}\n\nCreate < {} > ?'.format(
+                                                  storageFolderPath, visualBoardName),
+                                              QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+                if answer == QMessageBox.No:
+                    println('Visual Board is not created. Nothing is opened.')
+                    return
+
+            # The storage tree is built as it is used, so every level is made on its first press.
+            if not os.path.isdir(storageFolderPath):
+                os.makedirs(storageFolderPath)
+
+            if boardToCopyPath != '':
+                shutil.copy2(boardToCopyPath, storageFullPath)
+                println('Visual Board copied : {}    >>>    {}'.format(boardToCopyPath, storageFullPath))
+            else:
+                open(storageFullPath, 'w').close()
+                println('Visual Board created : {}'.format(storageFullPath))
+
+        # The copy is in place by now, so the board on the job drive goes. One that is open in
+        # PureRef, or held by the storage drive's sync, refuses to be deleted, so it is left where
+        # it is and tried again on the next press instead of failing the whole button.
+        if os.path.isfile(originalFullPath):
+            try:
+                os.remove(originalFullPath)
+                println('Old Visual Board deleted : {}'.format(originalFullPath))
+            except OSError as deleteProblem:
+                QMessageBox.warning(self, 'Ooops!',
+                                    'The old Visual Board could not be deleted :\n\n{}\n\n{}\n\nThe board opens from its new home anyway, and BigKeeper tries this again the next time you open it.'.format(
+                                        originalFullPath, deleteProblem))
+
         # Rebuilt whenever it is missing, so a board moved by hand still gets one back. Same
         # Shortcut.exe the RV comment folder uses :
         # Shortcut.exe /f:"<the .lnk>" /a:c /t:"<what it points at>"
@@ -2994,6 +3110,18 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         # .pur opens through its Windows file association.
         os.startfile(storageFullPath)
+
+    def shortcutCreate(self, inShortcutFullPath, inTargetFullPath):
+        println('\ndef >>>>> shortcutCreate')
+
+        # The one place a Windows shortcut is made : the Visual Board, the RV session and the RV
+        # comment folder all come here. Both paths are normalised, as the comment folder always
+        # did, because the RV paths arrive with forward slashes.
+        # Shortcut.exe /f:"<the .lnk>" /a:c /t:"<what it points at>"
+        shortcutExecutablePath = os.path.normpath(os.path.join(externalToolPath, 'shortCut', 'Shortcut.exe'))
+        shortcutCommand = shortcutExecutablePath + ' /f:"' + os.path.normpath(inShortcutFullPath) + '" /a:c /t:"' + os.path.normpath(inTargetFullPath) + '"'
+        self.printEcho('shortcutCommand :' + shortcutCommand)
+        os.system(shortcutCommand)
 
     def openCurrentOpeningLocationPath(self):
         println('\ndef >>>>> openCurrentOpeningLocationPath')
@@ -4259,41 +4387,77 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             chosenVersion = inChosenVersion
 
         chosenVersionPath = os.path.join(rvReviewPath, chosenVersion)
-        rvFilePath = os.path.join(rvReviewPath, chosenVersion + '.rv')
         self.printEcho(chosenVersionPath)
 
+        # The .rv lives in the storage tree, which mirrors the project tree under its own project
+        # folder the way the Visual Board does. The folder RV reviews on the job drive keeps only
+        # a shortcut beside the version folder : output\v0005.rv.lnk
+        rvFileName = chosenVersion + '.rv'
+        rvStorageFolderPath = os.path.join(rvSessionStorageRootPath, self.selProj, os.path.relpath(rvReviewPath, self.subDict[self.selProjPath]))
+        rvStorageFullPath = os.path.join(rvStorageFolderPath, rvFileName)
+        rvOriginalFullPath = os.path.join(rvReviewPath, rvFileName)
+        shortcutFullPath = rvOriginalFullPath + '.lnk'
+        self.printEcho(rvStorageFullPath)
+
+        # An .rv built before the storage tree existed is copied there with no question asked :
+        # it is the same session, only somewhere else.
+        if not os.path.isfile(rvStorageFullPath) and os.path.isfile(rvOriginalFullPath):
+            if not os.path.isdir(rvStorageFolderPath):
+                os.makedirs(rvStorageFolderPath)
+            shutil.copy2(rvOriginalFullPath, rvStorageFullPath)
+            println('RV session copied : {}    >>>    {}'.format(rvOriginalFullPath, rvStorageFullPath))
+
+        # The copy is in place by now, so the .rv on the job drive goes. One that is open in RV
+        # refuses to be deleted, so it is left where it is and tried again on the next press.
+        if os.path.isfile(rvOriginalFullPath):
+            try:
+                os.remove(rvOriginalFullPath)
+                println('Old RV session deleted : {}'.format(rvOriginalFullPath))
+            except OSError as deleteProblem:
+                QMessageBox.warning(self, 'Ooops!',
+                                    'The old RV session could not be deleted :\n\n{}\n\n{}\n\nThe session opens from its new home anyway, and BigKeeper tries this again the next time you open it.'.format(
+                                        rvOriginalFullPath, deleteProblem))
+
         # An .rv that already exists is opened as it is, never rebuilt.
-        if os.path.isfile(rvFilePath):
-            self.launchStudioEnvRv(rvFilePath)
-            return
+        if not os.path.isfile(rvStorageFullPath):
 
-        # Only a v#### folder is built into an .rv session. Anything else, a LayerMask or a
-        # FreeLayerMask folder, is opened in Explorer.
-        if not ((len(chosenVersion) <= 5) and (chosenVersion[0] == 'v') and chosenVersion[1::].isnumeric()):
-            os.startfile(chosenVersionPath)
-            return
-
-        # fps is the third line of the shot's frameRange.txt, the file bigKInfo.currentShotFrameFps
-        # reads. It is read here from the shot picked in the browser, because bigKInfo follows the
-        # script open in the DCC, and os.getcwd() in standalone python. No file, ask the user.
-        componentsPath, shotName, taskName = self.taskLevelConvert(inType)
-        frameRangeFullName = os.path.join(componentsPath, 'frameRange.txt')
-        self.printEcho(frameRangeFullName)
-
-        if os.path.isfile(frameRangeFullName):
-            with open(frameRangeFullName) as file:
-                fps = float(file.readlines()[2])
-        else:
-            fps, ok = QInputDialog.getDouble(self, 'Input fps', 'frameRange.txt not found :\n{}\n\nfps of this review :'.format(frameRangeFullName), 24, 1, 240, 3)
-            if not ok:
+            # Only a v#### folder is built into an .rv session. Anything else, a LayerMask or a
+            # FreeLayerMask folder, is opened in Explorer.
+            if not ((len(chosenVersion) <= 5) and (chosenVersion[0] == 'v') and chosenVersion[1::].isnumeric()):
+                os.startfile(chosenVersionPath)
                 return
 
-        self.printEcho('fps : {}'.format(fps))
+            # fps is the third line of the shot's frameRange.txt, the file bigKInfo.currentShotFrameFps
+            # reads. It is read here from the shot picked in the browser, because bigKInfo follows the
+            # script open in the DCC, and os.getcwd() in standalone python. No file, ask the user.
+            componentsPath, shotName, taskName = self.taskLevelConvert(inType)
+            frameRangeFullName = os.path.join(componentsPath, 'frameRange.txt')
+            self.printEcho(frameRangeFullName)
 
-        if self.createRvFile(chosenVersionPath, chosenVersion, shotName, fps):
-            self.launchStudioEnvRv(rvFilePath)
+            if os.path.isfile(frameRangeFullName):
+                with open(frameRangeFullName) as file:
+                    fps = float(file.readlines()[2])
+            else:
+                fps, ok = QInputDialog.getDouble(self, 'Input fps', 'frameRange.txt not found :\n{}\n\nfps of this review :'.format(frameRangeFullName), 24, 1, 240, 3)
+                if not ok:
+                    return
 
-    def createRvFile(self, inLatestVerPath, inLatestVer, inShotName, inFps):
+            self.printEcho('fps : {}'.format(fps))
+
+            # The storage tree is built as it is used, so every level is made on its first build.
+            if not os.path.isdir(rvStorageFolderPath):
+                os.makedirs(rvStorageFolderPath)
+
+            if not self.createRvFile(chosenVersionPath, chosenVersion, rvStorageFullPath, shotName, fps):
+                return
+
+        # Rebuilt whenever it is missing, so an .rv moved by hand still gets one back.
+        if not os.path.isfile(shortcutFullPath):
+            self.shortcutCreate(shortcutFullPath, rvStorageFullPath)
+
+        self.launchStudioEnvRv(rvStorageFullPath)
+
+    def createRvFile(self, inLatestVerPath, inLatestVer, inRvFullPath, inShotName, inFps):
 
         println('\ndef >>>>> createRvFile')
         self.printEcho(inLatestVerPath)
@@ -4428,19 +4592,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             if not os.path.isdir(targetShortCutPath):
                 os.makedirs(targetShortCutPath)
 
-            exec_command = os.path.normpath(os.path.join(externalToolPath, 'shortCut', 'Shortcut.exe'))
-            #argument_command = ' ' + r'/f:"' + r'D:\toliet\Shortcut\myBNOpic8.lnk' + r'" ' +  r'/a:c ' + r'/t:"' + r'D:\toliet\Shortcut\IMG_1459_BNO_N_U.jpg' + '"'
             linkName = os.path.normpath(os.path.join(targetShortCutPath, str(inShotName + '_' + iniRvVersion))) + r'__shortcut' + r'.lnk'
-            sourceName = os.path.normpath(inRvFullPathName)
-            argument_command = ' ' + r'/f:"' + linkName + r'" ' +  r'/a:c ' + r'/t:"' + sourceName + '"'
-            # sample: Shortcut.exe /f:"D:\toliet\Shortcut\myBNOpic2.lnk" /a:c /t:"D:\toliet\Shortcut\IMG_1459_BNO_N_U.jpg"
-            #cmd = exec_command + " " + r'/f:"D:\toliet\Shortcut\myBNOpic6.lnk" /a:c /t:"D:\toliet\Shortcut\IMG_1459_BNO_N_U.jpg"'
-            cmd = exec_command + argument_command
-            self.printEcho('exec_command :' + exec_command)
-            self.printEcho('cmd :' + cmd)
-
-            #subprocess.Popen([exec_command, linkName, actionMode, sourceName])
-            os.system(cmd)
+            self.shortcutCreate(linkName, inRvFullPathName)
 
 
 
@@ -4502,8 +4655,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             data[line-1] = data[line-1].replace('__<rvTimelineStart>__', str(rvTimeLineStart))
             data[line-1] = data[line-1].replace('__<rvTimelineEnd>__', str(rvTimeLineEnd))
 
-        # The .rv sits beside its version folder, in the folder RV reviews.
-        writePath = str(os.path.join(os.path.dirname(inLatestVerPath), inLatestVer + '.rv')).replace("\\", "/")
+        # inRvFullPath sits in the storage tree under rvSessionStorageRootPath, worked out by the
+        # caller, which also makes its folder.
+        writePath = inRvFullPath.replace("\\", "/")
         #writePath = writePath.replace("\\", "/")
         self.printEcho('writePath is :' + writePath)
         with open(writePath, 'w') as f:
