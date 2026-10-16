@@ -1479,7 +1479,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.pushButton_commentInternal.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_commentInternal", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_commentInternal.setText(QCoreApplication.translate("MainWindow", u"_Comment (Internal)", None))
+        self.pushButton_commentInternal.setText(QCoreApplication.translate("MainWindow", u"Comment (Internal)", None))
         self.label_9.setText("")
 #if QT_CONFIG(tooltip)
         self.pushButton_versionUp.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_versionUp", None))
