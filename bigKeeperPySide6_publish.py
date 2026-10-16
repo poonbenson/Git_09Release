@@ -544,10 +544,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.wrongFormatUi.pushButton_exec.clicked.connect(lambda : self.listWidget_A_action(self.wrongFormatUi.listWidget.currentItem()))
         self.wrongFormatUi.setWindowTitle('Edit task in Wrong-Format-Projects')
 
-        self.compPreviousVerUi = subListView(parent = self)
-        self.compPreviousVerUi.listWidget.itemDoubleClicked.connect(lambda item : self.shotAction3Action(self.rvPreviousVersionInType, item.text()))
-        self.compPreviousVerUi.pushButton_exec.clicked.connect(lambda : self.shotAction3Action(self.rvPreviousVersionInType, self.compPreviousVerUi.listWidget.currentItem().text()))
-        self.compPreviousVerUi.setWindowTitle('RV Review Previous ver')
+        self.rvPreviousVersionUi = subListView(parent = self)
+        self.rvPreviousVersionUi.listWidget.itemDoubleClicked.connect(lambda item : self.rvReviewAction(self.rvPreviousVersionInType, item.text()))
+        self.rvPreviousVersionUi.pushButton_exec.clicked.connect(lambda : self.rvReviewAction(self.rvPreviousVersionInType, self.rvPreviousVersionUi.listWidget.currentItem().text()))
+        self.rvPreviousVersionUi.setWindowTitle('RV Review Previous ver')
 
         #self.prerendKeywordListUi  = prerendKeywordListView(parent = self)
 
@@ -715,10 +715,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         # 'Task Type' above is only a placeholder, aboutToShow writes the row before it is seen.
         self.shotActionMenu.aboutToShow.connect(lambda : self.taskTypeMenuRefresh('typeScene'))
         self.shotTaskTypeAction.triggered.connect(lambda : self.taskTypeChangeAction('typeScene'))
-        self.shotAction1.triggered.connect(lambda : self.shotAction1Action('typeScene'))
+        self.shotAction1.triggered.connect(lambda : self.editTaskAction('typeScene'))
         #self.shotAction2.triggered.connect(self.shotAction2Action)
-        self.shotAction3.triggered.connect(lambda : self.shotAction3Action('typeScene', None))
-        self.shotAction4.triggered.connect(lambda : self.shotAction4Action('typeScene'))
+        self.shotAction3.triggered.connect(lambda : self.rvReviewAction('typeScene', None))
+        self.shotAction4.triggered.connect(lambda : self.rvPreviousVersionShow('typeScene'))
 
         self.pushButton_assetAction.setText('assetActionMenu')
         self.pushButton_assetAction.setEnabled(False)
@@ -735,9 +735,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_assetAction.setMenu(self.assetActionMenu)
         self.assetActionMenu.aboutToShow.connect(lambda : self.taskTypeMenuRefresh('typeLib'))
         self.assetTaskTypeAction.triggered.connect(lambda : self.taskTypeChangeAction('typeLib'))
-        self.assetAction1.triggered.connect(lambda : self.shotAction1Action('typeLib'))
-        self.assetAction3.triggered.connect(lambda : self.shotAction3Action('typeLib', None))
-        self.assetAction4.triggered.connect(lambda : self.shotAction4Action('typeLib'))
+        self.assetAction1.triggered.connect(lambda : self.editTaskAction('typeLib'))
+        self.assetAction3.triggered.connect(lambda : self.rvReviewAction('typeLib', None))
+        self.assetAction4.triggered.connect(lambda : self.rvPreviousVersionShow('typeLib'))
 
         # set the only active tab in related software.
         tabCount = self.tabWidget_2.count()
@@ -4187,8 +4187,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         else:
             QMessageBox.information(self, 'message', "no shot is selected.")
 
-    def shotAction1Action(self, inType):
-        println('\ndef >>>>> shotAction1Action')
+    def editTaskAction(self, inType):
+        println('\ndef >>>>> editTaskAction')
 
         # Both arms used to differ only by the listWidget, and both handed the shared selTask
         # down to listWidget_3C_action. The task name now comes from this tab's own state.
@@ -4209,10 +4209,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> shotAction2Action')
         self.compLatestRvAction()
 
-    def shotAction4Action(self, inType):
-        println('\ndef >>>>> shotAction4Action')
+    def rvPreviousVersionShow(self, inType):
+        println('\ndef >>>>> rvPreviousVersionShow')
 
-        # compPreviousVerUi is a single dialog shared by both tabs. Its exec button and double
+        # rvPreviousVersionUi is a single dialog shared by both tabs. Its exec button and double
         # click are connected once in __init__, so the tab is stashed here for them to read.
         self.rvPreviousVersionInType = inType
 
@@ -4231,18 +4231,18 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         folderOnlyList.sort(reverse=True)
         self.printEcho(folderOnlyList)
 
-        self.compPreviousVerUi.listWidget.clear()
-        self.compPreviousVerUi.listWidget.addItems(folderOnlyList)
+        self.rvPreviousVersionUi.listWidget.clear()
+        self.rvPreviousVersionUi.listWidget.addItems(folderOnlyList)
         # Row 0 picked, so the exec button never runs on no row.
-        self.compPreviousVerUi.listWidget.setCurrentRow(0)
-        self.compPreviousVerUi.show()
+        self.rvPreviousVersionUi.listWidget.setCurrentRow(0)
+        self.rvPreviousVersionUi.show()
 
 
-    def shotAction3Action(self, inType, inChosenVersion):
-        println('\ndef >>>>> shotAction3Action')
+    def rvReviewAction(self, inType, inChosenVersion):
+        println('\ndef >>>>> rvReviewAction')
 
         # inChosenVersion is None from the menu row, which reviews the latest v#### folder, or the
-        # folder name picked in compPreviousVerUi.
+        # folder name picked in rvPreviousVersionUi.
         self.printEcho('inChosenVersion : {}'.format(inChosenVersion))
 
         # The folder RV reviews is no longer hardcoded comp\output : it is the folder that
