@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20261016E'
+winTitlePrefix = 'BigKeeper_20261016F'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 #This have to match the line in the launcher.bat lines, to keep launcher singleton:
 #taskkill /FI "WINDOWTITLE eq BigKeeper_*" /F
@@ -497,6 +497,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.pushButton_commentClient.clicked.connect(self.launchCommentClient)
         self.pushButton_commentClient.setText(self.iconPathRead(pathOfIconPathsStudio, 'COMMENTCLIENT', 'label'))
+        self.pushButton_commentInternal.clicked.connect(self.launchCommentInternal)
 
         self.pushButton_miscCookbook.clicked.connect(self.launchMiscCookbook)
         self.pushButton_miscCookbook.setText(self.iconPathRead(pathOfIconPathsStudio, 'LEARNING', 'label'))
@@ -545,8 +546,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.wrongFormatUi.setWindowTitle('Edit task in Wrong-Format-Projects')
 
         self.rvPreviousVersionUi = subListView(parent = self)
-        self.rvPreviousVersionUi.listWidget.itemDoubleClicked.connect(lambda item : self.rvReviewAction(self.rvPreviousVersionInType, item.text()))
-        self.rvPreviousVersionUi.pushButton_exec.clicked.connect(lambda : self.rvReviewAction(self.rvPreviousVersionInType, self.rvPreviousVersionUi.listWidget.currentItem().text()))
+        self.rvPreviousVersionUi.listWidget.itemDoubleClicked.connect(lambda item : self.rvReviewAction(self.rvPreviousVersionInType, item.data(Qt.UserRole)))
+        self.rvPreviousVersionUi.pushButton_exec.clicked.connect(lambda : self.rvReviewAction(self.rvPreviousVersionInType, self.rvPreviousVersionUi.listWidget.currentItem().data(Qt.UserRole)))
         self.rvPreviousVersionUi.setWindowTitle('RV Review Previous ver')
 
         #self.prerendKeywordListUi  = prerendKeywordListView(parent = self)
@@ -787,7 +788,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.initDummy()
 
-
     def initDummy(self):
         '''
         #self.pushButton_childUi.clicked.connect(self.myAction4)
@@ -1003,6 +1003,21 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> launchCommentClient')
 
         os.startfile(os.path.normpath(os.path.join(self.selProjRootPath, 'Comment')))
+
+
+    def launchCommentInternal(self):
+        println('\ndef >>>>> launchCommentInternal')
+
+        # The internal comment folder sits in the RV storage tree on K:, where createRvFile writes
+        # its comment shortcuts, so every office opens the same one. It is made on the first
+        # press, the way the Daily folder is.
+        commentPath = os.path.join(rvSessionStorageRootPath, self.selProj, 'comment')
+
+        if not os.path.isdir(commentPath):
+            os.makedirs(commentPath)
+            QMessageBox.information(self, 'Comment Folder not found', 'No existing internal Comment folder.\nFolder is created: {}'.format(commentPath))
+
+        os.startfile(commentPath)
 
 
     def launchRoughcut(self):
@@ -4268,6 +4283,22 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println('\ndef >>>>> shotAction2Action')
         self.compLatestRvAction()
 
+    def rvReviewPathRead(self, inType):
+        println('\ndef >>>>> rvReviewPathRead')
+
+        # The folder RV reviews and its mirror in the storage tree, as a plain tuple. The review
+        # folder is no longer hardcoded comp\output : it is the folder rvReviewFolderPreset.txt
+        # pairs with this task's Task Type, and taskTypeMenuRefresh only enables the RV rows when
+        # that pair exists. The storage folder mirrors it under its own project folder, the way
+        # the Visual Board does.
+        taskLocationPath = self.taskLocationPathRead(inType)
+        rvReviewPath = os.path.join(taskLocationPath, self.rvReviewFolderRead(self.taskTypeRead(taskLocationPath)))
+        rvStorageFolderPath = os.path.join(rvSessionStorageRootPath, self.selProj, os.path.relpath(rvReviewPath, self.subDict[self.selProjPath]))
+        self.printEcho(rvReviewPath)
+        self.printEcho(rvStorageFolderPath)
+
+        return (rvReviewPath, rvStorageFolderPath)
+
     def rvPreviousVersionShow(self, inType):
         println('\ndef >>>>> rvPreviousVersionShow')
 
@@ -4275,9 +4306,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         # click are connected once in __init__, so the tab is stashed here for them to read.
         self.rvPreviousVersionInType = inType
 
-        taskLocationPath = self.taskLocationPathRead(inType)
-        rvReviewPath = os.path.join(taskLocationPath, self.rvReviewFolderRead(self.taskTypeRead(taskLocationPath)))
-        self.printEcho(rvReviewPath)
+        rvReviewPath, rvStorageFolderPath = self.rvReviewPathRead(inType)
 
         if not os.path.isdir(rvReviewPath):
             QMessageBox.information(self, 'message', 'Review folder not found :\n\n{}'.format(rvReviewPath))
@@ -4290,8 +4319,20 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         folderOnlyList.sort(reverse=True)
         self.printEcho(folderOnlyList)
 
+        # A version whose .rv is already in the storage tree is marked, so the user knows it opens
+        # at once with no build. The marked text is no longer the folder name, so the folder name
+        # rides in UserRole, which is what __init__ hands to rvReviewAction.
         self.rvPreviousVersionUi.listWidget.clear()
-        self.rvPreviousVersionUi.listWidget.addItems(folderOnlyList)
+        for eachFolder in folderOnlyList:
+            if os.path.isfile(os.path.join(rvStorageFolderPath, eachFolder + '.rv')):
+                displayText = eachFolder + ' - <rv>'
+            else:
+                displayText = eachFolder
+
+            newItem = QListWidgetItem(displayText)
+            newItem.setData(Qt.UserRole, eachFolder)
+            self.rvPreviousVersionUi.listWidget.addItem(newItem)
+
         # Row 0 picked, so the exec button never runs on no row.
         self.rvPreviousVersionUi.listWidget.setCurrentRow(0)
         self.rvPreviousVersionUi.show()
@@ -4300,31 +4341,37 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def rvReviewAction(self, inType, inChosenVersion):
         println('\ndef >>>>> rvReviewAction')
 
-        # inChosenVersion is None from the menu row, which reviews the latest v#### folder, or the
+        # inChosenVersion is None from the menu row, which reviews the latest version, or the
         # folder name picked in rvPreviousVersionUi.
         self.printEcho('inChosenVersion : {}'.format(inChosenVersion))
 
-        # The folder RV reviews is no longer hardcoded comp\output : it is the folder that
-        # rvReviewFolderPreset.txt pairs with this task's Task Type. taskTypeMenuRefresh only
-        # enables the RV rows when that pair exists.
-        taskLocationPath = self.taskLocationPathRead(inType)
-        rvReviewPath = os.path.join(taskLocationPath, self.rvReviewFolderRead(self.taskTypeRead(taskLocationPath)))
-        self.printEcho(rvReviewPath)
+        rvReviewPath, rvStorageFolderPath = self.rvReviewPathRead(inType)
 
         if not os.path.isdir(rvReviewPath):
             QMessageBox.information(self, 'message', 'Review folder not found :\n\n{}'.format(rvReviewPath))
             return
 
+        # The latest version is the highest of the v#### folders on the job drive and the
+        # v####.rv sessions in the storage tree. An office whose frames have not arrived yet
+        # still opens the newest .rv that K:'s sync brought, and RV itself reports the missing
+        # frames.
         if inChosenVersion == None:
             listSeq = []
             for i in os.listdir(rvReviewPath):
                 if (len(i) <= 5) and (i[0] == 'v') and i[1::].isnumeric() and os.path.isdir(os.path.join(rvReviewPath, i)):
                     listSeq.append(i)
+
+            if os.path.isdir(rvStorageFolderPath):
+                for i in os.listdir(rvStorageFolderPath):
+                    versionName = i[:-3]
+                    if i.lower().endswith('.rv') and (len(versionName) <= 5) and (versionName[0] == 'v') and versionName[1::].isnumeric() and versionName not in listSeq:
+                        listSeq.append(versionName)
+
             listSeq.sort()
             self.printEcho(listSeq)
 
             if len(listSeq) == 0:
-                QMessageBox.information(self, 'message', 'No v#### folder in :\n\n{}'.format(rvReviewPath))
+                QMessageBox.information(self, 'message', 'No v#### folder or .rv in :\n\n{}\n\n{}'.format(rvReviewPath, rvStorageFolderPath))
                 return
 
             chosenVersion = listSeq[-1]
@@ -4334,11 +4381,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         chosenVersionPath = os.path.join(rvReviewPath, chosenVersion)
         self.printEcho(chosenVersionPath)
 
-        # The .rv lives in the storage tree, which mirrors the project tree under its own project
-        # folder the way the Visual Board does. The folder RV reviews on the job drive keeps only
+        # The .rv lives in the storage tree. The folder RV reviews on the job drive keeps only
         # a shortcut beside the version folder : output\v0005.rv.lnk
         rvFileName = chosenVersion + '.rv'
-        rvStorageFolderPath = os.path.join(rvSessionStorageRootPath, self.selProj, os.path.relpath(rvReviewPath, self.subDict[self.selProjPath]))
         rvStorageFullPath = os.path.join(rvStorageFolderPath, rvFileName)
         rvOriginalFullPath = os.path.join(rvReviewPath, rvFileName)
         shortcutFullPath = rvOriginalFullPath + '.lnk'
