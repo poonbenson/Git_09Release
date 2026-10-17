@@ -942,17 +942,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         println(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'))
 
         shotlistUrl = self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'), 'SHOTLIST', 'Path')
-
-        self.openUrlInEdge(shotlistUrl)
-
-
-    def launchShotlist(self):
-        println('\ndef >>>>> launchShotlist')
-
-        getBigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
-        println(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'))
-
-        shotlistUrl = self.iconPathRead(os.path.join(self.subDict[self.selProjPath], 'bigPathsProject.ini'), 'SHOTLIST', 'Path')
         println('shotlist url ' + shotlistUrl)
         println('shotlist edge profile ' + edgeShotlistProfilePath)
 
