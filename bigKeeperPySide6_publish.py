@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20261016F'
+winTitlePrefix = 'BigKeeper_20261017a'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 #This have to match the line in the launcher.bat lines, to keep launcher singleton:
 #taskkill /FI "WINDOWTITLE eq BigKeeper_*" /F
@@ -549,6 +549,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.rvPreviousVersionUi.listWidget.itemDoubleClicked.connect(lambda item : self.rvReviewAction(self.rvPreviousVersionInType, item.data(Qt.UserRole)))
         self.rvPreviousVersionUi.pushButton_exec.clicked.connect(lambda : self.rvReviewAction(self.rvPreviousVersionInType, self.rvPreviousVersionUi.listWidget.currentItem().data(Qt.UserRole)))
         self.rvPreviousVersionUi.setWindowTitle('RV Review Previous ver')
+        # Hide others sits under the list of this one dialog only : subListView also builds
+        # wrongFormatUi and reviveUi, so it is added here rather than in Qt Designer. Toggling it
+        # lists the folders again.
+        self.rvPreviousVersionHideOthersCheckBox = QCheckBox('Hide others')
+        self.rvPreviousVersionHideOthersCheckBox.setChecked(True)
+        self.rvPreviousVersionUi.verticalLayout.addWidget(self.rvPreviousVersionHideOthersCheckBox)
+        self.rvPreviousVersionHideOthersCheckBox.toggled.connect(lambda : self.rvPreviousVersionShow(self.rvPreviousVersionInType))
 
         #self.prerendKeywordListUi  = prerendKeywordListView(parent = self)
 
@@ -704,7 +711,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.shotTaskTypeAction = QAction('Task Type', self)
         self.shotAction1 = QAction('Edit Shot Task', self)
         #self.shotAction2 = QAction('RV latest Comp Output', self)
-        self.shotAction3 = QAction('RV Build & Review Latest ver', self)
+        self.shotAction3 = QAction('RV Build && Review Latest ver', self)
         self.shotAction4 = QAction('RV Review Previous ver', self)
         self.shotActionMenu.addAction(self.shotTaskTypeAction)
         self.shotActionMenu.addSeparator()
@@ -726,7 +733,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.assetActionMenu = QMenu(self.pushButton_assetAction)
         self.assetTaskTypeAction = QAction('Task Type', self)
         self.assetAction1 = QAction('Edit Asset Task', self)
-        self.assetAction3 = QAction('RV Build & Review Latest ver', self)
+        self.assetAction3 = QAction('RV Build && Review Latest ver', self)
         self.assetAction4 = QAction('RV Review Previous ver', self)
         self.assetActionMenu.addAction(self.assetTaskTypeAction)
         self.assetActionMenu.addSeparator()
@@ -4312,9 +4319,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             QMessageBox.information(self, 'message', 'Review folder not found :\n\n{}'.format(rvReviewPath))
             return
 
+        # Hide others, ticked by default, keeps only the v + number folders, so the LayerMask and
+        # FreeLayerMask folders drop out of the list.
+        hideOthers = self.rvPreviousVersionHideOthersCheckBox.isChecked()
+
         folderOnlyList = []
         for i in os.listdir(rvReviewPath):
-            if os.path.isdir(os.path.join(rvReviewPath, i)):
+            if os.path.isdir(os.path.join(rvReviewPath, i)) and (not hideOthers or (i[0] == 'v' and i[1::].isnumeric())):
                 folderOnlyList.append(i)
         folderOnlyList.sort(reverse=True)
         self.printEcho(folderOnlyList)
@@ -4562,17 +4573,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             return metaData
 
-        def askFolderName():
-            println('\n   def >>>>> askFolderName')
-            try:
-                defaultText = self.storedAnsweredFolder
-            except:
-                defaultText = ""
-            answerFolder = QInputDialog.getText(self, 'Input Folder Name', 'To create instance-shortcut for comment folder,\nformat: <yyyymmdd>\n\nor\n\nPress cancel to skip.',QLineEdit.Normal, defaultText)
-            self.printEcho(answerFolder)
-
-            return answerFolder
-
         def createShortCut(folderName, inShotName, iniRvVersion, inRvFullPathName):
             println('\n   def >>>>> createShortCut')
             self.printEcho(self.subDict[self.selProjPath])
@@ -4601,6 +4601,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         if MetaData == None:
             QMessageBox.information(self, 'message', 'No image sequence in :\n\n{}'.format(inLatestVerPath))
+            return False
+
+        # Asked before anything is written, so Cancel leaves no .rv behind. The review folder's
+        # own name is shown in the question : output for comp.
+        shortcutChoice, commentFolderName = self.rvShortcutAsk(os.path.basename(os.path.dirname(inLatestVerPath)))
+
+        if shortcutChoice == 'cancel':
+            println('RV session not built : cancelled.')
             return False
 
         inWidth, inHeight, inRvStringName, inFrameFirstFrameNo, inFrameEndFrameNo = MetaData
@@ -4655,12 +4663,76 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         with open(writePath, 'w') as f:
             f.writelines(data)
 
-        receivedAnswerFolder = askFolderName()
-        if receivedAnswerFolder[1]:
-            self.storedAnsweredFolder = receivedAnswerFolder[0]
-            createShortCut(self.storedAnsweredFolder, inShotName, inLatestVer, writePath)
+        if shortcutChoice == 'both':
+            self.storedAnsweredFolder = commentFolderName
+            createShortCut(commentFolderName, inShotName, inLatestVer, writePath)
 
         return True
+
+    def rvShortcutAsk(self, inReviewFolderName):
+        println('\ndef >>>>> rvShortcutAsk')
+
+        # Asked by createRvFile before the .rv is written. Returns a plain tuple
+        # (choice, comment folder name), choice being 'both', 'output' or 'cancel'. Cancel, Esc and
+        # the window's X all stop the build. The comment folder name starts as the last one used,
+        # as one review day usually covers many shots.
+        try:
+            defaultText = self.storedAnsweredFolder
+        except:
+            defaultText = ''
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle('RV Shortcut')
+        dialogLayout = QVBoxLayout(dialog)
+
+        # PlainText, or QLabel takes <output> and <yyyymmdd> for rich text tags and drops them.
+        outputLabel = QLabel('By Default, one shortcut will be in this <{}> folder.'.format(inReviewFolderName))
+        outputLabel.setTextFormat(Qt.PlainText)
+        dialogLayout.addWidget(outputLabel)
+        dialogLayout.addSpacing(12)
+
+        commentLabel = QLabel('Additionally, it can also create a twin shortcut for comment folder,\nformat <yyyymmdd>:')
+        commentLabel.setTextFormat(Qt.PlainText)
+        dialogLayout.addWidget(commentLabel)
+
+        commentFolderLineEdit = QLineEdit(defaultText)
+        dialogLayout.addWidget(commentFolderLineEdit)
+        dialogLayout.addSpacing(12)
+
+        buttonLayout = QHBoxLayout()
+        bothButton = QPushButton('Both shortcuts')
+        outputButton = QPushButton('Just <{}>'.format(inReviewFolderName))
+        cancelButton = QPushButton('Cancel')
+        buttonLayout.addWidget(bothButton)
+        buttonLayout.addWidget(outputButton)
+        buttonLayout.addWidget(cancelButton)
+        dialogLayout.addLayout(buttonLayout)
+
+        # Enter in the line edit means Both, the button the typing was for.
+        bothButton.setDefault(True)
+
+        def bothClicked():
+            if commentFolderLineEdit.text().strip() == '':
+                QMessageBox.warning(dialog, 'Ooops!', 'Enter the comment folder name first, for example 20261017.')
+                return
+            dialog.done(2)
+
+        bothButton.clicked.connect(bothClicked)
+        outputButton.clicked.connect(lambda : dialog.done(1))
+        cancelButton.clicked.connect(dialog.reject)
+
+        dialogResult = dialog.exec()
+
+        if dialogResult == 2:
+            shortcutChoice = 'both'
+        elif dialogResult == 1:
+            shortcutChoice = 'output'
+        else:
+            shortcutChoice = 'cancel'
+
+        self.printEcho('shortcutChoice : {}'.format(shortcutChoice))
+
+        return (shortcutChoice, commentFolderLineEdit.text().strip())
 
     def findNodeLargestNumber(self, InPrefix, InNodeClassName):
         println('\ndef >>>>> findNodeLargestNumber')
