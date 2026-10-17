@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20261017b'
+winTitlePrefix = 'BigKeeper_20261017c'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 #This have to match the line in the launcher.bat lines, to keep launcher singleton:
 #taskkill /FI "WINDOWTITLE eq BigKeeper_*" /F
@@ -4801,70 +4801,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         return (shortcutChoice, commentFolderLineEdit.text().strip())
 
-    def rvShortcutAsk(self, inReviewFolderName):
-        println('\ndef >>>>> rvShortcutAsk')
-
-        # Asked by createRvFile before the .rv is written. Returns a plain tuple
-        # (choice, comment folder name), choice being 'both', 'output' or 'cancel'. Cancel, Esc and
-        # the window's X all stop the build. The comment folder name starts as the last one used,
-        # as one review day usually covers many shots.
-        try:
-            defaultText = self.storedAnsweredFolder
-        except:
-            defaultText = ''
-
-        dialog = QDialog(self)
-        dialog.setWindowTitle('RV Shortcut')
-        dialogLayout = QVBoxLayout(dialog)
-
-        # PlainText, or QLabel takes <output> and <yyyymmdd> for rich text tags and drops them.
-        outputLabel = QLabel('By Default, one shortcut will be in this <{}> folder.'.format(inReviewFolderName))
-        outputLabel.setTextFormat(Qt.PlainText)
-        dialogLayout.addWidget(outputLabel)
-        dialogLayout.addSpacing(12)
-
-        commentLabel = QLabel('Additionally, it can also create a twin shortcut for comment folder,\nformat <yyyymmdd>:')
-        commentLabel.setTextFormat(Qt.PlainText)
-        dialogLayout.addWidget(commentLabel)
-
-        commentFolderLineEdit = QLineEdit(defaultText)
-        dialogLayout.addWidget(commentFolderLineEdit)
-        dialogLayout.addSpacing(12)
-
-        buttonLayout = QHBoxLayout()
-        bothButton = QPushButton('Both shortcuts')
-        outputButton = QPushButton('Just <{}>'.format(inReviewFolderName))
-        cancelButton = QPushButton('Cancel')
-        buttonLayout.addWidget(bothButton)
-        buttonLayout.addWidget(outputButton)
-        buttonLayout.addWidget(cancelButton)
-        dialogLayout.addLayout(buttonLayout)
-
-        # Enter in the line edit means Both, the button the typing was for.
-        bothButton.setDefault(True)
-
-        def bothClicked():
-            if commentFolderLineEdit.text().strip() == '':
-                QMessageBox.warning(dialog, 'Ooops!', 'Enter the comment folder name first, for example 20261017.')
-                return
-            dialog.done(2)
-
-        bothButton.clicked.connect(bothClicked)
-        outputButton.clicked.connect(lambda : dialog.done(1))
-        cancelButton.clicked.connect(dialog.reject)
-
-        dialogResult = dialog.exec()
-
-        if dialogResult == 2:
-            shortcutChoice = 'both'
-        elif dialogResult == 1:
-            shortcutChoice = 'output'
-        else:
-            shortcutChoice = 'cancel'
-
-        self.printEcho('shortcutChoice : {}'.format(shortcutChoice))
-
-        return (shortcutChoice, commentFolderLineEdit.text().strip())
 
     def findNodeLargestNumber(self, InPrefix, InNodeClassName):
         println('\ndef >>>>> findNodeLargestNumber')
