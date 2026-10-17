@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20261017a'
+winTitlePrefix = 'BigKeeper_20261017b'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 #This have to match the line in the launcher.bat lines, to keep launcher singleton:
 #taskkill /FI "WINDOWTITLE eq BigKeeper_*" /F
@@ -191,6 +191,10 @@ visualBoardStorageRootPath = r'K:\z_VisualBoard'
 # K:\z_VisualBoard\ChanFilm\lib\bldg5060s\bldg5060s.pur. The matching folder on the job drive
 # keeps a Windows shortcut pointing back here. Nothing checks that K: is mapped -- an unmapped
 # drive fails on the spot with its own error.
+
+visualBoardExistStyle = 'background-color:rgb(61,115,115); color:rgb(255,255,255)'
+# The look of a Visual Board button whose board already exists. A button whose board does not
+# exist yet goes back to the default look, with an empty style sheet.
 
 freeLayerMaskType = 'FreeLayerMask'
 # The inType of the Free LayerMask Write node, and the tail of its version folder name :
@@ -727,6 +731,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.shotAction2.triggered.connect(self.shotAction2Action)
         self.shotAction3.triggered.connect(lambda : self.rvReviewAction('typeScene', None))
         self.shotAction4.triggered.connect(lambda : self.rvPreviousVersionShow('typeScene'))
+        # Hidden, not removed : Previous ver covers it, and rvReviewAction still serves Previous ver.
+        self.shotAction3.setVisible(False)
 
         self.pushButton_assetAction.setText('assetActionMenu')
         self.pushButton_assetAction.setEnabled(False)
@@ -746,6 +752,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.assetAction1.triggered.connect(lambda : self.editTaskAction('typeLib'))
         self.assetAction3.triggered.connect(lambda : self.rvReviewAction('typeLib', None))
         self.assetAction4.triggered.connect(lambda : self.rvPreviousVersionShow('typeLib'))
+        self.assetAction3.setVisible(False)
 
         # set the only active tab in related software.
         tabCount = self.tabWidget_2.count()
@@ -1334,7 +1341,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         # A board or a session made at another office arrives through K:'s sync, but its
         # shortcut on this office's job drive does not. Every click puts back what is missing.
         self.storageShortcutRefresh(inType)
-
+        self.visualBoardButtonRefresh(inType)
 
 
     def comboBoxAction2(self, item):
@@ -1495,8 +1502,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         # A board or a session made at another office arrives through K:'s sync, but its
         # shortcut on this office's job drive does not. Every click puts back what is missing.
         self.storageShortcutRefresh(inType)
-
-
+        self.visualBoardButtonRefresh(inType)
 
 
     def listWidget_3_appear(self, item3, inType):
@@ -1552,7 +1558,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         # A board or a session made at another office arrives through K:'s sync, but its
         # shortcut on this office's job drive does not. Every click puts back what is missing.
         self.storageShortcutRefresh(inType)
-
+        self.visualBoardButtonRefresh(inType)
 
     def listWidget_3C_action(self, item, inType):
         println('\ndef >>>>> listWidget_3C_action')
@@ -2894,6 +2900,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         # A board or a session made at another office arrives through K:'s sync, but its
         # shortcut on this office's job drive does not. Every click puts back what is missing.
         self.storageShortcutRefresh(inType)
+        self.visualBoardButtonRefresh(inType)
 
         #return item
 
@@ -2925,11 +2932,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         elif  inType == 'typeLib':
             os.startfile(self.assetLocationPath)
 
-    def visualBoardAction(self, inType, inLevel):
-        println('\ndef >>>>> visualBoardAction')
-        self.printEcho(inType)
-        self.printEcho(inLevel)
+    def visualBoardPathRead(self, inType, inLevel):
+        println('\ndef >>>>> visualBoardPathRead')
 
+        # The board paths of one level, shared by visualBoardAction and visualBoardButtonRefresh,
+        # as a plain tuple : (storageFolderPath, storageFullPath, originalFullPath,
+        # shortcutFullPath, visualBoardName). None when that level has no row picked yet.
+        #
         # Each button owns one level and stays there, so the Seq row still opens the seq board
         # after the user has clicked all the way down to a task. The path is rebuilt from this
         # tab's own listWidgets because the state variables only carry the level last clicked,
@@ -2960,8 +2969,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             selectedItems = [listWidgetSequence.currentItem(), listWidgetShot.currentItem(), listWidgetTask.currentItem()]
 
         if selectedItems != [] and selectedItems[-1] == None:
-            QMessageBox.warning(self, 'Ooops!', 'Visual Board\n\nNothing is selected on this row yet.')
-            return
+            return None
 
         folderNames = [eachItem.text() for eachItem in selectedItems]
 
@@ -2985,6 +2993,66 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         # <name>.pur.lnk, so Explorer shows it as <name>.pur with file extensions hidden.
         shortcutFullPath = os.path.join(originalFolderPath, visualBoardName + '.lnk')
         self.printEcho(storageFullPath)
+
+        return (storageFolderPath, storageFullPath, originalFullPath, shortcutFullPath, visualBoardName)
+
+    def visualBoardButtonRefresh(self, inType):
+        println('\ndef >>>>> visualBoardButtonRefresh')
+
+        # Called at the end of every list click, and by visualBoardAction once a board is made.
+        # Each Visual Board button of this tab shows whether its level has a board already :
+        # Open on visualBoardExistStyle when it has, New on the default look when it has not.
+        # A board still on the job drive counts as there, its next press moves it into storage.
+        # A level with no row picked yet has its button disabled. The tab's top button keeps its
+        # Visual Board text and only changes colour, and its root level is always picked.
+        if inType == 'typeScene':
+            levelButtons = [('levelRoot', self.pushButton_vBoardShotTab),
+                            ('levelSequence', self.pushButton_vBoardSeq),
+                            ('levelShot', self.pushButton_vBoardShot),
+                            ('levelTask', self.pushButton_vBoardScnTask)]
+        elif inType == 'typeLib':
+            levelButtons = [('levelRoot', self.pushButton_vBoardAssetTab),
+                            ('levelSequence', self.pushButton_vBoardType),
+                            ('levelShot', self.pushButton_vBoardAsset),
+                            ('levelTask', self.pushButton_vBoardAssetTask)]
+
+        for eachLevel, eachButton in levelButtons:
+            boardPaths = self.visualBoardPathRead(inType, eachLevel)
+
+            if boardPaths == None:
+                eachButton.setEnabled(False)
+                eachButton.setText('Open')
+                eachButton.setStyleSheet('')
+                continue
+
+            storageFolderPath, storageFullPath, originalFullPath, shortcutFullPath, visualBoardName = boardPaths
+            boardExists = os.path.isfile(storageFullPath) or os.path.isfile(originalFullPath)
+
+            eachButton.setEnabled(True)
+
+            if boardExists:
+                eachButton.setStyleSheet(visualBoardExistStyle)
+            else:
+                eachButton.setStyleSheet('')
+
+            if eachLevel != 'levelRoot':
+                if boardExists:
+                    eachButton.setText('Open')
+                else:
+                    eachButton.setText('New')
+
+    def visualBoardAction(self, inType, inLevel):
+        println('\ndef >>>>> visualBoardAction')
+        self.printEcho(inType)
+        self.printEcho(inLevel)
+
+        boardPaths = self.visualBoardPathRead(inType, inLevel)
+
+        if boardPaths == None:
+            QMessageBox.warning(self, 'Ooops!', 'Visual Board\n\nNothing is selected on this row yet.')
+            return
+
+        storageFolderPath, storageFullPath, originalFullPath, shortcutFullPath, visualBoardName = boardPaths
 
         if not os.path.isfile(storageFullPath):
 
@@ -3030,6 +3098,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         # Rebuilt whenever it is missing, so a board moved by hand still gets one back.
         if not os.path.isfile(shortcutFullPath):
             self.shortcutCreate(shortcutFullPath, storageFullPath)
+
+        # A board made just now turns its button to Open.
+        self.visualBoardButtonRefresh(inType)
 
         # .pur opens through its Windows file association.
         os.startfile(storageFullPath)
@@ -4664,10 +4735,71 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             f.writelines(data)
 
         if shortcutChoice == 'both':
-            self.storedAnsweredFolder = commentFolderName
             createShortCut(commentFolderName, inShotName, inLatestVer, writePath)
 
         return True
+
+    def rvShortcutAsk(self, inReviewFolderName):
+        println('\ndef >>>>> rvShortcutAsk')
+
+        # Asked by createRvFile before the .rv is written. Returns a plain tuple
+        # (choice, comment folder name), choice being 'both', 'output' or 'cancel'. Cancel, Esc and
+        # the window's X all stop the build. The comment folder name starts as today's date, so
+        # Enter alone makes both shortcuts.
+        defaultText = time.strftime('%Y%m%d')
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle('RV Shortcut')
+        dialogLayout = QVBoxLayout(dialog)
+
+        # PlainText, or QLabel takes <output> and <yyyymmdd> for rich text tags and drops them.
+        outputLabel = QLabel('By Default, one shortcut will be in this <{}> folder.'.format(inReviewFolderName))
+        outputLabel.setTextFormat(Qt.PlainText)
+        dialogLayout.addWidget(outputLabel)
+        dialogLayout.addSpacing(12)
+
+        commentLabel = QLabel('Additionally, it can also create a twin shortcut for comment folder,\nformat <yyyymmdd>:')
+        commentLabel.setTextFormat(Qt.PlainText)
+        dialogLayout.addWidget(commentLabel)
+
+        commentFolderLineEdit = QLineEdit(defaultText)
+        dialogLayout.addWidget(commentFolderLineEdit)
+        dialogLayout.addSpacing(12)
+
+        buttonLayout = QHBoxLayout()
+        bothButton = QPushButton('Both shortcuts')
+        outputButton = QPushButton('Just <{}>'.format(inReviewFolderName))
+        cancelButton = QPushButton('Cancel')
+        buttonLayout.addWidget(bothButton)
+        buttonLayout.addWidget(outputButton)
+        buttonLayout.addWidget(cancelButton)
+        dialogLayout.addLayout(buttonLayout)
+
+        # Enter in the line edit means Both, the button the typing was for.
+        bothButton.setDefault(True)
+
+        def bothClicked():
+            if commentFolderLineEdit.text().strip() == '':
+                QMessageBox.warning(dialog, 'Ooops!', 'Enter the comment folder name first, for example 20261017.')
+                return
+            dialog.done(2)
+
+        bothButton.clicked.connect(bothClicked)
+        outputButton.clicked.connect(lambda : dialog.done(1))
+        cancelButton.clicked.connect(dialog.reject)
+
+        dialogResult = dialog.exec()
+
+        if dialogResult == 2:
+            shortcutChoice = 'both'
+        elif dialogResult == 1:
+            shortcutChoice = 'output'
+        else:
+            shortcutChoice = 'cancel'
+
+        self.printEcho('shortcutChoice : {}'.format(shortcutChoice))
+
+        return (shortcutChoice, commentFolderLineEdit.text().strip())
 
     def rvShortcutAsk(self, inReviewFolderName):
         println('\ndef >>>>> rvShortcutAsk')
