@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20261017c'
+winTitlePrefix = 'BigKeeper_20261022a'
 #winTitlePrefix = 'BigKeeper_20250810a - For Release'
 #This have to match the line in the launcher.bat lines, to keep launcher singleton:
 #taskkill /FI "WINDOWTITLE eq BigKeeper_*" /F
@@ -1011,14 +1011,31 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def launchCommentInternal(self):
         println('\ndef >>>>> launchCommentInternal')
 
-        # The internal comment folder sits in the RV storage tree on K:, where createRvFile writes
-        # its comment shortcuts, so every office opens the same one. It is made on the first
-        # press, the way the Daily folder is.
-        commentPath = os.path.join(rvSessionStorageRootPath, self.selProj, 'comment')
+        # Opens the project's comment folder on the job drive. createRvFile writes each comment
+        # shortcut there and to the RV storage tree on K:, but only at the office that builds the
+        # .rv, so the shortcuts K:'s sync brought from another office are copied across first,
+        # into the same <yyyymmdd> folders. They point at K:, so a copy works at every office.
+        # The folder is made on the first press, the way the Daily folder is.
+        storageCommentPath = os.path.join(rvSessionStorageRootPath, self.selProj, 'comment')
+        commentPath = os.path.join(self.subDict[self.selProjPath], 'comment')
 
         if not os.path.isdir(commentPath):
             os.makedirs(commentPath)
             QMessageBox.information(self, 'Comment Folder not found', 'No existing internal Comment folder.\nFolder is created: {}'.format(commentPath))
+
+        if os.path.isdir(storageCommentPath):
+            for eachFolderName in os.listdir(storageCommentPath):
+                storageFolderPath = os.path.join(storageCommentPath, eachFolderName)
+                if not os.path.isdir(storageFolderPath):
+                    continue
+
+                for eachName in os.listdir(storageFolderPath):
+                    copyFullPath = os.path.join(commentPath, eachFolderName, eachName)
+                    if eachName.lower().endswith('.lnk') and not os.path.isfile(copyFullPath):
+                        if not os.path.isdir(os.path.dirname(copyFullPath)):
+                            os.makedirs(os.path.dirname(copyFullPath))
+                        shutil.copy2(os.path.join(storageFolderPath, eachName), copyFullPath)
+                        println('Comment shortcut copied : {}'.format(copyFullPath))
 
         os.startfile(commentPath)
 
@@ -4637,15 +4654,19 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             println('\n   def >>>>> createShortCut')
             self.printEcho(self.subDict[self.selProjPath])
 
-            # The comment folder sits in the RV storage tree on K:, so every office gets it through
-            # K:'s sync. The shortcuts in it point at K: too, the same drive letter at every office.
-            targetShortCutPath = os.path.normpath(os.path.join(rvSessionStorageRootPath, self.selProj, 'comment', folderName))
-            self.printEcho(targetShortCutPath)
-            if not os.path.isdir(targetShortCutPath):
-                os.makedirs(targetShortCutPath)
+            # Twin shortcuts, same name and same <yyyymmdd> folder : one in the RV storage tree on
+            # K:, which every office gets through K:'s sync, one in the project's comment folder on
+            # the job drive. Both point at the .rv on K:, the same drive letter at every office.
+            # launchCommentInternal copies the K: ones to the job drive of another office.
+            shortcutName = str(inShotName + '_' + iniRvVersion) + r'__shortcut' + r'.lnk'
 
-            linkName = os.path.normpath(os.path.join(targetShortCutPath, str(inShotName + '_' + iniRvVersion))) + r'__shortcut' + r'.lnk'
-            self.shortcutCreate(linkName, inRvFullPathName)
+            for eachCommentPath in [os.path.join(rvSessionStorageRootPath, self.selProj, 'comment'), os.path.join(self.subDict[self.selProjPath], 'comment')]:
+                targetShortCutPath = os.path.normpath(os.path.join(eachCommentPath, folderName))
+                self.printEcho(targetShortCutPath)
+                if not os.path.isdir(targetShortCutPath):
+                    os.makedirs(targetShortCutPath)
+
+                self.shortcutCreate(os.path.join(targetShortCutPath, shortcutName), inRvFullPathName)
 
 
 
